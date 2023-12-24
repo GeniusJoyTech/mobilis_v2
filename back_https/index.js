@@ -19,14 +19,40 @@ const credentials = { key: privateKey, cert: certificate};
 const httpsServer = https.createServer(credentials, app);
 
 app.use(cors());
-
 app.use(express.json());
 
-app.use('/', Usuario);
-app.use('/sup', Supervisor);
-app.use('/pro', Promotor);
-app.use('/adm', Administrador);
 
+const checkCargo = (req, res, next, cargo) => {
+  const token = req.header('Authorization');
+
+  if (!token) {
+    return res.status(401).json({ message: 'Token não fornecido' });
+  }
+
+  try {
+    const decoded = jwt.verify(token, 'seuSegredo'); // Substitua 'seuSegredo' pelo seu segredo JWT
+    if (decoded.cargo !== cargo) {
+      return res.status(403).json({ message: 'Usuário não é supervisor' });
+    }
+    next();
+  } catch (error) {
+    return res.status(401).json({ message: 'Token inválido' });
+  }
+};
+
+
+app.use('/', Usuario);
+app.use('/sup', (req, res, next) => {
+  checkCargo(req, res, next, 'supervisor');
+}, Supervisor);
+
+app.use('/pro', (req, res, next) => {
+  checkCargo(req, res, next, 'promotor');
+}, Promotor);
+
+app.use('/adm', (req, res, next) => {
+  checkCargo(req, res, next, 'administrador');
+}, Administrador);
 
 httpsServer.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT} utilizando HTTPS`);
