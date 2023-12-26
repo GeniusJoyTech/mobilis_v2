@@ -30,7 +30,7 @@ const checkCargo = (req, res, next, cargo) => {
   }
 
   try {
-    const decoded = jwt.verify(token, 'seuSegredo'); // Substitua 'seuSegredo' pelo seu segredo JWT
+    const decoded = jwt.verify(token, 'segredo');
     if (decoded.cargo !== cargo) {
       return res.status(403).json({ message: 'Usuário não é supervisor' });
     }
