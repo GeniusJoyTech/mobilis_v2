@@ -3,13 +3,17 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Login from './Login.jsx';
+import TrocaSenha from './TrocaSenha.jsx';
+import NovaSenha from './NovaSenha.jsx';
 
 const App = () => {
   return (
     <Router>
       <Routes>
         <Route path="/login" element={<Login />} />
-        {/* Adicione mais rotas conforme necessário */}
+        <Route path="/trocasenha" element={<TrocaSenha />} />
+        <Route path="/novasenha" element={<NovaSenha />} />
+        
       </Routes>
     </Router>
   );
