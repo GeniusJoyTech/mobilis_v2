@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const https = require('https');
 const fs = require('fs');
+const jwt = require("jsonwebtoken");
 
 const Usuario = require('./rotas/usuario.js');
 const Supervisor = require('./rotas/supervisor.js');
@@ -24,7 +25,6 @@ app.use(express.json());
 
 const checkCargo = (req, res, next, cargo) => {
   const token = req.header('Authorization');
-
   if (!token) {
     return res.status(401).json({ message: 'Token não fornecido' });
   }
@@ -32,26 +32,26 @@ const checkCargo = (req, res, next, cargo) => {
   try {
     const decoded = jwt.verify(token, 'segredo');
     if (decoded.cargo !== cargo) {
-      return res.status(403).json({ message: 'Usuário não é supervisor' });
+      return res.status(403).json({ message: `Usuário não é ${cargo}, usuário é ${decoded.cargo}` });
     }
     next();
   } catch (error) {
-    return res.status(401).json({ message: 'Token inválido' });
+    return res.status(401).json({ message: `Token inválido ${error}` });
   }
 };
 
 
 app.use('/', Usuario);
 app.use('/sup', (req, res, next) => {
-  checkCargo(req, res, next, 'supervisor');
+  checkCargo(req, res, next, 'Supervisor');
 }, Supervisor);
 
 app.use('/pro', (req, res, next) => {
-  checkCargo(req, res, next, 'promotor');
+  checkCargo(req, res, next, 'Promotor');
 }, Promotor);
 
 app.use('/adm', (req, res, next) => {
-  checkCargo(req, res, next, 'administrador');
+  checkCargo(req, res, next, 'Administrador');
 }, Administrador);
 
 httpsServer.listen(PORT, () => {

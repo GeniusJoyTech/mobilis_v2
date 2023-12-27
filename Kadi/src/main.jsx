@@ -2,9 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Login from './Login.jsx';
-import TrocaSenha from './TrocaSenha.jsx';
-import NovaSenha from './NovaSenha.jsx';
+import Login from './usuario/Login.jsx';
+import TrocaSenha from './usuario/TrocaSenha.jsx';
+import NovaSenha from './usuario/NovaSenha.jsx';
+import Mercados from './supervisor/Mercados.jsx';
 
 const App = () => {
   return (
@@ -13,6 +14,8 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/trocasenha" element={<TrocaSenha />} />
         <Route path="/novasenha" element={<NovaSenha />} />
+        <Route path="/Mercados" element={<Mercados />} />
+        
         
       </Routes>
     </Router>
