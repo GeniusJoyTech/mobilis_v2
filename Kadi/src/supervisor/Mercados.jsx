@@ -3,7 +3,6 @@ import Table from 'react-bootstrap/Table';
 import Container from 'react-bootstrap/Container';
 import Pagination from 'react-bootstrap/Pagination';
 import getAuthToken from '../utils/authorization';
-import Mercado from './Mercado';
 
 function Mercados() {
   const [loja, setLoja] = useState([]);
