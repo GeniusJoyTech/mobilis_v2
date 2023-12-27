@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import Table from 'react-bootstrap/Table';
 import Container from 'react-bootstrap/Container';
-
+import Pagination from 'react-bootstrap/Pagination';
 import getAuthToken from '../utils/authorization';
 import Mercado from './Mercado';
 
 function Mercados() {
   const [loja, setLoja] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 2;
 
   const fetchData = async () => {
     try {
@@ -35,28 +37,44 @@ function Mercados() {
     fetchData();
   }, []);
 
-  const handleButtonClick = () => {
-    fetchData();
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
   };
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = loja.slice(indexOfFirstItem, indexOfLastItem);
 
   return (
     <Container>
-        <Table striped bordered hover>
-      <thead>
-        <tr>
-          <th>Loja</th>
-          <th>Endereço</th>
-        </tr>
-      </thead>
-      <tbody>
-        {loja.map((item) => (
-          <tr key={item.id}>
-            <td>{item.nome}</td>
-            <td>{item.endereco}</td>
+      <Table striped bordered hover>
+        <thead>
+          <tr>
+            <th>Loja</th>
+            <th>Endereço</th>
           </tr>
+        </thead>
+        <tbody>
+          {currentItems.map((item) => (
+            <tr key={item.id_loja}>
+              <td>{item.nome}</td>
+              <td>{item.endereco}</td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+      
+      <Pagination>
+        {Array.from({ length: Math.ceil(loja.length / itemsPerPage) }).map((_, index) => (
+          <Pagination.Item
+            key={index + 1}
+            active={index + 1 === currentPage}
+            onClick={() => handlePageChange(index + 1)}
+          >
+            {index + 1}
+          </Pagination.Item>
         ))}
-      </tbody>
-    </Table>
+      </Pagination>
     </Container>
   );
 }
