@@ -49,7 +49,7 @@ function AdicionarDadosModal() {
 
   return (
     <>
-      <Button variant="sucess" onClick={handleShow}>
+      <Button variant="primary" onClick={handleShow}>
         Adicionar
       </Button>
 
@@ -79,7 +79,6 @@ function AdicionarDadosModal() {
                 onChange={handleChange}
               />
             </Form.Group>
-            {/* Adicione outros campos conforme necessário */}
             <Button variant="primary" type="submit">
               Adicionar
             </Button>

@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Login from './usuario/Login.jsx';
 import TrocaSenha from './usuario/TrocaSenha.jsx';
 import NovaSenha from './usuario/NovaSenha.jsx';
-import Mercados from './supervisor/Mercados.jsx';
+import Mercados from './supervisor/mercado.jsx/Listar.jsx';
 
 const App = () => {
   return (
