@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Login from './usuario/Login.jsx';
 import TrocaSenha from './usuario/TrocaSenha.jsx';
 import NovaSenha from './usuario/NovaSenha.jsx';
-import Mercados from './supervisor/mercado.jsx/Listar.jsx';
+import Incluir from './supervisor/mercado/Mercado.jsx';
 
 const App = () => {
   return (
@@ -14,7 +14,7 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/trocasenha" element={<TrocaSenha />} />
         <Route path="/novasenha" element={<NovaSenha />} />
-        <Route path="/Mercados" element={<Mercados />} />
+        <Route path="/sup/Mercado" element={<Incluir />} />
         
         
       </Routes>
