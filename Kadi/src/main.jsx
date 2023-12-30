@@ -24,7 +24,6 @@ const App = () => {
 
 const rootElement = document.getElementById('root');
 
-// Certifique-se de importar createRoot de 'react-dom/client'
 const root = ReactDOM.createRoot(rootElement);
 
 root.render(

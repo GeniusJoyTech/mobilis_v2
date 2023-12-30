@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
-import getAuthToken from '../utils/authorization';
+import Excluir from './Excluir';
 
-function AdicionarDadosModal({ campos, url }) {
+function Incluir({ campos, url, token }) {
   const [show, setShow] = useState(false);
   const [dados, setDados] = useState(campos || {});
 
@@ -15,8 +15,6 @@ function AdicionarDadosModal({ campos, url }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const token = getAuthToken();
-
     await fetch(url, {
       method: 'POST',
       headers: {
@@ -34,6 +32,9 @@ function AdicionarDadosModal({ campos, url }) {
     });
 
     handleClose();
+    setTimeout(function() {
+      location.reload();
+    }, 1000);
   };
 
   const handleShow = () => setShow(true);
@@ -63,9 +64,12 @@ function AdicionarDadosModal({ campos, url }) {
                 />
               </Form.Group>
             ))}
+            <div style={{display:'flex'}}>
+
             <Button variant="primary" type="submit">
               Adicionar
             </Button>
+            </div>
           </Form>
         </Modal.Body>
       </Modal>
@@ -73,4 +77,4 @@ function AdicionarDadosModal({ campos, url }) {
   );
 }
 
-export default AdicionarDadosModal;
+export default Incluir;
