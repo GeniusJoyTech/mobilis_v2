@@ -3,15 +3,44 @@ import Table from 'react-bootstrap/Table';
 import Container from 'react-bootstrap/Container';
 import Pagination from 'react-bootstrap/Pagination';
 import Spinner from 'react-bootstrap/Spinner';
+import getAuthToken from '../../utils/authorization';
 
-function Listar({ data, columns, tagKey, itemsToMap }) {
+function Listar({ urlFetch, columns, tagKey, itemsToMap }) {
+  const [loja, setLoja] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const itemsPerPage = 5;
 
+  const fetchData = async () => {
+    try {
+      setIsLoading(true);
+
+      const token = getAuthToken();
+
+      const response = await fetch(urlFetch, {
+        method: 'get',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Erro na requisição: ${response.status}`);
+      }
+
+      const data = await response.json();
+      setLoja(data);
+    } catch (error) {
+      console.error('Erro na requisição:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
-    setIsLoading(false);
-  }, [data]);
+    fetchData();
+  }, []);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -19,7 +48,7 @@ function Listar({ data, columns, tagKey, itemsToMap }) {
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = loja.slice(indexOfFirstItem, indexOfLastItem);
 
   return (
     <Container style={{ position: 'relative', minHeight: '100vh' }}>
@@ -32,7 +61,8 @@ function Listar({ data, columns, tagKey, itemsToMap }) {
             transform: 'translate(-50%, -50%)',
           }}
         >
-          <Spinner animation="border" role="status"></Spinner>
+          <Spinner animation="border" role="status">
+          </Spinner>
           <p>Carregando...</p>
         </div>
       )}
@@ -59,7 +89,7 @@ function Listar({ data, columns, tagKey, itemsToMap }) {
           </Table>
 
           <Pagination>
-            {Array.from({ length: Math.ceil(data.length / itemsPerPage) }).map((_, index) => (
+            {Array.from({ length: Math.ceil(loja.length / itemsPerPage) }).map((_, index) => (
               <Pagination.Item
                 key={index + 1}
                 active={index + 1 === currentPage}
