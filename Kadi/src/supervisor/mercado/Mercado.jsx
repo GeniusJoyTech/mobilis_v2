@@ -1,16 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import Incluir from '../../components/Incluir';
 import Listar from '../../components/Listar';
+import DropD from '../../components/DropD';
 import getAuthToken from '../../utils/authorization';
-
 const Mercado = () => {
   const [loja, setLoja] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
-  const valores = {
+  const valColunas = {
     nome: '',
     endereco: '',
   };
+  const menu = [
+    {
+      ref: './mercado',
+      nome: 'Mercado',
+    }
+  ];
   const token = getAuthToken();
   const urlFetch = 'https://localhost:5000/sup/mercado/ver';
   const fetchData = async () => {
@@ -48,18 +54,22 @@ const Mercado = () => {
 
   return (
     <>
-      <div style={{ display:'flex', alignItems:'center'}}>
-        <h2>Mercados</h2>
+      <div style={{ display: 'flex', alignItems: 'center', marginBottom: '4px', backgroundColor:"#d9d9d9" }}>
+
+        <DropD
+          titulo='Menu'
+          items={menu}
+        />
         <Incluir
-          campos={valores}
+          campos={valColunas}
           url={'https://localhost:5000/sup/mercado/incluir'}
           token={token}
         />
       </div>
       <Listar
-      urlEdit={'https://localhost:5000/sup/mercado/editar'}
-      urlDel={'https://localhost:5000/sup/mercado/deletar'}
-      token={token}
+        urlEdit={'https://localhost:5000/sup/mercado/editar'}
+        urlDel={'https://localhost:5000/sup/mercado/deletar'}
+        token={token}
         dados={loja}
         currentPage={currentPage}
         isLoading={isLoading}

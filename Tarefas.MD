@@ -2,7 +2,7 @@
 - [x] RF 01 - login.
 - [x] RF 02 - Logout.
 - [X] RF 03 - troca de senha.
-- [] RF 04 - Gerenciar mercado.
+- [X] RF 04 - Gerenciar mercado.
 - [] RF 05 - Gerenciar Promotor.
 - [] RF 06 - Gerenciar Roteiro.
 - [] RF 07 - Horas trabalhadas.
