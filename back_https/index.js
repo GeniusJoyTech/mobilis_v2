@@ -43,15 +43,15 @@ const checkCargo = (req, res, next, cargo) => {
 
 app.use('/', Usuario);
 app.use('/sup', (req, res, next) => {
-  checkCargo(req, res, next, 'Supervisor');
+  checkCargo(req, res, next, 'Supervisor' ||'Promotor' || 'Administrador');
 }, Supervisor);
 
 app.use('/pro', (req, res, next) => {
-  checkCargo(req, res, next, 'Promotor');
+  checkCargo(req, res, next, 'Supervisor' ||'Promotor' || 'Administrador');
 }, Promotor);
 
 app.use('/adm', (req, res, next) => {
-  checkCargo(req, res, next, 'Administrador');
+  checkCargo(req, res, next, 'Supervisor' ||'Promotor' || 'Administrador');
 }, Administrador);
 
 httpsServer.listen(PORT, () => {

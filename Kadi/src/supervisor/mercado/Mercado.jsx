@@ -1,86 +1,38 @@
-import React, { useState, useEffect } from 'react';
-import Incluir from '../../components/Incluir';
-import Listar from '../../components/Listar';
-import DropD from '../../components/DropD';
-import getAuthToken from '../../utils/authorization';
+import React, { useEffect, useState } from 'react';
+import h_api from '../../hook/HApi';
+import Tabela from '../../components/b_Table';
+import Carregamento from '../../assets/Carregamento';
+
 const Mercado = () => {
-  const [loja, setLoja] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const valColunas = {
-    nome: '',
-    endereco: '',
+
+  const id = 'id_loja';// id da base de dados, alterar conforme o tipo de requisição
+  const col = [{ id: 0, nome: 'nome' }, { id: 1, nome: 'endereco' }];//colunas que seão visiveis para o usuario
+  const reqVis = { //requisição de visualização para a api 
+    method: 'GET',
+    url: 'https://localhost:5000/sup/mercado/ver',
   };
-  const menu = [
-    {
-      ref: './mercado',
-      nome: 'Mercado',
-    }
-  ];
-  const token = getAuthToken();
-  const urlFetch = 'https://localhost:5000/sup/mercado/ver';
-  const fetchData = async () => {
-    try {
-      setIsLoading(true);
-
-      const response = await fetch(urlFetch, {
-        method: 'get',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error(`Erro na requisição: ${response.status}`);
-      }
-
-      const data = await response.json();
-      setLoja(data);
-    } catch (error) {
-      console.error('Erro na requisição:', error);
-    } finally {
-      setIsLoading(false);
-    }
+  const reqEdt = { //requisição de visualização para a api 
+    method: 'POST',
+    url: 'https://localhost:5000/sup/mercado/editar',
   };
-
+//metodo para exibir componente de carregamento quando o sistema estiver aguardando a requisição à base de dados.
   useEffect(() => {
-    fetchData();
+    const loading = async () => {
+        await h_api(reqVis, setData);//h_api já realiza um tratamento de erros.
+        setIsLoading(false);
+    };
+    loading();
   }, []);
-
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-  };
 
   return (
     <>
-      <div style={{ display: 'flex', alignItems: 'center', marginBottom: '4px', backgroundColor:"#d9d9d9" }}>
-
-        <DropD
-          titulo='Menu'
-          items={menu}
-        />
-        <Incluir
-          campos={valColunas}
-          url={'https://localhost:5000/sup/mercado/incluir'}
-          token={token}
-        />
-      </div>
-      <Listar
-        urlEdit={'https://localhost:5000/sup/mercado/editar'}
-        urlDel={'https://localhost:5000/sup/mercado/deletar'}
-        token={token}
-        dados={loja}
-        currentPage={currentPage}
-        isLoading={isLoading}
-        handlePageChange={handlePageChange}
-        columns={[
-          { label: 'nome', width: 50 },
-          { label: 'endereco', width: 50 },
-        ]}
-        tagKey="id_loja"
-        itemsToMap={["nome", "endereco"]}
-      />
+      {isLoading ? (
+        <Carregamento />
+      ) : (
+        <Tabela col={col} lin={data} id={id} reqEdit={reqEdt} />
+      )}
     </>
   );
 };
