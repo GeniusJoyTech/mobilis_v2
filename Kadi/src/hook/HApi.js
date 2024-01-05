@@ -3,14 +3,15 @@ import getAuthToken from '../utils/authorization';
 
 const h_api = async (fetchData, setData) => {
   try {
-    const { url, method } = fetchData;
+    const { url, method, body } = fetchData;
     const requestData = {
       url: url,
       token: getAuthToken(),
       method: method,
+      body: body,
     };
     const result = await requestApi(requestData);
-    setData(result);
+    if(setData){setData(result)};
   } catch (error) {
     console.error('Erro durante o fetch de dados: ', error);
   }

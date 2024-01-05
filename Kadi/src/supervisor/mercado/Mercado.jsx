@@ -13,10 +13,6 @@ const Mercado = () => {
     method: 'GET',
     url: 'https://localhost:5000/sup/mercado/ver',
   };
-  const reqEdt = { //requisição de visualização para a api 
-    method: 'POST',
-    url: 'https://localhost:5000/sup/mercado/editar',
-  };
 //metodo para exibir componente de carregamento quando o sistema estiver aguardando a requisição à base de dados.
   useEffect(() => {
     const loading = async () => {
@@ -25,13 +21,15 @@ const Mercado = () => {
     };
     loading();
   }, []);
-
   return (
     <>
       {isLoading ? (
         <Carregamento />
       ) : (
-        <Tabela col={col} lin={data} id={id} reqEdit={reqEdt} />
+        <Tabela col={col} lin={data} id={id} url={{
+          edit: 'https://localhost:5000/sup/mercado/editar',
+          del: 'https://localhost:5000/sup/mercado/deletar',
+        }} />
       )}
     </>
   );

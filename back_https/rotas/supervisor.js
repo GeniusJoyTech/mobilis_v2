@@ -33,14 +33,12 @@ router.post('/mercado/incluir', (req, res) => {
 })
 // -[x] Editar
 router.post('/mercado/editar', (req, res) => {
-    const { nome, endereco, id } = req.body;
-
-    // Verifique se o id está presente nos parâmetros da solicitação
-    if (!id) {
-        return res.status(400).send('O campo id é obrigatório');
+    const { nome, endereco, id_loja } = req.body;
+    if (!id_loja) {
+        return res.status(400).send('O campo id_loja é obrigatório');
     }
 
-    const query = `UPDATE db_loja SET nome = '${nome}', endereco = '${endereco}' WHERE id_loja = ${id}`;
+    const query = `UPDATE db_loja SET nome = '${nome}', endereco = '${endereco}' WHERE id_loja = ${id_loja}`;
 
     // Executar a query
     q(query)
@@ -53,11 +51,11 @@ router.post('/mercado/editar', (req, res) => {
 });
 // -[X] Excluir
 router.post('/mercado/deletar', (req, res) => {
-    const id = req.body.id;
-    if (!id) {
+    const id_loja = req.body.id_loja;
+    if (!id_loja) {
         return res.status(400).send('O campo id é obrigatório');
     }
-    const query = `DELETE FROM db_loja  WHERE id_loja = ${id}`;
+    const query = `DELETE FROM db_loja  WHERE id_loja = ${id_loja}`;
     q(query)
         .then(results => {
             res.status(200).json(results);
