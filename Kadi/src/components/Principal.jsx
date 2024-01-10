@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import h_api from '../hook/HApi';
 import Tabela from './b_Table';
-import Carregamento from '../assets/Carregamento';
+import Carregamento from './Carregamento';
 
 const Principal = ({ id, col, url }) => {
   

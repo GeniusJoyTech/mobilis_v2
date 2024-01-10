@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import { Container, Table, Navbar, NavbarBrand, Button } from 'react-bootstrap';
-import Paginacao from '../assets/PaginationComponent';
-import Pesquisa from '../assets/Pesquisa';
+import Paginacao from './PaginationComponent';
+import Pesquisa from './Pesquisa';
 import EditModal from './EditModal';
 import Incluir from './IncluirModal';
 
 function Tabela({ col, lin, id, url }) {
-  ;
-  const itemsPerPage = 10;
-  const colWidth = 100 / col.length;
+  const itemsPorPag = 10;
+  const largCol = 100 / col.length;
   const [showEditModal, setShowEditModal] = useState(false);
   const [showIncludeModal, setShowIncludeModal] = useState(false);
   const [selectedRow, setSelectedRow] = useState({});
@@ -22,15 +21,12 @@ function Tabela({ col, lin, id, url }) {
   const handleIncludeClick = () => {
     setShowIncludeModal(true);
   };
-
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
     setCurrentPage(1);
   };
-
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-
+  const indexOfLastItem = currentPage * itemsPorPag;
+  const indexOfFirstItem = indexOfLastItem - itemsPorPag;
   const filteredLin = lin.filter((linha) => {
     const values = Object.values(linha);
     return values.some((value) => {
@@ -38,9 +34,7 @@ function Tabela({ col, lin, id, url }) {
     });
   });
   const currentItems = filteredLin.slice(indexOfFirstItem, indexOfLastItem);
-
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
   return (
     <>
       <Container>
@@ -56,7 +50,7 @@ function Tabela({ col, lin, id, url }) {
           <thead>
             <tr>
               {col.map((coluna) => (
-                <th key={coluna.id} style={{ width: `${colWidth}%` }}>
+                <th key={coluna.id} style={{ width: `${largCol}%` }}>
                   {coluna.nome}
                 </th>
               ))}
@@ -68,7 +62,7 @@ function Tabela({ col, lin, id, url }) {
                 {col.map((coluna) => (
                   <td
                     key={linha[id] + coluna.id}
-                    style={{ width: `${colWidth}%` }}
+                    style={{ width: `${largCol}%` }}
                     onClick={() => handleEditClick(linha)}
                   >
                     {linha[coluna.nome]}
@@ -80,7 +74,7 @@ function Tabela({ col, lin, id, url }) {
         </Table>
         <Paginacao
           lin={filteredLin}
-          itemsPerPage={itemsPerPage}
+          itemsPerPage={itemsPorPag}
           currentPage={currentPage}
           paginate={paginate}
         />
@@ -102,6 +96,7 @@ function Tabela({ col, lin, id, url }) {
           }
           }
           col={col}
+          lin={lin}
           url={url.incluir}
         />
       </Container>

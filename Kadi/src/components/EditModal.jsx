@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
+import {Modal, Button, Form, Dropdown} from 'react-bootstrap';
 import h_api from '../hook/HApi';
 import refreshTime from '../utils/refreshTime';
 
 function EditModal({ show, onHide, lin, col, url }) {
+    
     const [editedData, setEditedData] = useState(lin);
     useEffect(() => {
-        // Atualiza o estado quando a linha é alterada
         setEditedData(lin);
     }, [lin]);
     const handleInputChange = (e) => {
@@ -17,15 +15,16 @@ function EditModal({ show, onHide, lin, col, url }) {
     };
     const handleEditSubmit = async () => {
         await h_api({ method: 'POST', url: url.edit, body: editedData });
-        onHide(); // Fechar o modal após a edição
+        onHide();
         refreshTime();
     };
     const handleDeletSubmit = async () => {
         await h_api({ method: 'POST', url: url.del, body: editedData });
-        onHide(); // Fechar o modal após a edição
+        onHide();
         refreshTime();
     };
 
+    
     return (
         <Modal show={show} onHide={onHide}>
             <Modal.Header closeButton>
@@ -34,7 +33,7 @@ function EditModal({ show, onHide, lin, col, url }) {
             <Modal.Body>
                 <Form>
                     {col.map((coluna) => (
-                        <Form.Group key={coluna.id} controlId={`form${coluna.id}`}>
+                        coluna.tipo === 'form' && (<Form.Group key={coluna.id} controlId={`form${coluna.id}`}>
                             <Form.Label>{coluna.nome}</Form.Label>
                             <Form.Control
                                 type="text"
@@ -42,7 +41,7 @@ function EditModal({ show, onHide, lin, col, url }) {
                                 value={editedData[coluna.nome] || ''}
                                 onChange={handleInputChange}
                             />
-                        </Form.Group>
+                        </Form.Group>)
                     ))}
                 </Form>
             </Modal.Body>
