@@ -94,14 +94,14 @@ router.post('/promotor/incluir', (req, res) => {
 })
 // -[X] Editar
 router.post('/promotor/editar', (req, res) => {
-    const { nome, cracha, superior, endereco, email, id } = req.body;
-
+    const { nome, cracha, superior, endereco, email, id_usu } = req.body;
+    console.log({ nome, cracha, superior, endereco, email, id_usu });
     // Verifique se o id está presente nos parâmetros da solicitação
-    if (!id) {
+    if (!id_usu) {
         return res.status(400).send('O campo id é obrigatório');
     }
 
-    const query = `UPDATE db_usuario SET nome = '${nome}', cracha = '${cracha}', superior = '${superior}', endereco = '${endereco}', email = '${email}' WHERE id_usu = ${id}`;
+    const query = `UPDATE db_usuario SET nome = '${nome}', cracha = '${cracha}', superior = '${superior}', endereco = '${endereco}', email = '${email}' WHERE id_usu = ${id_usu}`;
 
     // Executar a query
     q(query)

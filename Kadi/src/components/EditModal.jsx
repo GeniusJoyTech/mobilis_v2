@@ -3,6 +3,7 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import h_api from '../hook/HApi';
+import refreshTime from '../utils/refreshTime';
 
 function EditModal({ show, onHide, lin, col, url }) {
     const [editedData, setEditedData] = useState(lin);
@@ -17,11 +18,12 @@ function EditModal({ show, onHide, lin, col, url }) {
     const handleEditSubmit = async () => {
         await h_api({ method: 'POST', url: url.edit, body: editedData });
         onHide(); // Fechar o modal após a edição
+        refreshTime();
     };
-
     const handleDeletSubmit = async () => {
         await h_api({ method: 'POST', url: url.del, body: editedData });
         onHide(); // Fechar o modal após a edição
+        refreshTime();
     };
 
     return (
