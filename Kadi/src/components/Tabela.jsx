@@ -2,27 +2,44 @@ import React, { useState, useEffect } from 'react';
 import { Container, Table, Navbar, NavbarBrand, Button } from 'react-bootstrap';
 import Paginacao from './PaginationComponent';
 import Pesquisa from './Pesquisa';
-import EditModal from './Editar';
+import Editar from './Editar';
 import Incluir from './Incluir';
 
 function Tabela({ col, lin, id, url }) {
   
   const [list, setList] = useState([]);
+  const [form, setForm] = useState([]);
 
   useEffect(() => {
-    const novoList = lin.map(item => {
+    const novoList = lin.map(l => {
       let novoItem = {};
-      col.forEach(coluna => {
-        if (coluna.tipo === 'list' && item[coluna.nome] !== undefined) {
-          novoItem[coluna.nome] = item[coluna.nome];
+      col.forEach(c => {
+        if (c.tipo === 'list' && l[c.nome] !== undefined && l[c.nome] !== null) {
+          novoItem[c.nome] = l[c.nome];
         }
       });
       return novoItem;
     });
-
-    setList(novoList);
+    setList(novoList.filter(objeto => Object.keys(objeto).some(chave => objeto[chave] !== '')));
+    
+    const novoForm = lin.map(l => {
+      let novoItem = {};
+      col.forEach(c => {
+        if (c.tipo === 'form' && l[c.nome] !== undefined && l[c.nome] !== null) {
+          novoItem[c.nome] = l[c.nome];
+        }
+      });
+      return novoItem;
+    });
+    setForm(novoForm.filter(objeto => Object.keys(objeto).some(chave => objeto[chave] !== '')));
+    
   }, []);
+/*
 
+  console.log(list);
+  console.log(form);
+*/
+  
   const itemsPorPag = 10;
   const largCol = 100 / col.length;
   const [showEditModal, setShowEditModal] = useState(false);
@@ -95,13 +112,13 @@ function Tabela({ col, lin, id, url }) {
           currentPage={currentPage}
           paginate={paginate}
         />
-        <EditModal
+        <Editar
           show={showEditModal}
           onHide={() => {
             setShowEditModal(false);
             setCurrentPage(1);
           }}
-          lin={selectedRow}
+          row={selectedRow}
           col={col}
           url={url}
         />
@@ -113,8 +130,6 @@ function Tabela({ col, lin, id, url }) {
           }
           }
           col={col}
-          lin={lin}
-          list={list}
           url={url.incluir}
         />
       </Container>

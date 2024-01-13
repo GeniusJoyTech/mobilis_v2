@@ -3,23 +3,23 @@ import h_api from '../hook/HApi';
 import refreshTime from '../utils/refreshTime';
 import CustomModal from './Modal';
 
-function EditModal({ show, onHide, lin, col, url }) {
+function EditModal({ show, onHide, row, col, url }) {
 
-    const [editedData, setEditedData] = useState(lin);
+    const [data, setData] = useState(row);
     useEffect(() => {
-        setEditedData(lin);
-    }, [lin]);
+        setData(row);
+    }, [row]);
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setEditedData((prevData) => ({ ...prevData, [name]: value }));
+        setData((prevData) => ({ ...prevData, [name]: value }));
     };
     const handleEditSubmit = async () => {
-        await h_api({ method: 'POST', url: url.edit, body: editedData });
+        await h_api({ method: 'POST', url: url.edit, body: data });
         onHide();
         refreshTime();
     };
     const handleDeletSubmit = async () => {
-        await h_api({ method: 'POST', url: url.del, body: editedData });
+        await h_api({ method: 'POST', url: url.del, body: data });
         onHide();
         refreshTime();
     };

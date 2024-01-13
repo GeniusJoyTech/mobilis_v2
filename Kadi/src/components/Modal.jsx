@@ -1,4 +1,4 @@
-import { Modal, Button, Form, Dropdown } from 'react-bootstrap';
+import { Modal, Button, Form, Dropdown, DropdownItem } from 'react-bootstrap';
 import React from 'react';
 export default function CustomModal({ titulo, show, onHide, col, handleInputChange, handleSendSubmit, handleDeletSubmit }) {
     return (
@@ -6,9 +6,21 @@ export default function CustomModal({ titulo, show, onHide, col, handleInputChan
             <Modal.Header closeButton>
                 <Modal.Title>{titulo}</Modal.Title>
             </Modal.Header>
-            {/*
-            Aqui eu preciso criar um drop down aqui
-            */}
+            {/* Inicio dropDown */}
+            {col != null ? <Dropdown>
+                <Dropdown.Toggle variant="secondary">
+                    Escolha
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                {col.map((l, index) => (
+                    <DropdownItem key={index}>{l.nome}</DropdownItem>
+                )
+                )}
+                </Dropdown.Menu>
+            </Dropdown>
+            :
+            <></>}
+            {/*Fim DropDown */}
             <Modal.Body>
                 <Form>
                     {col.map((coluna) => (
@@ -26,12 +38,12 @@ export default function CustomModal({ titulo, show, onHide, col, handleInputChan
                     Salvar Alterações
                 </Button>
                 {handleDeletSubmit != null ?
-                
-                <Button variant="danger" onClick={handleDeletSubmit}>
-                    Deletar
-                </Button>
-                :
-                <></> 
+
+                    <Button variant="danger" onClick={handleDeletSubmit}>
+                        Deletar
+                    </Button>
+                    :
+                    <></>
                 }
             </Modal.Footer>
         </Modal>
