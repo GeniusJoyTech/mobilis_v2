@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import h_api from '../hook/HApi';
-import Tabela from './b_Table';
+import Tabela from './Tabela';
 import Carregamento from './Carregamento';
+import Logout from '../usuario/Logout';
 
 const Principal = ({ id, col, url }) => {
   
@@ -24,6 +25,7 @@ const Principal = ({ id, col, url }) => {
 
   return (
     <>
+    <Logout/>
       {isLoading ? (
         <Carregamento />
       ) : (

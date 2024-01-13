@@ -9,5 +9,4 @@ function MenuRotas(titulo) {
     </DropdownButton>
   );
 }
-
 export default MenuRotas;

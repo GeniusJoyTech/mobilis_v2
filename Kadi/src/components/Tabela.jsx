@@ -1,11 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Table, Navbar, NavbarBrand, Button } from 'react-bootstrap';
 import Paginacao from './PaginationComponent';
 import Pesquisa from './Pesquisa';
-import EditModal from './EditModal';
-import Incluir from './IncluirModal';
+import EditModal from './Editar';
+import Incluir from './Incluir';
 
 function Tabela({ col, lin, id, url }) {
+  
+  const [list, setList] = useState([]);
+
+  useEffect(() => {
+    const novoList = lin.map(item => {
+      let novoItem = {};
+      col.forEach(coluna => {
+        if (coluna.tipo === 'list' && item[coluna.nome] !== undefined) {
+          novoItem[coluna.nome] = item[coluna.nome];
+        }
+      });
+      return novoItem;
+    });
+
+    setList(novoList);
+  }, []);
+
   const itemsPorPag = 10;
   const largCol = 100 / col.length;
   const [showEditModal, setShowEditModal] = useState(false);
@@ -97,6 +114,7 @@ function Tabela({ col, lin, id, url }) {
           }
           col={col}
           lin={lin}
+          list={list}
           url={url.incluir}
         />
       </Container>
