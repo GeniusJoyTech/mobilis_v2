@@ -12,7 +12,7 @@ const Mercado = () => {
   return (
     <Principal
       id={'id_loja'}
-      col={[{ id: 0, nome: 'nome' }, { id: 1, nome: 'endereco' }]}
+      col={[{ id: 0, nome: 'nome', tipo: 'form' }, { id: 1, nome: 'endereco', tipo: 'form' }]}
       url={urls}
     />
   );

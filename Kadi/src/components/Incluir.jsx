@@ -3,10 +3,9 @@ import h_api from '../hook/HApi';
 import refreshTime from '../utils/refreshTime';
 import CustomModal from './Modal';
 
-
-function Incluir({ show, onHide, col, url }) {
+function Incluir({ show, onHide, col, list, form, url }) {
     const [formData, setFormData] = useState({});
-
+    const [selectedItem, setSelectedItem] = useState(null);
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
@@ -14,10 +13,15 @@ function Incluir({ show, onHide, col, url }) {
             [name]: value,
         }));
     };
+    const handleDropdownSelect = (item) => {
+        setSelectedItem(item);
+    };
 
     const handleSendSubmit = async () => {
         try {
-            await h_api({ method: 'POST', url: url, body: formData });
+            const dataToSend = { ...formData, selectedItem };
+            
+            await h_api({ method: 'POST', url: url, body: dataToSend });
             onHide();
             refreshTime();
         } catch (error) {
@@ -31,9 +35,11 @@ function Incluir({ show, onHide, col, url }) {
             show={show}
             onHide={onHide}
             col={col}
+            list={list}
+            form={form}
             handleInputChange={handleInputChange}
+            handleDropdownSelect={handleDropdownSelect}
             handleSendSubmit={handleSendSubmit}
-
         />
     );
 }

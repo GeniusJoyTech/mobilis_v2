@@ -20,7 +20,15 @@ function Tabela({ col, lin, id, url }) {
       });
       return novoItem;
     });
-    setList(novoList.filter(objeto => Object.keys(objeto).some(chave => objeto[chave] !== '')));
+    
+    // Remover itens duplicados de novoList
+    const listSemDuplicatas = novoList.filter((objeto, index, self) =>
+      index === self.findIndex((t) => (
+        JSON.stringify(t) === JSON.stringify(objeto)
+      ))
+    );
+
+    setList(listSemDuplicatas.filter(objeto => Object.keys(objeto).some(chave => objeto[chave] !== '')));
     
     const novoForm = lin.map(l => {
       let novoItem = {};
@@ -31,14 +39,18 @@ function Tabela({ col, lin, id, url }) {
       });
       return novoItem;
     });
-    setForm(novoForm.filter(objeto => Object.keys(objeto).some(chave => objeto[chave] !== '')));
+
+    // Remover itens duplicados de novoForm
+    const formSemDuplicatas = novoForm.filter((objeto, index, self) =>
+      index === self.findIndex((t) => (
+        JSON.stringify(t) === JSON.stringify(objeto)
+      ))
+    );
+
+    setForm(formSemDuplicatas.filter(objeto => Object.keys(objeto).some(chave => objeto[chave] !== '')));
     
   }, []);
-/*
 
-  console.log(list);
-  console.log(form);
-*/
   
   const itemsPorPag = 10;
   const largCol = 100 / col.length;
@@ -121,6 +133,8 @@ function Tabela({ col, lin, id, url }) {
           row={selectedRow}
           col={col}
           url={url}
+          list={list.length ? list : null}
+          form={form.length ? form : null}
         />
         <Incluir
           show={showIncludeModal}
@@ -130,6 +144,8 @@ function Tabela({ col, lin, id, url }) {
           }
           }
           col={col}
+          list={list.length ? list : null}
+          form={form.length ? form : null}
           url={url.incluir}
         />
       </Container>

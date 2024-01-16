@@ -3,18 +3,24 @@ import h_api from '../hook/HApi';
 import refreshTime from '../utils/refreshTime';
 import CustomModal from './Modal';
 
-function EditModal({ show, onHide, row, col, url }) {
+function EditModal({ show, onHide, row, col, list, form, url }) {
 
+    const [selectedItem, setSelectedItem] = useState(null);
     const [data, setData] = useState(row);
     useEffect(() => {
         setData(row);
     }, [row]);
+    const handleDropdownSelect = (item) => {
+        setSelectedItem(item);
+    };
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setData((prevData) => ({ ...prevData, [name]: value }));
     };
     const handleEditSubmit = async () => {
-        await h_api({ method: 'POST', url: url.edit, body: data });
+        const dataToSend = { ...formData, selectedItem };
+        await h_api({ method: 'POST', url: url, body: dataToSend });
         onHide();
         refreshTime();
     };
@@ -31,9 +37,12 @@ function EditModal({ show, onHide, row, col, url }) {
             show={show}
             onHide={onHide}
             col={col}
+            list={list}
+            form={form}
             handleInputChange={handleInputChange}
             handleSendSubmit={handleEditSubmit}
             handleDeletSubmit={handleDeletSubmit}
+            handleDropdownSelect={handleDropdownSelect}
         />
     );
 }
