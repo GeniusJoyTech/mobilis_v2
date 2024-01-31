@@ -114,7 +114,7 @@ router.post('/promotor/editar', (req, res) => {
 });
 // -[X] Excluir
 router.post('/promotor/deletar', (req, res) => {
-    const id = req.body.id;
+    const id = req.body.id_usu;
     if (!id) {
         return res.status(400).send('O campo id é obrigatório');
     }

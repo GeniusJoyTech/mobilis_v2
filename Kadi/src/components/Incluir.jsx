@@ -1,27 +1,45 @@
-import React, { useState } from 'react';
+//Em pt-br me responda
+import React, { useState, useEffect } from 'react';
 import h_api from '../hook/HApi';
 import refreshTime from '../utils/refreshTime';
 import CustomModal from './Modal';
 
-function Incluir({ show, onHide, col, list, form, url }) {
-    const [formData, setFormData] = useState({});
-    const [selectedItem, setSelectedItem] = useState(null);
-    const handleInputChange = (e) => {
+function Incluir({ show, onHide, row, form, list, url }) {
+
+    const f = form != null ? Object.fromEntries(form.map(item => [item.nome, ''])) : '' ;
+    const [lista, setList] = useState({});
+    const [formulario, setForm] = useState({});
+    const [send, setSend] = useState({});
+
+    useEffect(() => {
+        setForm(f);
+        setSend(row);
+    }, [row, form]);
+
+    const handleListChange = (e) => {
         const { name, value } = e.target;
-        setFormData((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }));
+        setList((prevData) => ({ ...prevData, [name]: value }));
+        setSend((prevData) => ({ ...prevData, [name]: value }));
     };
-    const handleDropdownSelect = (item) => {
-        setSelectedItem(item);
+    const handleFormChange = (e) => {
+        const { name, value } = e.target;
+        setForm((prevData) => ({ ...prevData, [name]: value }));
+        setSend((prevData) => ({ ...prevData, [name]: value }));
     };
 
+    const handleEditSubmit = async () => {
+        try {
+            await h_api({ method: 'POST', url: url, body: send });
+            onHide();
+            refreshTime();
+        } catch (error) {
+            console.error("Erro ao buscar dados:", error.message);
+        }
+    };
+/*
     const handleSendSubmit = async () => {
         try {
-            const dataToSend = { ...formData, selectedItem };
-            
-            await h_api({ method: 'POST', url: url, body: dataToSend });
+            await h_api({ method: 'POST', url: url, body: formData });
             onHide();
             refreshTime();
         } catch (error) {
@@ -34,13 +52,27 @@ function Incluir({ show, onHide, col, list, form, url }) {
             titulo={'Incluir'}
             show={show}
             onHide={onHide}
-            col={col}
-            list={list}
             form={form}
+            list={list}
             handleInputChange={handleInputChange}
-            handleDropdownSelect={handleDropdownSelect}
             handleSendSubmit={handleSendSubmit}
+
         />
+    );
+}*/
+    return (
+        <>
+            <CustomModal
+                titulo={'Incluir'}
+                show={show}
+                onHide={onHide}
+                form={formulario}
+                list={list}
+                handleListChange={handleListChange}
+                handleFormChange={handleFormChange}
+                handleSendSubmit={handleEditSubmit}
+            />
+        </>
     );
 }
 

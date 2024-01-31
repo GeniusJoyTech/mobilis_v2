@@ -3,10 +3,10 @@ import Principal from '../components/Principal';
 
 const Promotor = () => {
   const urls = {
-    ver: 'https://localhost:5000/sup/promotor/ver',
-    editar: 'https://localhost:5000/sup/promotor/editar',
-    deletar: 'https://localhost:5000/sup/promotor/deletar',
-    incluir: 'https://localhost:5000/sup/promotor/incluir',
+    ver: 'https://localhost:5000/adm/func/ver',
+    editar: 'https://localhost:5000/adm/func/editar',
+    deletar: 'https://localhost:5000/adm/func/deletar',
+    incluir: 'https://localhost:5000/adm/func/incluir',
   };
 
   return (

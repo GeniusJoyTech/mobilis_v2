@@ -10,6 +10,7 @@ import NovaSenha from './usuario/NovaSenha.jsx';
 //supervisor
 import Mercado from './supervisor/Mercado.jsx';
 import Roteiro from './supervisor/Roteiro.jsx';
+import Administrador from './administrador/Administrador.jsx';
 import Promotor from './supervisor/Promotor.jsx';
 
 
@@ -20,6 +21,7 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/trocasenha" element={<TrocaSenha />} />
         <Route path="/novasenha" element={<NovaSenha />} />
+        <Route path="/adm/funcionario" element={<Administrador />} />
         <Route path="/sup/mercado" element={<Mercado />} />
         <Route path="/sup/roteiro" element={<Roteiro />} />
         <Route path="/sup/funcionario" element={<Promotor />} />
