@@ -20,6 +20,7 @@ function EditModal({ show, onHide, row, form, list, url }) {
                 }
             });
 
+            setList(list);
             setForm((prevData) => ({ ...prevData, ...updatedData }));
             setSend(row);
         }
@@ -57,7 +58,7 @@ function EditModal({ show, onHide, row, form, list, url }) {
                 show={show}
                 onHide={onHide}
                 form={formulario}
-                list={list}
+                list={lista}
                 handleListChange={handleListChange}
                 handleFormChange={handleFormChange}
                 handleSendSubmit={handleEditSubmit}
