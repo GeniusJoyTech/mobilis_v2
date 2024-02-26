@@ -142,7 +142,7 @@ router.get('/roteiro/ver', (req, res) => {
 });
 // -[X] Incluir
 router.post('/roteiro/incluir', async (req, res) => {
-    const { fk_loja, fk_usu, semana, ciclo, visita, tipo } = req.body;
+    const { nome, endereco, cracha, visita: semana, ciclo, visita, tipo } = req.body;
     let connection;
 
     try {
@@ -150,15 +150,15 @@ router.post('/roteiro/incluir', async (req, res) => {
         await connection.beginTransaction();
 
         const [resultadoVisita] = await connection.query(
-            'INSERT INTO db_visita (fk_loja, semana, ciclo, visita) VALUES (?, ?, ?, ?)',
-            [fk_loja, semana, ciclo, visita]
+            'INSERT INTO db_visita (fk_loja, semana, ciclo, visita) SELECT id_loja, ?, ?, ? FROM db_loja WHERE nome = ? AND endereco = ?',
+            [semana, ciclo, visita, nome, endereco]
         );
-
+        
         const id_visita = resultadoVisita.insertId;
 
         await connection.query(
-            'INSERT INTO db_roteiro (tipo, fk_visita, fk_usu) VALUES (?, ?, ?)',
-            [tipo, id_visita, fk_usu]
+            'INSERT INTO db_roteiro (fk_visita, fk_usu) SELECT ?, ?, id_usu FROM db_usuario WHERE cracha = ?',
+            [id_visita, cracha]
         );
 
         await connection.commit();
@@ -175,9 +175,10 @@ router.post('/roteiro/incluir', async (req, res) => {
         }
     }
 });
+
 // -[X] Editar
 router.post('/roteiro/editar', async (req, res) => {
-    const { fk_loja, fk_usu, semana, ciclo, visita, tipo, id_visita } = req.body;
+    const { cracha, visita, semana, ciclo, id_visita, nome, endereco } = req.body;
     let connection;
 
     try {
@@ -186,14 +187,14 @@ router.post('/roteiro/editar', async (req, res) => {
 
         // Atualizar os dados na tabela db_visita
         await connection.query(
-            'UPDATE db_visita SET fk_loja=?, semana=?, ciclo=?, visita=? WHERE id_vis =?',
-            [fk_loja, semana, ciclo, visita, id_visita]
+            'UPDATE db_visita SET fk_loja = (select id_loja from db_loja where nome = ? AND endereco = ?), semana=?, ciclo=?, visita=? WHERE id_vis =?',
+            [nome, endereco, visita, ciclo, semana, id_visita]
         );
 
         // Atualizar os dados na tabela db_roteiro
         await connection.query(
-            'UPDATE db_roteiro SET tipo=?, fk_usu=? WHERE fk_visita=?',
-            [tipo, fk_usu, id_visita]
+            'UPDATE db_roteiro SET fk_usu=(select id_usu from db_usuario where cracha = ?) WHERE fk_visita=?',
+            [cracha, id_visita]
         );
 
         await connection.commit();
@@ -292,3 +293,7 @@ router.get('/pro/visitas/ver', (req, res) => {
 });
 
 module.exports = router;
+
+
+
+  

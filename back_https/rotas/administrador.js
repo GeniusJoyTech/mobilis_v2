@@ -33,14 +33,14 @@ router.post('/func/incluir', (req, res) => {
 })
 // -[X] Editar
 router.post('/func/editar', (req, res) => {
-    const { nome, cracha, superior, endereco, email, id } = req.body;
+    const { nome, cracha, superior, endereco, email, id_usu } = req.body;
 
     // Verifique se o id está presente nos parâmetros da solicitação
-    if (!id) {
+    if (!id_usu) {
         return res.status(400).send('O campo id é obrigatório');
     }
 
-    const query = `UPDATE db_usuario SET nome = '${nome}', cracha = '${cracha}', superior = '${superior}', endereco = '${endereco}', email = '${email}' WHERE id_usu = ${id}`;
+    const query = `UPDATE db_usuario SET nome = '${nome}', cracha = '${cracha}', superior = '${superior}', endereco = '${endereco}', email = '${email}' WHERE id_usu = ${id_usu}`;
 
     // Executar a query
     q(query)
@@ -53,7 +53,7 @@ router.post('/func/editar', (req, res) => {
 });
 // -[X] Excluir
 router.post('/func/deletar', (req, res) => {
-    const id = req.body.id;
+    const id = req.body.id_usu;
     if (!id) {
         return res.status(400).send('O campo id é obrigatório');
     }
