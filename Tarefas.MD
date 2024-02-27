@@ -3,9 +3,7 @@
 - [x] RF 02 - Logout.
 - [X] RF 03 - troca de senha.
 - [X] RF 04 - Gerenciar mercado.
-- [] RF 05 - Gerenciar Promotor.
-    - [] É necessário adicionar um drop down que seja alterado conforme a esolha do usuario na coluna superior
-    - []  
+- [X] RF 05 - Gerenciar Promotor.
 - [] RF 06 - Gerenciar Roteiro.
 - [] RF 07 - Horas trabalhadas.
 - [] RF 08 - Supervisionar visitas.

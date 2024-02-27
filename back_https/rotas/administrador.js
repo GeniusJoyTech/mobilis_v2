@@ -33,7 +33,11 @@ router.post('/func/incluir', (req, res) => {
 })
 // -[X] Editar
 router.post('/func/editar', (req, res) => {
+<<<<<<< HEAD
     const { nome, cracha, superior, endereco, email, id_usu } = req.body;
+=======
+    const { nome, cracha, superior, endereco, email, id: id_usu } = req.body;
+>>>>>>> cfdc95c8e21f47ce31c0b834defd0b86ac2d611f
 
     // Verifique se o id está presente nos parâmetros da solicitação
     if (!id_usu) {

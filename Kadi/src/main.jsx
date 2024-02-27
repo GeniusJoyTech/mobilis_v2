@@ -11,15 +11,13 @@ import Supervisor from './components/pages/Supervisor/Supervisor.jsx';
 //Administrador ou RH
 import Administrador from './components/pages/Administrador/Administrador.jsx';
 
-
 const App = () => {
   return (
     <Router>
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/sup" element={<Supervisor />} />
-        <Route path="/adm" element={<Administrador />} />
-        
+        <Route path="/adm" element={<Administrador />} />        
       </Routes>
     </Router>
   );
