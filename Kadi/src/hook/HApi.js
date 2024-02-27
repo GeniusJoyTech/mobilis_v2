@@ -12,8 +12,9 @@ const h_api = async (fetchData, setData) => {
     };
     const result = await requestApi(requestData);
     if(setData){setData(result)};
+    
   } catch (error) {
-    console.error('Erro durante o fetch de dados: ', error);
+    throw('Erro durante o fetch de dados: ', error);
   }
 };
 

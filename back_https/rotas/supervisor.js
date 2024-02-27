@@ -20,8 +20,8 @@ router.get('/mercado/ver', (req, res) => {
 });
 // -[x] Incluir
 router.post('/mercado/incluir', (req, res) => {
-    const { nome, endereco } = req.body;
-    const query = `INSERT INTO db_loja (id_loja, nome, endereco) VALUES (NULL, '${nome}', '${endereco}');`
+    const { loja, endereco } = req.body;
+    const query = `INSERT INTO db_loja (id_loja, loja, endereco) VALUES (NULL, '${loja}', '${endereco}');`
 
     q(query)
         .then(results => {
@@ -33,12 +33,12 @@ router.post('/mercado/incluir', (req, res) => {
 })
 // -[x] Editar
 router.post('/mercado/editar', (req, res) => {
-    const { nome, endereco, id_loja } = req.body;
+    const { loja, endereco, id_loja } = req.body;
     if (!id_loja) {
         return res.status(400).send('O campo id_loja é obrigatório');
     }
 
-    const query = `UPDATE db_loja SET nome = '${nome}', endereco = '${endereco}' WHERE id_loja = ${id_loja}`;
+    const query = `UPDATE db_loja SET loja = '${loja}', endereco = '${endereco}' WHERE id_loja = ${id_loja}`;
 
     // Executar a query
     q(query)
@@ -114,7 +114,7 @@ router.post('/promotor/editar', (req, res) => {
 });
 // -[X] Excluir
 router.post('/promotor/deletar', (req, res) => {
-    const id = req.body.id;
+    const id = req.body.id_usu;
     if (!id) {
         return res.status(400).send('O campo id é obrigatório');
     }
@@ -142,7 +142,7 @@ router.get('/roteiro/ver', (req, res) => {
 });
 // -[X] Incluir
 router.post('/roteiro/incluir', async (req, res) => {
-    const { nome, endereco, cracha, visita: semana, ciclo, visita, tipo } = req.body;
+    const { loja, endereco, cracha, visita: semana, ciclo, visita, tipo } = req.body;
     let connection;
 
     try {
@@ -150,14 +150,14 @@ router.post('/roteiro/incluir', async (req, res) => {
         await connection.beginTransaction();
 
         const [resultadoVisita] = await connection.query(
-            'INSERT INTO db_visita (fk_loja, semana, ciclo, visita) SELECT id_loja, ?, ?, ? FROM db_loja WHERE nome = ? AND endereco = ?',
-            [semana, ciclo, visita, nome, endereco]
+            'INSERT INTO db_visita (fk_loja, semana, ciclo, visita) SELECT id_loja, ?, ?, ? FROM db_loja WHERE loja = ? AND endereco = ?',
+            [visita, ciclo, semana, loja, endereco]
         );
         
         const id_visita = resultadoVisita.insertId;
 
         await connection.query(
-            'INSERT INTO db_roteiro (fk_visita, fk_usu) SELECT ?, ?, id_usu FROM db_usuario WHERE cracha = ?',
+            'INSERT INTO db_roteiro (fk_visita, fk_usu) SELECT ?, id_usu FROM db_usuario WHERE cracha = ?',
             [id_visita, cracha]
         );
 
@@ -178,7 +178,8 @@ router.post('/roteiro/incluir', async (req, res) => {
 
 // -[X] Editar
 router.post('/roteiro/editar', async (req, res) => {
-    const { cracha, visita, semana, ciclo, id_visita, nome, endereco } = req.body;
+    const { cracha, visita, semana, ciclo, id_visita, loja, endereco } = req.body;
+    console.log(req.body);
     let connection;
 
     try {
@@ -187,8 +188,8 @@ router.post('/roteiro/editar', async (req, res) => {
 
         // Atualizar os dados na tabela db_visita
         await connection.query(
-            'UPDATE db_visita SET fk_loja = (select id_loja from db_loja where nome = ? AND endereco = ?), semana=?, ciclo=?, visita=? WHERE id_vis =?',
-            [nome, endereco, visita, ciclo, semana, id_visita]
+            'UPDATE db_visita SET fk_loja = (select id_loja from db_loja where loja = ? AND endereco = ?), semana=?, ciclo=?, visita=? WHERE id_vis =?',
+            [loja, endereco, visita, ciclo, semana, id_visita]
         );
 
         // Atualizar os dados na tabela db_roteiro

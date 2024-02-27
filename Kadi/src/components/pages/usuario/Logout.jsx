@@ -1,6 +1,5 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
-import refreshTime from '../utils/refreshTime';
 
 const Logout = () => {
     function deleteCookie(cookieName) {
@@ -9,7 +8,6 @@ const Logout = () => {
 
     const handleLogoutClick = () => {
         deleteCookie('Authorization');
-        refreshTime();
     };
 
     return (
