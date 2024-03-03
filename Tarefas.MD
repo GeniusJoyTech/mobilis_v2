@@ -1,13 +1,13 @@
 ## Front.
-- [x] RF 01 - login.
+- [x] RF 01 - Login.
 - [x] RF 02 - Logout.
-- [X] RF 03 - troca de senha.
+- [X] RF 03 - Troca de senha.
 - [X] RF 04 - Gerenciar mercado.
 - [X] RF 05 - Gerenciar Promotor.
-- [] RF 06 - Gerenciar Roteiro.
+- [X] RF 06 - Gerenciar Roteiro.
 - [] RF 07 - Horas trabalhadas.
 - [] RF 08 - Supervisionar visitas.
-- [] RF 09 - Gerenciar usuário
+- [X] RF 09 - Gerenciar usuário
 - [] RF 10 - Foto.
 - [] RF 11 - Atendimento de roteiro.
 - [] RF 12 - Inicio de visita.

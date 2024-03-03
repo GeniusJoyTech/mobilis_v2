@@ -4,8 +4,10 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-//usuario
-import Login from './components/pages/usuario/Login.jsx';
+//Usuario
+import Login from './components/pages/Usuario/Login.jsx';
+//Promotor
+import Promotor from './components/pages/Promotor/Promotor.jsx'
 //supervisor
 import Supervisor from './components/pages/Supervisor/Supervisor.jsx';
 //Administrador ou RH
@@ -17,7 +19,8 @@ const App = () => {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/sup" element={<Supervisor />} />
-        <Route path="/adm" element={<Administrador />} />        
+        <Route path="/adm" element={<Administrador />} />
+        <Route path="/pro" element={<Promotor />} />   
       </Routes>
     </Router>
   );

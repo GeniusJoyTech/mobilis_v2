@@ -19,15 +19,16 @@ router.post('/foto/incluir', (req, res) => {
         });
 });
 // -[X] RF 11 - Atendimento de roteiro - não testado
-router.get('/roteiro/ver', (req, res) => {
-    const id = req.body.id_usu
-    const query = `SELECT * FROM v_sup_vis where id = ${id};`;
+router.post('/roteiro/ver', (req, res) => {
+    const cracha = req.body.cracha;
+    const query = `SELECT * FROM v_vis_pro where cracha = "${cracha}";`;
 
     q(query)
         .then(results => {
             res.status(200).json(results);
         })
         .catch(err => {
+            console.log(err);
             res.status(500).json({ error: 'Erro ao executar a consulta', details: err });
         });
 });
