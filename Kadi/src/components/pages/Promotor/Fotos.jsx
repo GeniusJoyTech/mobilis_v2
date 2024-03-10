@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Button } from 'react-bootstrap';
 
-const Fotos = ({ data, toggleCamera }) => {
+const Fotos = ({ data, toggleCamera, send }) => {
   const [photo, setPhoto] = useState(null);
 
   const handleCapture = async () => {
@@ -35,7 +35,7 @@ const Fotos = ({ data, toggleCamera }) => {
   const sendPhoto = () => {
     console.log('Enviando foto para o servidor:', photo);
     console.log('Enviando dados para o servidor:', data);
-    toggleCamera(); // Corrected function call
+    send(); // Corrected function call
   };
 
   return (

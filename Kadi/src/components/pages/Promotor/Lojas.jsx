@@ -2,25 +2,38 @@
 import React, { useState } from 'react';
 import Accordion from 'react-bootstrap/Accordion';
 import Fotos from './Fotos';
+import Atividades from './Atividades';
 import { Button } from 'react-bootstrap';
 
 export default function Acordeon({ lojas }) {
-  const [camera, setCamera] = useState(false);
+  const [cameraLojas, setCameraLojas] = useState(false);
+  const [atividades, setAtvidades] = useState(false);
+  const [ljs, setLjs] = useState(true);
   const [data, setData] = useState({});
 
-  const toggleCamera = () => {
-    setCamera(!camera);
+  const toggleCameraLojas = () => {
+    setCameraLojas(!cameraLojas);
+    setLjs(!ljs);
   };
-
-  const registrarFoto = (loja) => {
-    toggleCamera();
+  const toggleCameraAtividades = () => {
+    setCameraLojas(!cameraLojas);
+    setAtvidades(!atividades);
+  };
+  const registrarFotoLoja = (loja) => {
+    toggleCameraLojas();
     setData(loja);
   };
-
+  
+  const toggleAtividades = () => {
+    setAtvidades(false);
+    setLjs(true);
+  };
   return (
     <>
-      <Accordion defaultActiveKey="0">
-        {!camera &&
+      {
+        ljs && <Accordion defaultActiveKey="0">
+        {
+        !cameraLojas &&
           lojas.map((loja, index) => (
             <Accordion.Item key={index} eventKey={index}>
               <Accordion.Header>{loja.loja}</Accordion.Header>
@@ -28,12 +41,15 @@ export default function Acordeon({ lojas }) {
                 <p>{loja.endereco}</p>
                 <p>{loja.visita}</p>
                 <p>{loja.ciclo}</p>
-                <Button onClick={() => registrarFoto(loja)}>Iniciar Visita</Button>
+                <Button onClick={() => registrarFotoLoja(loja)}>Iniciar Visita</Button>
               </Accordion.Body>
             </Accordion.Item>
           ))}
       </Accordion>
-      {camera && <Fotos data={data} toggleCamera={toggleCamera} />}
+      }
+      {cameraLojas && <Fotos data={data} toggleCamera={toggleCameraLojas} send={toggleCameraAtividades} />}
+      {atividades && <Atividades data={data} atividades={toggleAtividades}/>}
+      
     </>
   );
 }
