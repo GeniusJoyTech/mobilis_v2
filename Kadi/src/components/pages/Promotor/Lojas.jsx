@@ -47,7 +47,7 @@ export default function Acordeon({ lojas }) {
           ))}
       </Accordion>
       }
-      {cameraLojas && <Fotos data={data} toggleCamera={toggleCameraLojas} send={toggleCameraAtividades} />}
+      {cameraLojas && <Fotos data={data} toggleCamera={toggleCameraLojas} send={toggleCameraAtividades} pk_atv={1}/>}
       {atividades && <Atividades data={data} atividades={toggleAtividades}/>}
       
     </>

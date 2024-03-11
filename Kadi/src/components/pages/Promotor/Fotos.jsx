@@ -2,9 +2,11 @@
 import React, { useState } from 'react';
 import { Button } from 'react-bootstrap';
 
-const Fotos = ({ data, toggleCamera, send }) => {
-  const [photo, setPhoto] = useState(null);
+import h_api from '../../../hook/HApi';
 
+const Fotos = ({ data, toggleCamera, send, pk_atv }) => {
+  const [photo, setPhoto] = useState(null);
+  const url = 'https://localhost:5000/pro/foto/incluir';
   const handleCapture = async () => {
     const stream = await navigator.mediaDevices.getUserMedia({ video: true });
     const video = document.createElement('video');
@@ -32,9 +34,26 @@ const Fotos = ({ data, toggleCamera, send }) => {
     setPhoto(null);
   };
 
-  const sendPhoto = () => {
-    console.log('Enviando foto para o servidor:', photo);
-    console.log('Enviando dados para o servidor:', data);
+  const sendPhoto = async () => {
+    data.foto = photo;
+    const now = new Date();
+
+    const formattedDate = now.toLocaleString();
+
+    // Extraindo os componentes da data e hora
+    const year = formattedDate.substring(6, 10);
+    const month = formattedDate.substring(3, 5);
+    const day = formattedDate.substring(0, 2);
+    const hours = formattedDate.substring(12, 14);
+    const minutes = formattedDate.substring(15, 17);
+    const seconds = formattedDate.substring(18, 20);
+
+    // Formatando a data no formato YYYY-MM-DD HH:MM:SS
+    const agora = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    data.data = agora;
+    data.atividade = pk_atv;
+    await h_api({ method: 'POST', url: url, body: data });
+    console.log("Enviando Foto para a api:", data, url);
     send(); // Corrected function call
   };
 
