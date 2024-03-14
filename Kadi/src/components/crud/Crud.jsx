@@ -4,15 +4,17 @@ import h_api from "../../hook/HApi";
 
 import Create from "./Create"
 import Read from "./Read";
-import UpdateDelete from "./UpdateDelete";
+import Update from "./Update";
+import Delete from "./Delete";
 
-import Button from 'react-bootstrap/Button';
+import { Button, Form } from 'react-bootstrap';
 
 
 export default function Crud({ titulo, exibir, dropItem, url }) {
-  const [readRoteiro, setReadRoteiro] = useState([]); //itens recebidos da base de dados
+  const [read, setRead] = useState([]); //itens recebidos da base de dados
   const form = exibir.filter((item) => item.type === 'form').map((item) => item.row);
-  
+  const [searchTerm, setSearchTerm] = useState(""); // estado para armazenar o termo de pesquisa
+
 
   //variaveis para mostrar as opções de editar atualizar e excluir linhas da tabela.
   const [selectedRow, setSelectedRow] = useState([]); // Item que o usuario seleciona manualmente
@@ -21,10 +23,11 @@ export default function Crud({ titulo, exibir, dropItem, url }) {
   const [showCreate, setShowCreate] = useState(false);
   const [showRead, setShowRead] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [showUpdateDelete, setShowUpdateDelete] = useState(false);
-  const reqRoteiro = async () => {
+  const [showUpdate, setShowUpdate] = useState(false);
+  const [showDelete, setShowDelete] = useState(false);
+  const reqRead = async () => {
     setLoading(true);
-    await h_api(reqRot, setReadRoteiro);
+    await h_api(reqRot, setRead);
     setLoading(false);
     setShowRead(true);
   };
@@ -35,43 +38,96 @@ export default function Crud({ titulo, exibir, dropItem, url }) {
   };
 
   useEffect(() => {
-    reqRoteiro();
+    reqRead();
   }, [url.ver]);
 
+  // Função para filtrar os itens com base no termo de pesquisa
+  const filteredItems = read.filter(item =>
+    Object.values(item).some(val =>
+      typeof val === "string" && val.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+  );
 
   function handleCloseCreate() {
     setShowCreate(false);
     setShowRead(true);
-    setShowUpdateDelete(false);
+    setShowUpdate(false);
+    setShowDelete(false);
     setSelectedRow([]);
   };
 
   function handleCreate() {
     setShowCreate(true);
     setShowRead(false);
-    setShowUpdateDelete(false);
+    setShowUpdate(false);
+    setShowDelete(false);
   }
 
-  const handleSelectItem = (item) => {
+  const handleUpdateItem = (item) => {
     setSelectedRow(item);
     setShowCreate(false);
     setShowRead(false);
-    setShowUpdateDelete(true);
+    setShowUpdate(true);
+    setShowDelete(false);
   }
-  function handleCloseUpdateDelete() {
+  function handleCloseUpdate() {
     setShowCreate(false);
-    setShowUpdateDelete(false);
+    setShowUpdate(false);
     setShowRead(true);
+    setShowDelete(false);
+    setSelectedRow([]);
+  };
+
+  const handleDeleteItem = (item) => {
+    setSelectedRow(item);
+    setShowCreate(false);
+    setShowRead(false);
+    setShowUpdate(false);
+    setShowDelete(true);
+  }
+  function handleCloseDelete() {
+    setShowCreate(false);
+    setShowUpdate(false);
+    setShowRead(true);
+    setShowDelete(false);
     setSelectedRow([]);
   };
 
   //Lógica para obter dados da base de dados
   return (
-    <div style={{ border: '20px solid rgba(0,0,0,0)', borderRadius: '4px' }}>
+    <div
+      style={{ border: '20px solid rgba(0,0,0,0)', borderRadius: '4px' }}
+    >
       {showRead == true ?
-        <div style={{ display: 'flex', border: '8px solid rgba(0,0,0,0)' }}>
-          <h2 style={{ borderLeft: '4px solid rgba(0, 0, 0, 0)', borderRight: '8px solid rgba(0, 0, 0, 0)', borderBottom: '4px solid rgba(0, 0, 0, 0)' }}><strong>{titulo}</strong></h2>
-          <Button onClick={handleCreate}>Adicionar {titulo}</Button>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            border: '8px solid rgba(0,0,0,0)'
+          }}>
+          <h2
+            style={{
+              borderLeft: '4px solid rgba(0, 0, 0, 0)',
+              borderRight: '8px solid rgba(0, 0, 0, 0)',
+              borderBottom: '4px solid rgba(0, 0, 0, 0)'
+            }}>
+            <strong>{titulo}</strong></h2>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              width:'100%'
+            }}
+          >
+            <Button onClick={handleCreate} style={{ marginRight: '4px' }}>Adicionar {titulo}</Button>
+
+            <Form.Control
+              type="text"
+              placeholder="Pesquisar..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
         </div>
         :
         null}
@@ -95,20 +151,27 @@ export default function Crud({ titulo, exibir, dropItem, url }) {
           <Read
             open={showRead}
             exibir={exibir}
-            data={readRoteiro}
-            clickItem={handleSelectItem}
+            data={filteredItems} // Exibindo itens filtrados
+            Update={handleUpdateItem}
+            Delete={handleDeleteItem}
           />
       }
 
 
-      {/*Logica de Edição e remoção DELETE / UPDATE*/}
+      {/*Logica de Edição e remoção DELETE e UPDATE*/}
 
-      <UpdateDelete
-        open={showUpdateDelete}
-        close={handleCloseUpdateDelete}
+      <Update
+        open={showUpdate}
+        close={handleCloseUpdate}
         exibir={form}
         data={selectedRow}
         dropItens={dropItem}
+        url={url}
+      />
+      <Delete
+        open={showDelete}
+        close={handleCloseDelete}
+        data={selectedRow}
         url={url}
       />
     </div>

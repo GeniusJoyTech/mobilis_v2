@@ -8,8 +8,7 @@ export default function Promotores() {
         { row: "superior", type: "form" },
         { row: "endereco", type: "form" },
         { row: "status", type: "form" },
-        { row: "email", type: "form" },
-        { row: "senha", type: "form" }
+        { row: "email", type: "form" }
     ];
     const drop = [{cargo: [{ cargo: 'Promotor' }, { cargo: 'Supervisor' }, { cargo: 'Administrador' }]}];
     const url = {

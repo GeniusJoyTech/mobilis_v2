@@ -50,7 +50,7 @@ const Fotos = ({ data, toggleCamera, send, pk_atv }) => {
 
     // Formatando a data no formato YYYY-MM-DD HH:MM:SS
     const agora = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-    data.data = agora;
+    data.dia = agora;
     data.atividade = pk_atv;
     await h_api({ method: 'POST', url: url, body: data });
     console.log("Enviando Foto para a api:", data, url);

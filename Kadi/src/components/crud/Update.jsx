@@ -6,9 +6,9 @@ import Form from 'react-bootstrap/Form';
 
 import h_api from '../../hook/HApi';
 
-export default function UpdateDelete({ open, close, exibir, data, dropItens, url }) {
+export default function Update({ open, close, exibir, data, dropItens, url }) {
     const [send, setSend] = useState(data),
-    editar = url.editar, deletar = url.deletar;
+    editar = url.editar
     useEffect(() => {
         setSend(data);
     }, [data]);
@@ -42,13 +42,6 @@ export default function UpdateDelete({ open, close, exibir, data, dropItens, url
         setSend(updatedState);
     };
 
-    const handleDelete = async() => {
-        // Aqui você pode enviar o objeto `send` para deletar da base de dados
-        console.log("Deletando da base de dados:", send, url.deletar);
-        await h_api({ method: 'POST', url: deletar, body: send });
-        // Fechar o modal após a exclusão
-        close();
-    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -61,7 +54,7 @@ export default function UpdateDelete({ open, close, exibir, data, dropItens, url
     return (
         <Modal show={open} onHide={close}>
             <Modal.Header closeButton>
-                <Modal.Title>Atualizar ou deletar</Modal.Title>
+                <Modal.Title>Atualizar</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <form onSubmit={handleSubmit}>
@@ -81,9 +74,6 @@ export default function UpdateDelete({ open, close, exibir, data, dropItens, url
                 </form>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="danger" onClick={handleDelete}>
-                    Deletar
-                </Button>
                 <Button variant="primary" onClick={handleSubmit}>
                     Salvar Alterações
                 </Button>

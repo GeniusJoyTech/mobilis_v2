@@ -40,8 +40,9 @@ const Login = () => {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '25vh' }}>
       <Form onSubmit={handleSubmit}>
-        <Form.Group className="mb-3" controlId="formBasicEmail">
-          <Form.Control
+        <Form.Group className="mb-3" controlId="formBasicEmail">  
+        <Form.Label>Email</Form.Label>
+        <Form.Control
             type="email"
             placeholder="Entre com email"
             value={email}

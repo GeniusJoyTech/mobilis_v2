@@ -22,36 +22,36 @@ const httpsServer = https.createServer(credentials, app);
 app.use(cors());
 app.use(express.json());
 
-
 const checkCargo = (req, res, next, cargo) => {
-  const token = req.header('Authorization');
-  if (!token) {
-    return res.status(401).json({ message: 'Token não fornecido' });
-  }
+  // const token = req.header('Authorization');
+  // if (!token) {
+  //   return res.status(401).json({ message: 'Token não fornecido' });
+  // }
 
-  try {
-    const decoded = jwt.verify(token, 'segredo');
-    if (decoded.cargo !== cargo) {
-      return res.status(403).json({ message: `Usuário não é ${cargo}, usuário é ${decoded.cargo}` });
-    }
-    next();
-  } catch (error) {
-    return res.status(401).json({ message: `Token inválido ${error}` });
-  }
+  // try {
+  //   const decoded = jwt.verify(token, 'segredo');
+  //   if (decoded.cargo !== cargo) {
+  //     return res.status(403).json({ message: `Usuário não é ${cargo}, usuário é ${decoded.cargo}` });
+  //   }
+  //   next();
+  // } catch (error) {
+  //   return res.status(401).json({ message: `Token inválido ${error}` });
+  // }
+  next();
 };
 
 
 app.use('/', Usuario);
 app.use('/sup', (req, res, next) => {
-  checkCargo(req, res, next, 'Supervisor' ||'Promotor' || 'Administrador');
+  checkCargo(req, res, next, 'Supervisor');
 }, Supervisor);
 
 app.use('/pro', (req, res, next) => {
-  checkCargo(req, res, next, 'Supervisor' ||'Promotor' || 'Administrador');
+  checkCargo(req, res, next, 'Promotor');
 }, Promotor);
 
 app.use('/adm', (req, res, next) => {
-  checkCargo(req, res, next, 'Supervisor' ||'Promotor' || 'Administrador');
+  checkCargo(req, res, next, 'Administrador');
 }, Administrador);
 
 httpsServer.listen(PORT, () => {

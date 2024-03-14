@@ -13,12 +13,12 @@ const requestApi = (data) => {
   return fetch(data.url, requestOptions)
     .then(response => {
       if (!response.ok) {
-        throw new Error(`Erro na solicitação: ${response.statusText}`);
+        throw new Error(`Request Api erro na solicitação: ${response.statusText}`);
       }
       return response.json();
     })
     .catch(error => {
-      console.error('Erro ao buscar dados:', error);
+      console.error('Request Api erro ao buscar dados:', error);
     });
 };
 

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 
-export default function Read({ open, exibir, data, clickItem }) {
+export default function Read({ open, exibir, data, Update, Delete }) {
     const [page, setPage] = useState(1);
     const itemsPerPage = 10;
     const row = exibir.map((item) => item.row);
@@ -40,16 +40,21 @@ export default function Read({ open, exibir, data, clickItem }) {
                     <thead>
                         <tr>
                             {row.map((propriedade, index) => (
-                                <th key={index}>{propriedade}</th>
+                                <th style={{textAlign:'center'}} key={index}>{propriedade}</th>
                             ))}
+                            <th style={{textAlign:'center'}} key={'actions'}>Ações</th>
                         </tr>
                     </thead>
                     <tbody>
                         {visibleItems.map((item, index) => (
-                            <tr key={index} onClick={() => clickItem(item)}>
+                            <tr key={index}>
                                 {row.map((propriedade, index) => (
                                     <td key={index}>{item[propriedade]}</td>
                                 ))}
+                                <td style={{display:'flex', justifyContent:'space-around'}}> 
+                                    <Button style={{margin: '2px'}} onClick={() => Update(item)}>Atualizar</Button>
+                                    <Button variant="danger" onClick={() => Delete(item)}>Deletar</Button>
+                                </td>
                             </tr>
                         ))}
                     </tbody>
