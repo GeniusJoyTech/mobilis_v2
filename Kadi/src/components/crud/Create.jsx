@@ -72,7 +72,7 @@ export default function UpdateDelete({open, close, exibir, dropItens, url }) {
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={close}>
-                    Fechar
+                    Cancelar
                 </Button>
                 <Button variant="primary" onClick={handleSubmit}>
                     Salvar Alterações

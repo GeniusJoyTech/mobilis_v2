@@ -25,9 +25,13 @@ export default function Delete({ open, close, data, url }) {
                 <p>Você tem certeza?<br/>Deseja <strong>apagar</strong> este em específico?</p>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="danger" onClick={handleDelete}>
-                    Deletar
+                <Button variant="primary" onClick={handleDelete}>
+                    Cancelar
                 </Button>
+                <Button variant="danger" onClick={handleDelete}>
+                    Confirmar
+                </Button>
+                
             </Modal.Footer>
         </Modal>
     );
