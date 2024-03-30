@@ -5,7 +5,6 @@ export default function Promotores() {
     const exibir = [
         { row: "nome", type: "form" },
         { row: "cracha", type: "form" },
-        { row: "superior", type: "form" },
         { row: "endereco", type: "form" },
         { row: "status", type: "form" },
         { row: "email", type: "form" }

@@ -13,6 +13,9 @@ export default function Update({ open, close, exibir, data, dropItens, url }) {
         setSend(data);
     }, [data]);
 
+    const handleClose = () => {
+        close()
+    };
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setSend(prevSend => ({
@@ -76,6 +79,9 @@ export default function Update({ open, close, exibir, data, dropItens, url }) {
             <Modal.Footer>
                 <Button variant="primary" onClick={handleSubmit}>
                     Salvar Alterações
+                </Button>
+                <Button variant="primary" onClick={handleClose}>
+                    Cancelar
                 </Button>
             </Modal.Footer>
         </Modal>

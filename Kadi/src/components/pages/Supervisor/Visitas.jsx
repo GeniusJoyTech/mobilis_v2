@@ -4,20 +4,35 @@ import Dropdown from 'react-bootstrap/Dropdown';
 
 export default function Visitas() {
     const [prom, setProm] = useState([]);
+    const [visP, setVisP] = useState([]);
     const [selectedPromotor, setSelectedPromotor] = useState(null);
 
     const reqFuncs = {
         method: "GET",
         url: 'https://localhost:5000/sup/promotor/ver',
     };
-
-    const reqProm = async () => {
+    const reqVisP = {
+        method: "POST",
+        url: 'https://localhost:5000/sup/pro/visitas/ver',
+        body: selectedPromotor,
+    };
+    const reqApiPro = async () => {
         await h_api(reqFuncs, setProm);
     };
 
+    const reqApiVis = async () => {
+        await h_api(reqVisP, setVisP);
+    };
+
     useEffect(() => {
-        reqProm();
+        reqApiPro();
     }, []);
+    useEffect(() => {
+        if (selectedPromotor != null) {
+            reqApiVis();
+        }
+    }, [selectedPromotor]);
+    { visP.length > 0 && console.log(visP, 'promotor - ', selectedPromotor.nome) }
 
     const handleSelectPromotor = (promotor) => {
         setSelectedPromotor(promotor); // Define o promotor selecionado quando um item é clicado
@@ -26,9 +41,20 @@ export default function Visitas() {
 
     return (
         <div style={{ margin: '4px' }}>
-            <SelProm prom={prom} handle={handleSelectPromotor} selP={selectedPromotor} />
-            
-        </div>
+            <div style={{ display: 'flex' }}>
+                <h2>Visitas</h2>
+                <SelProm prom={prom} handle={handleSelectPromotor} selP={selectedPromotor} />
+
+            </div>
+            {
+                visP.length > 0 && visP.map((item, index) => (
+                    <>
+                        <p>{item.descricao} - {item.data} - {item.loja} - {item.endereco}</p>
+                        <ImageComponent key={index} base64Image={item.foto} />
+                    </>))
+            }
+
+        </div >
     )
 }
 
@@ -48,4 +74,8 @@ function SelProm({ prom, handle, selP }) {
             </Dropdown.Menu>
         </Dropdown>
     );
+}
+
+function ImageComponent({ base64Image }) {
+    return <img  src={base64Image} alt="Imagem" />;
 }

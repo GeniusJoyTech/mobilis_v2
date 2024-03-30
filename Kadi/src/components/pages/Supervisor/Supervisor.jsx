@@ -10,8 +10,8 @@ import { useState } from "react";
 export default function Supervisor() {
     const [rot, setRot] = useState(false);
     const [prom, setProm] = useState(false);
-    const [lj, setLj] = useState(false);
-    const [vis, setVis] = useState(true);
+    const [lj, setLj] = useState(true);
+    const [vis, setVis] = useState(false);
     
     const handleRot = () =>{
         setRot(true);

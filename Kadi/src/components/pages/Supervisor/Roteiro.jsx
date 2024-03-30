@@ -1,9 +1,6 @@
 import { useState, useEffect } from "react";
-import Crud from "../../crud/Crud"
-
-
+import Crud from "../../crud/Crud";
 import h_api from "../../../hook/HApi";
-
 import filtro from "../../../utils/filtroSelect";
 export default function Roteiro() {
 

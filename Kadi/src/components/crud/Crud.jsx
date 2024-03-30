@@ -11,6 +11,13 @@ import { Button, Form } from 'react-bootstrap';
 
 
 export default function Crud({ titulo, exibir, dropItem, url }) {
+  //variaveis para exibir os componentes de edição, deletar e inclusão.
+  const [showCreate, setShowCreate] = useState(false);
+  const [showRead, setShowRead] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [showUpdate, setShowUpdate] = useState(false);
+  const [showDelete, setShowDelete] = useState(false);
+  
   const [read, setRead] = useState([]); //itens recebidos da base de dados
   const form = exibir.filter((item) => item.type === 'form').map((item) => item.row);
   const [searchTerm, setSearchTerm] = useState(""); // estado para armazenar o termo de pesquisa
@@ -19,12 +26,6 @@ export default function Crud({ titulo, exibir, dropItem, url }) {
   //variaveis para mostrar as opções de editar atualizar e excluir linhas da tabela.
   const [selectedRow, setSelectedRow] = useState([]); // Item que o usuario seleciona manualmente
 
-  //variaveis para exibir os componentes de edição, deletar e inclusão.
-  const [showCreate, setShowCreate] = useState(false);
-  const [showRead, setShowRead] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [showUpdate, setShowUpdate] = useState(false);
-  const [showDelete, setShowDelete] = useState(false);
   const reqRead = async () => {
     setLoading(true);
     await h_api(reqRot, setRead);
@@ -50,6 +51,7 @@ export default function Crud({ titulo, exibir, dropItem, url }) {
 
   function handleCloseCreate() {
     setShowCreate(false);
+    reqRead();
     setShowRead(true);
     setShowUpdate(false);
     setShowDelete(false);
@@ -73,6 +75,7 @@ export default function Crud({ titulo, exibir, dropItem, url }) {
   function handleCloseUpdate() {
     setShowCreate(false);
     setShowUpdate(false);
+    reqRead();
     setShowRead(true);
     setShowDelete(false);
     setSelectedRow([]);
@@ -88,6 +91,7 @@ export default function Crud({ titulo, exibir, dropItem, url }) {
   function handleCloseDelete() {
     setShowCreate(false);
     setShowUpdate(false);
+    reqRead();
     setShowRead(true);
     setShowDelete(false);
     setSelectedRow([]);

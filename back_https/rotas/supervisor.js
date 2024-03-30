@@ -20,9 +20,10 @@ router.get('/mercado/ver', (req, res) => {
 });
 // -[x] Incluir
 router.post('/mercado/incluir', (req, res) => {
-    const { loja, endereco } = req.body;
-    const query = `INSERT INTO db_loja (id_loja, loja, endereco) VALUES (NULL, '${loja}', '${endereco}');`
-
+    const { loja, endereco, rua, cidade, logradouro, cep, celular } = req.body;
+    
+    const query = `INSERT INTO db_loja (loja, endereco, rua, cidade, logradouro, cep, celular) VALUES ('${loja}', '${endereco}', '${rua}', '${cidade}', ${logradouro}, '${cep}', '${celular}');`
+    console.log(query);
     q(query)
         .then(results => {
             res.status(200).json(results);
@@ -33,12 +34,12 @@ router.post('/mercado/incluir', (req, res) => {
 })
 // -[x] Editar
 router.post('/mercado/editar', (req, res) => {
-    const { loja, endereco, id_loja } = req.body;
+    const { loja, endereco, rua, cidade, logradouro, cep, celular, id_loja } = req.body;
     if (!id_loja) {
         return res.status(400).send('O campo id_loja é obrigatório');
     }
 
-    const query = `UPDATE db_loja SET loja = '${loja}', endereco = '${endereco}' WHERE id_loja = ${id_loja}`;
+    const query = `UPDATE db_loja SET loja = '${loja}', endereco = '${endereco}', rua = '${rua}', cidade='${cidade}', logradouro='${logradouro}', cep='${cep}', celular='${celular}' WHERE id_loja = ${id_loja}`;
 
     // Executar a query
     q(query)
@@ -153,7 +154,7 @@ router.post('/roteiro/incluir', async (req, res) => {
             'INSERT INTO db_visita (fk_loja, semana, ciclo, visita) SELECT id_loja, ?, ?, ? FROM db_loja WHERE loja = ? AND endereco = ?',
             [visita, ciclo, semana, loja, endereco]
         );
-        
+
         const id_visita = resultadoVisita.insertId;
 
         await connection.query(
@@ -270,17 +271,22 @@ router.get('/pro/horas/ver', (req, res) => {
 
 });
 // -[X] RF 08 - Supervisionar visitas
-router.get('/pro/visitas/ver', (req, res) => {
+router.post('/pro/visitas/ver', (req, res) => {
     const { id_usu, date1, date2 } = req.body;
 
     let query = "SELECT * FROM v_sup";
 
     if (id_usu && date1 && date2) {
-        query += ` WHERE id_usu = ${id_usu} AND data BETWEEN '${date1}' AND '${date2}'`;
-    } else if (id_usu) {
-        query += ` WHERE id_usu = ${id_usu}`;
-    } else if (date1 && date2) {
+        query += ` WHERE fk_usu = ${id_usu} AND data BETWEEN '${date1}' AND '${date2}'`;
+    }
+    else if (date1 && date2) {
         query += ` WHERE data BETWEEN '${date1}' AND '${date2}'`;
+    }
+    else if (date1) {
+        query += ` WHERE data '${date1}'`;
+    }
+    else if (id_usu) {
+        query += ` WHERE fk_usu = ${id_usu}`;
     }
 
     q(query)
@@ -297,4 +303,3 @@ module.exports = router;
 
 
 
-  
