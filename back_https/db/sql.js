@@ -4,9 +4,9 @@ const { promisify } = require('util');
 
 const pool = mysql.createPool({
     host: 'srv1074.hstgr.io',
-    user: 'u874236547_Genius',
+    user: 'u874236547_Gabriel',
     password: 'P0r69r90',
-    database: 'u874236547_Mobilis',
+    database: 'u874236547_kadi',
     port: '3306', // Porta padrão do MySQL
     connectionLimit: 10 // Número máximo de conexões na pool
 });

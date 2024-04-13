@@ -8,7 +8,7 @@ const { pool, query: q } = bd;
 // -[X] RF 04 - Gerenciar mercado
 // -[x] Ver
 router.get('/mercado/ver', (req, res) => {
-    const query = "SELECT * FROM db_loja;";
+    const query = "SELECT * FROM loja;";
 
     q(query)
         .then(results => {
@@ -20,9 +20,11 @@ router.get('/mercado/ver', (req, res) => {
 });
 // -[x] Incluir
 router.post('/mercado/incluir', (req, res) => {
-    const { loja, endereco, rua, cidade, logradouro, cep, celular } = req.body;
-    
-    const query = `INSERT INTO db_loja (loja, endereco, rua, cidade, logradouro, cep, celular) VALUES ('${loja}', '${endereco}', '${rua}', '${cidade}', ${logradouro}, '${cep}', '${celular}');`
+    const { loja, cep, numero, rua, cidade, celular } = req.body;
+
+    const query = `INSERT INTO loja
+             (loja, rua, cidade, numero, cep, celular) VALUES 
+             ('${loja}', '${rua}', '${cidade}', ${numero}, '${cep}', '${celular}');`
     console.log(query);
     q(query)
         .then(results => {
@@ -30,16 +32,17 @@ router.post('/mercado/incluir', (req, res) => {
         })
         .catch(err => {
             res.status(500).json({ error: 'Erro ao executar a consulta', details: err });
+            console.log(err);
         });
 })
 // -[x] Editar
 router.post('/mercado/editar', (req, res) => {
-    const { loja, endereco, rua, cidade, logradouro, cep, celular, id_loja } = req.body;
+    const { loja, cep, numero, rua, cidade, celular, id_loja } = req.body;
     if (!id_loja) {
         return res.status(400).send('O campo id_loja é obrigatório');
     }
 
-    const query = `UPDATE db_loja SET loja = '${loja}', endereco = '${endereco}', rua = '${rua}', cidade='${cidade}', logradouro='${logradouro}', cep='${cep}', celular='${celular}' WHERE id_loja = ${id_loja}`;
+    const query = `UPDATE loja SET loja = '${loja}',  rua = '${rua}', cidade='${cidade}', numero='${numero}', cep='${cep}', celular='${celular}' WHERE id_loja = ${id_loja}`;
 
     // Executar a query
     q(query)
@@ -56,7 +59,7 @@ router.post('/mercado/deletar', (req, res) => {
     if (!id_loja) {
         return res.status(400).send('O campo id é obrigatório');
     }
-    const query = `DELETE FROM db_loja  WHERE id_loja = ${id_loja}`;
+    const query = `DELETE FROM loja  WHERE id_loja = ${id_loja}`;
     q(query)
         .then(results => {
             res.status(200).json(results);
@@ -69,7 +72,18 @@ router.post('/mercado/deletar', (req, res) => {
 // -[X] RF 05 - Gerenciar Promotor
 // -[X] Ver
 router.get('/promotor/ver', (req, res) => {
-    const query = "SELECT * FROM v_usuario;";
+    const query = "SELECT * FROM v_promotores;";
+
+    q(query)
+        .then(results => {
+            res.status(200).json(results);
+        })
+        .catch(err => {
+            res.status(500).json({ error: 'Erro ao executar a consulta', details: err });
+        });
+});
+router.get('/sup/ver', (req, res) => {
+    const query = "SELECT * FROM v_supervisores;";
 
     q(query)
         .then(results => {
@@ -81,9 +95,9 @@ router.get('/promotor/ver', (req, res) => {
 });
 // -[X] Incluir
 router.post('/promotor/incluir', (req, res) => {
-    const { nome, cracha, superior, endereco, email } = req.body;
-    const query = `INSERT INTO db_usuario (nome, cargo, cracha, superior, endereco, email)
-            VALUES ('${nome}', 'Promotor', '${cracha}', '${superior}', '${endereco}', '${email}');`
+    const { nome, cracha, id_superior, cep, numero, rua, cidade, email } = req.body;
+    const query = `INSERT INTO usuario (nome, cargo, cracha, id_superior, cep, numero, rua, cidade, email, senha)
+            VALUES ('${nome}', 'Promotor', '${cracha}', '${id_superior}', '${cep}', ${numero}, '${rua}', '${cidade}', '${email}', '123456');`
 
     q(query)
         .then(results => {
@@ -95,14 +109,18 @@ router.post('/promotor/incluir', (req, res) => {
 })
 // -[X] Editar
 router.post('/promotor/editar', (req, res) => {
-    const { nome, cracha, superior, endereco, email, id_usu } = req.body;
-    console.log({ nome, cracha, superior, endereco, email, id_usu });
+    const { nome, cracha, superior, cep, numero, rua, cidade, email, id_usuario, id_superior } = req.body;
+    const token = req;
     // Verifique se o id está presente nos parâmetros da solicitação
-    if (!id_usu) {
+    if (!id_usuario) {
         return res.status(400).send('O campo id é obrigatório');
     }
 
-    const query = `UPDATE db_usuario SET nome = '${nome}', cracha = '${cracha}', superior = '${superior}', endereco = '${endereco}', email = '${email}' WHERE id_usu = ${id_usu}`;
+    const query = `UPDATE usuario 
+                    SET nome = '${nome}', cep = '${cep}', cidade = '${cidade}',
+                        rua = '${rua}', numero = ${numero}, cracha = '${cracha}',
+                        id_superior = ${id_superior}, email = '${email}'
+                    WHERE id_usuario = ${id_usuario}`;
 
     // Executar a query
     q(query)
@@ -111,15 +129,17 @@ router.post('/promotor/editar', (req, res) => {
         })
         .catch(err => {
             res.status(500).json({ error: 'Erro ao executar a consulta', details: err });
+            console.log(err);
         });
 });
 // -[X] Excluir
 router.post('/promotor/deletar', (req, res) => {
-    const id = req.body.id_usu;
+
+    const id = req.body.id_usuario;
     if (!id) {
         return res.status(400).send('O campo id é obrigatório');
     }
-    const query = `DELETE FROM db_usuario  WHERE id_usu = ${id}`;
+    const query = `DELETE FROM usuario  WHERE id_usuario = ${id}`;
     q(query)
         .then(results => {
             res.status(200).json(results);

@@ -1,6 +1,6 @@
 import { Navbar, Nav } from "react-bootstrap";
 
-import Funcionarios from "./Funcionarios";
+import Funcionarios from "./funcionarios/Funcionarios";
 import Logout from "../usuario/Logout";
 import { useState } from "react";
 

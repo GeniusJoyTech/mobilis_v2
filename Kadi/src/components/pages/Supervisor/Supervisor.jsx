@@ -1,8 +1,8 @@
 import { Navbar, Nav } from "react-bootstrap";
 
 import Roteiro from "./Roteiro";
-import Promotores from "./Promotores";
-import Loja from "./Loja";
+import Promotores from "./Promotores/Promotores";
+import Loja from "./Loja/Loja";
 import Visitas from "./Visitas";
 import Logout from "../usuario/Logout";
 import { useState } from "react";

@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 const Logout = () => {
     function deleteCookie(cookieName) {
         document.cookie = `${cookieName}=; path=/;`;
-        console.log('click');
+        window.location.href = '/login';
     }
 
     const handleLogoutClick = () => {
@@ -12,7 +12,7 @@ const Logout = () => {
     };
 
     return (
-        <Button variant="primary" style={{marginRight:'4px'}} type="submit" onClick={handleLogoutClick}>
+        <Button variant="primary" style={{ marginRight: '4px' }} type="submit" onClick={handleLogoutClick}>
             Logout
         </Button>
     );

@@ -12,14 +12,41 @@ const requestApi = (data) => {
 
   return fetch(data.url, requestOptions)
     .then(response => {
-      if (!response.ok) {
-        throw new Error(`Request Api erro na solicitação: ${response.statusText}`);
+      if (response.status === 401) {
+        alert('Você não está logado, realize o login.');
+        window.location.href = '/login';
+      }
+      else if (response.status === 403) {
+        return response.json().then(error => {
+          redirecionar(error.cargo)
+        });
+      }
+      else if (!response.ok) {
+        throw new Error(`Erro ${response.status}: ${response.statusText}`);
       }
       return response.json();
     })
     .catch(error => {
-      console.error('Request Api erro ao buscar dados:', error);
+      console.error('Erro na solicitação da API:', error);
+      throw error;
     });
 };
+
+function redirecionar(cargo) {
+  switch (cargo) {
+    case 'Supervisor':
+      window.location.href = '/sup';
+      break;
+    case 'Administrador':
+      window.location.href = '/adm';
+      break;
+    case 'Promotor':
+      window.location.href = '/pro';
+      break;
+    default:
+      window.location.href = '/login';
+  }
+}
+
 
 export default requestApi;

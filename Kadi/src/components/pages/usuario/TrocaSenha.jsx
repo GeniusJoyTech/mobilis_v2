@@ -27,6 +27,7 @@ const TrocaSenha = () =>{
     
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '25vh' }}>
+          <h2>Troca de senha.</h2>
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Control

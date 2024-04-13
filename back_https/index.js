@@ -23,21 +23,20 @@ app.use(cors());
 app.use(express.json());
 
 const checkCargo = (req, res, next, cargo) => {
-  // const token = req.header('Authorization');
-  // if (!token) {
-  //   return res.status(401).json({ message: 'Token não fornecido' });
-  // }
+   const token = req.header('Authorization');
+   if (!token) {
+     return res.status(401).json({ message: 'Token não fornecido' });
+   }
 
-  // try {
-  //   const decoded = jwt.verify(token, 'segredo');
-  //   if (decoded.cargo !== cargo) {
-  //     return res.status(403).json({ message: `Usuário não é ${cargo}, usuário é ${decoded.cargo}` });
-  //   }
-  //   next();
-  // } catch (error) {
-  //   return res.status(401).json({ message: `Token inválido ${error}` });
-  // }
-  next();
+   try {
+     const decoded = jwt.verify(token, 'segredo');
+     if (decoded.cargo !== cargo) {
+       return res.status(403).json({ message: `Usuário não é ${cargo}, usuário é ${decoded.cargo}`, cargo: decoded.cargo });
+     }
+     next();
+   } catch (error) {
+     return res.status(401).json({ message: `Token inválido ${error}` });
+   }
 };
 
 

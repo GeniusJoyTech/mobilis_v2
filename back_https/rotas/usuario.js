@@ -13,7 +13,7 @@ const secret = "segredo";
 // -[X] RF 01 - Login
 router.post('/login', (req, res) => {
     const { email, senha } = req.body;
-    const query = `SELECT id_usu, nome, email, senha, cargo FROM db_usuario where email = ? and senha = ?`;
+    const query = `SELECT id_usuario, nome, email, senha, cargo, cracha FROM usuario where email = ? and senha = ?`;
 
     q(query, [email, senha])
         .then(results => {
@@ -21,7 +21,7 @@ router.post('/login', (req, res) => {
                 res.status(401).json("Algo não saiu como esperado, verifique seus dados de acesso.")
             }
             else {
-                const payload = { userId: results[0].id_usu, username: results[0].nome, cargo: results[0].cargo };
+                const payload = { userId: results[0].id_usu, username: results[0].nome, cargo: results[0].cargo, id_usuario: results[0].id_usuario};
                 const token = jwt.sign(payload, secret, { expiresIn: '30w' });
                 res.header('Authorization', `${token}`);
                 res.status(200).json({ token });
@@ -29,6 +29,7 @@ router.post('/login', (req, res) => {
         })
         .catch(err => {
             res.status(500).json({ error: 'Erro ao executar a consulta', details: err });
+            console.log(err);
         });
 });
 // -[] RF 02 - Logout

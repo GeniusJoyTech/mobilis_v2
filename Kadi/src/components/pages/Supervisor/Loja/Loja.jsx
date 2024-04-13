@@ -1,14 +1,12 @@
-import { useState, useEffect } from "react";
-import Crud from "../../crud/Crud"
+import Crud from "./CrudLoja"
 
 export default function Loja() {
 
     
     const exibir = [
-        { row: "loja", type: "form" },
-        { row: "endereco", type: "form" },
+        { row: "loja", type: "form" },  
         { row: "cep", type: "form" },
-        { row: "logradouro", type: "form" },
+        { row: "numero", type: "form" },
         { row: "rua", type: "form" },
         { row: "cidade", type: "form" },
         { row: "celular", type: "form" },
