@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Crud from "../../crud/Crud";
 import h_api from "../../../hook/HApi";
 import filtro from "../../../utils/filtroSelect";
+import backUrl from '../../../../config'
 export default function Roteiro() {
 
     
@@ -22,19 +23,19 @@ export default function Roteiro() {
 
     const visita = [{ visita: 'segunda' }, { visita: 'terça' }, { visita: 'quarta' }, { visita: 'quinta' }, { visita: 'sexta' }, { visita: 'sábado' }, { visita: 'domingo' }];
     const url = {
-        ver: 'https://localhost:5000/sup/roteiro/ver',
-        editar: 'https://localhost:5000/sup/roteiro/editar',
-        deletar: 'https://localhost:5000/sup/roteiro/deletar',
-        incluir: 'https://localhost:5000/sup/roteiro/incluir',
+        ver: backUrl+'sup/roteiro/ver',
+        editar: backUrl+'sup/roteiro/editar',
+        deletar: backUrl+'sup/roteiro/deletar',
+        incluir: backUrl+'sup/roteiro/incluir',
     };
 
     const reqRot = {
         method: 'GET',
-        url: 'https://localhost:5000/adm/func/ver',
+        url: backUrl+'adm/func/ver',
     };
     const reqLoja = {
         method: 'GET',
-        url: 'https://localhost:5000/sup/mercado/ver',
+        url: backUrl+'sup/mercado/ver',
     };
 
     useEffect(() => {

@@ -1,13 +1,14 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import React, { useState } from 'react';
+import backUrl from '../../../../config'
 
 const TrocaSenha = () =>{
     const [email, setEmail] = useState('');
     const handleSubmit = async (event) => {
         event.preventDefault();
     
-        await fetch('https://localhost:5000/senha/editar', {
+        await fetch(backUrl+'senha/editar', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

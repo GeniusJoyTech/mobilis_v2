@@ -1,5 +1,5 @@
 import Crud from "./CrudProm";
-import { backUrl } from "../../../../../config";
+import backUrl  from "../../../../../config";
 export default function Promotores() {
 
 
@@ -7,6 +7,7 @@ export default function Promotores() {
         { row: "nome", type: "form" },
         { row: "cracha", type: "form" },
         { row: "superior", type: "form" },
+        { row: "cargo", type: "form" },
         { row: "status", type: "form" },
         { row: "cep", type: "form" },
         { row: "numero", type: "form" },

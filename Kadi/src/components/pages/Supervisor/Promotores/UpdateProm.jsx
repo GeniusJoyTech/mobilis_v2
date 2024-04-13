@@ -3,7 +3,7 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import buscarCEP from "../../../../utils/buscaCep";
 import Form from 'react-bootstrap/Form';
-
+import backUrl from "../../../../../config";
 import h_api from '../../../../hook/HApi';
 
 export default function UpdatePromotores({ open, close, data, url }) {
@@ -30,7 +30,7 @@ export default function UpdatePromotores({ open, close, data, url }) {
         async function getSup() {
             const reqSup = {
                 method: 'GET',
-                url: 'https://192.168.0.100:5000/sup/sup/ver',
+                url: backUrl+'sup/sup/ver',
             };
 
             await h_api(reqSup, setSup);
@@ -73,17 +73,6 @@ export default function UpdatePromotores({ open, close, data, url }) {
                         value={send['cracha'] || ''}
                         onChange={handleInputChange}
                     ></Form.Control>
-                    <Form.Label htmlFor="cargo">cargo</Form.Label>
-                    <Form.Select aria-label="Default select example"
-                        id='cargo'
-                        name='cargo'
-                        onChange={handleInputChange}
-                    >
-                        <option value={send['cargo'] || ''}>cargo: { send['cargo'] || 'Selecione um cargo.'}</option>
-                        <option value="Promotor">Promotor</option>
-                        <option value="Supervisor">Supervisor</option>
-                        <option value="Administrador">Administrador</option>
-                    </Form.Select>
                     <Form.Label htmlFor="id_superior">superior</Form.Label>
                     <Form.Select
                         aria-label="Default select example"

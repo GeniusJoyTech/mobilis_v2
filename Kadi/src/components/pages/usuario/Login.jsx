@@ -3,6 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import getAuthToken from '../../../utils/authorization';
 import TrocaSenha from './TrocaSenha';
+import backUrl from '../../../../config'
 
 const Login = () => {
   const [log, setLog] = useState(true);
@@ -37,7 +38,7 @@ const Log = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    await fetch('https://localhost:5000/Login', {
+    await fetch(backUrl+'Login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

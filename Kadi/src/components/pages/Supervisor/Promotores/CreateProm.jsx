@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import buscarCEP from '../../../../utils/buscaCep'
 import h_api from "../../../../hook/HApi";
-
+import backUrl from '../../../../../config'
 export default function CreatePromotores({ open, close, url }) {
     const [send, setSend] = useState({}); // Inicialize send como um objeto vazio
     const handleInputChange = (e) => {
@@ -21,7 +21,7 @@ export default function CreatePromotores({ open, close, url }) {
         async function getSup() {
             const reqSup = {
                 method: 'GET',
-                url: 'https://192.168.0.100:5000/sup/sup/ver',
+                url: backUrl+'sup/sup/ver',
             };
 
             await h_api(reqSup, setSup);

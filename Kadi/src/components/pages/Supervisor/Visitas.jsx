@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import h_api from "../../../hook/HApi";
 import Dropdown from 'react-bootstrap/Dropdown';
-
+import backUrl from '../../../../config'
 export default function Visitas() {
     const [prom, setProm] = useState([]);
     const [visP, setVisP] = useState([]);
@@ -9,11 +9,11 @@ export default function Visitas() {
 
     const reqFuncs = {
         method: "GET",
-        url: 'https://localhost:5000/sup/promotor/ver',
+        url: backUrl+'sup/promotor/ver',
     };
     const reqVisP = {
         method: "POST",
-        url: 'https://localhost:5000/sup/pro/visitas/ver',
+        url: backUrl+'sup/pro/visitas/ver',
         body: selectedPromotor,
     };
     const reqApiPro = async () => {

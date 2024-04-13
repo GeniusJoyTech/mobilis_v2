@@ -1,5 +1,5 @@
 import Crud from "./CrudFunc";
-import { backUrl } from "../../../../../config";
+import backUrl  from "../../../../../config";
 export default function Funcionarios() {
 
     

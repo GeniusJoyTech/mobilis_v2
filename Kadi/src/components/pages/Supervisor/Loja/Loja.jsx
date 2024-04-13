@@ -1,5 +1,5 @@
 import Crud from "./CrudLoja"
-
+import backUrl from '../../../../../config'
 export default function Loja() {
 
     
@@ -13,10 +13,10 @@ export default function Loja() {
     ];
 
     const url = {
-        ver: 'https://localhost:5000/sup/mercado/ver',
-        editar: 'https://localhost:5000/sup/mercado/editar',
-        deletar: 'https://localhost:5000/sup/mercado/deletar',
-        incluir: 'https://localhost:5000/sup/mercado/incluir',
+        ver: backUrl+'sup/mercado/ver',
+        editar: backUrl+'sup/mercado/editar',
+        deletar: backUrl+'sup/mercado/deletar',
+        incluir: backUrl+'sup/mercado/incluir',
     };
     
     return (

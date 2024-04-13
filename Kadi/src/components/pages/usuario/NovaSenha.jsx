@@ -1,6 +1,7 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import React, { useState } from 'react';
+import backUrl from '../../../../config'
 
 const NovaSenha = () => {
   const [token, setToken] = useState('');
@@ -8,7 +9,7 @@ const NovaSenha = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    await fetch('https://localhost:5000/nova/senha', {
+    await fetch(backUrl+'nova/senha', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
