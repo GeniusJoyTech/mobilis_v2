@@ -1,13 +1,14 @@
 const Router = require('express');
+
 const router = Router();
-const jwt = require("jsonwebtoken");
 
 const bd = require('../../db/sql');
+
 const { pool, query: q } = bd;
 
 // -[X] Ver
 router.get('/ver', (req, res) => {
-    const query = "SELECT * FROM v_sup_vis;";
+    const query = "SELECT * FROM atividade;";
 
     q(query)
         .then(results => {
@@ -18,12 +19,10 @@ router.get('/ver', (req, res) => {
         });
 });
 // -[X] Incluir
-router.post('/incluir', async (req, res) => {
-    const token = req.header('Authorization');
-    const decoded = jwt.verify(token, 'segredo');
-    const { id_usuario, id_loja, id_atividade, diavisita, ciclo } = req.body;
-    const query = `INSERT INTO agenda (id_usuario, id_criador, id_loja, id_atividade, diavisita, ciclo) 
-    values (${id_usuario}, ${decoded.id_usuario}, ${id_loja}, ${id_atividade}, '${diavisita}', ${ciclo})`;
+router.post('/incluir', (req, res) => {
+    const { descricao, tipo, observacao } = req.body;
+    const query = `INSERT INTO atividade (descricao, tipo, observacao) 
+    VALUES ('${descricao}', '${tipo}', '${observacao}');`
 
     q(query)
         .then(results => {
@@ -31,21 +30,20 @@ router.post('/incluir', async (req, res) => {
         })
         .catch(err => {
             res.status(500).json({ error: 'Erro ao executar a consulta', details: err });
-            console.log(err);
         });
-});
-
+})
 // -[X] Editar
 router.post('/editar', (req, res) => {
-    const { id_agenda, id_atividade, id_loja, id_usuario, id_criador, ciclo, diavisita } = req.body;
-
+    const { id_atividade, descricao, tipo, observacao } = req.body;
     // Verifique se o id está presente nos parâmetros da solicitação
-    if (!id_agenda) {
+    if (!id_atividade) {
         return res.status(400).send('O campo id é obrigatório');
     }
 
-    const query = `UPDATE agenda SET id_atividade = ${id_atividade}, id_loja = ${id_loja}, id_usuario = ${id_usuario}, id_criador = ${id_criador}, ciclo = ${ciclo}, diavisita = '${diavisita}' WHERE id_agenda = ${id_agenda}`;
-    console.log(query);
+    const query = `UPDATE atividade
+                    SET descricao = '${descricao}', tipo = '${tipo}', observacao = '${observacao}'
+                    WHERE id_atividade = ${id_atividade}`;
+
     // Executar a query
     q(query)
         .then(results => {
@@ -57,26 +55,22 @@ router.post('/editar', (req, res) => {
         });
 });
 // -[X] Excluir
-router.post('/deletar', async (req, res) => {
-    const { id_agenda } = req.body;
+router.post('/deletar', (req, res) => {
 
-    // Verifique se o id está presente nos parâmetros da solicitação
-    if (!id_agenda) {
-        return res.status(400).send('O campo id é obrigatório');
+    const id = req.body.id_atividade;
+    if (!id) {
+        return res.status(400).send('Como você deletará o arquivo se não configurou?');
     }
-
-    const query = `DELETE from agenda where id_agenda = ${id_agenda}`;
-    console.log(query);
-    // Executar a query
+    const query = `DELETE FROM atividade  WHERE id_atividade = ${id}`;
     q(query)
         .then(results => {
             res.status(200).json(results);
         })
         .catch(err => {
             res.status(500).json({ error: 'Erro ao executar a consulta', details: err });
-            console.log(err);
+            console.log(err)
         });
-
 });
+
 
 module.exports = router;

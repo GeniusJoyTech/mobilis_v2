@@ -33,7 +33,7 @@ router.post('/func/incluir', (req, res) => {
 
     const { id_superior, status, nome, cracha, cep, numero, rua, cargo, cidade, email } = req.body;
     const query = `INSERT INTO usuario
-                    (id_superior, status, nome, cracha, cep, numero, rua, cargo, cidade, email)
+                    (id_superior, status, nome, cracha, cep, numero, rua, cargo, cidade, email, senha)
                     VALUES 
                     (
                         ${id_superior}, 

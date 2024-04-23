@@ -8,7 +8,7 @@ const { pool, query: q } = bd;
 
 // -[X] Ver
 router.get('/ver', (req, res) => {
-    const query = "SELECT * FROM v_promotores;";
+    const query = "SELECT nome, status, cargo, id_usuario, id_superior, superior cep, cidade rua, numero, cracha, email FROM v_promotores;";
 
     q(query)
         .then(results => {

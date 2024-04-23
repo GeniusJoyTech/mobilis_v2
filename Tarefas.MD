@@ -13,3 +13,34 @@
 - [] RF 12 - Inicio de visita.
 - [] RF 13 - Final de visita.
 - [] RF 14 - Justificar Falta.
+
+
+
+---
+
+-[X] Rever modelo conceitual e lógico. 
+
+-[X] Criar uma tabela atividades relacionada com os usuarios na qual demonstra as atividades.
+
+-[X] Incluir em cadastro de loja cep e integração com api para buscar o endereço e jogar no campo de endereço, criar campo numero, complemento, cidade, etc. Fraco/importante.
+
+-[X] Adicionar em superior um dropdown com os supervisores. Supervisor não precisa selecionar superior. Isso já é algo selecionado na base de dados.
+
+-[X] No cadastro do promotor validar status do promotor como ativo ou inativo. 
+
+-[] Se possível adicionar verificador de email e senha.
+
+---
+
+-[X] Refatorar Administrador.
+
+---
+-[] Refatorar Supervisor.
+-[] Adicionar filtros, como nome do promotor, nome da loja, atividade, etc.
+-[] Falta finalizar agenda 
+-[X] Adicionar crud de atividades
+-[] Remover drop de superior na visão do superior
+-[] Atualizar Gui de visitas 
+
+-[] Refatorar Promotor.
+-[] Adicionar um histórico para promotor.

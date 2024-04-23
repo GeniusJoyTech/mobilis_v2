@@ -30,7 +30,7 @@ export default function UpdatePromotores({ open, close, data, url }) {
         async function getSup() {
             const reqSup = {
                 method: 'GET',
-                url: backUrl+'sup/sup/ver',
+                url: backUrl+'sup/promotor/sup/ver',
             };
 
             await h_api(reqSup, setSup);

@@ -8,7 +8,7 @@ const { query: q } = bd;
 // -[X] RF 10 - Foto
 router.post('/foto/incluir', (req, res) => {
     const { dia, foto, id_usu, loja, endereco, atividade } = req.body;
-    const query = `INSERT INTO db_foto (data, foto, fk_usu, fk_exe_tem) VALUES ('${dia}', '${foto}', ${id_usu}, (select pk_exe from db_execucao_tem where fk_loja = (select id_loja from db_loja where endereco = '${endereco}' and loja = '${loja}') and fk_atividade = ${atividade}));`
+    const query = `INSERT INTO foto (data, foto, fk_usu, fk_exe_tem) VALUES ('${dia}', '${foto}', ${id_usu}, (select pk_exe from db_execucao_tem where fk_loja = (select id_loja from db_loja where endereco = '${endereco}' and loja = '${loja}') and fk_atividade = ${atividade}));`
 
     q(query)
         .then(results => {

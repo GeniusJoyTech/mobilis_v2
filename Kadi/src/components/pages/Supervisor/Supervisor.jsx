@@ -1,23 +1,26 @@
 import { Navbar, Nav } from "react-bootstrap";
 
-import Roteiro from "./Roteiro";
+import Roteiro from "./Roteiro/Roteiro"
 import Promotores from "./Promotores/Promotores";
 import Loja from "./Loja/Loja";
 import Visitas from "./Visitas";
+import Atividades from "./Atividades/Atividades";
 import Logout from "../usuario/Logout";
 import { useState } from "react";
 
 export default function Supervisor() {
-    const [rot, setRot] = useState(false);
+    const [rot, setRot] = useState(true);
     const [prom, setProm] = useState(false);
-    const [lj, setLj] = useState(true);
+    const [lj, setLj] = useState(false);
     const [vis, setVis] = useState(false);
+    const [atv, setAtv] = useState(false);
     
     const handleRot = () =>{
         setRot(true);
         setProm(false);
         setLj(false);
         setVis(false);
+        setAtv(false);
         
     }
     const handleProm = () =>{
@@ -25,6 +28,7 @@ export default function Supervisor() {
         setProm(true);
         setLj(false);
         setVis(false);
+        setAtv(false);
         
     }
     const handleLj = () =>{
@@ -32,6 +36,7 @@ export default function Supervisor() {
         setProm(false);
         setLj(true);
         setVis(false);
+        setAtv(false);
         
     }
     const handleVis = () =>{
@@ -39,6 +44,15 @@ export default function Supervisor() {
         setProm(false);
         setLj(false);
         setVis(true);
+        setAtv(false);
+        
+    }
+    const handleAtv = () =>{
+        setRot(false);
+        setProm(false);
+        setLj(false);
+        setVis(false);
+        setAtv(true);
         
     }
     return (
@@ -52,6 +66,7 @@ export default function Supervisor() {
                             <Nav.Link onClick={handleProm}>Promotores</Nav.Link>
                             <Nav.Link onClick={handleLj}>Loja</Nav.Link>
                             <Nav.Link onClick={handleVis}>Visitas</Nav.Link>
+                            <Nav.Link onClick={handleAtv}>Atividades</Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
                     
@@ -61,5 +76,6 @@ export default function Supervisor() {
             {prom && <Promotores />}
             {lj && <Loja />}
             {vis && <Visitas />}
+            {atv && <Atividades />}
         </>);
 }
