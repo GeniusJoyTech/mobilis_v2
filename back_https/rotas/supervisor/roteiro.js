@@ -7,11 +7,12 @@ const { pool, query: q } = bd;
 
 // -[X] Ver
 router.get('/ver', (req, res) => {
-    const query = "SELECT * FROM v_sup_vis;";
+    const query = "SELECT id_agenda, id_usuario, nome, id_criador, roteirista, id_loja, loja, rua, numero, id_atividade, descricao, observacao, tipo, ciclo, diavisita FROM v_sup_vis;";
 
     q(query)
         .then(results => {
             res.status(200).json(results);
+            
         })
         .catch(err => {
             res.status(500).json({ error: 'Erro ao executar a consulta', details: err });
@@ -23,8 +24,8 @@ router.post('/incluir', async (req, res) => {
     const decoded = jwt.verify(token, 'segredo');
     const { id_usuario, id_loja, id_atividade, diavisita, ciclo } = req.body;
     const query = `INSERT INTO agenda (id_usuario, id_criador, id_loja, id_atividade, diavisita, ciclo) 
-    values (${id_usuario}, ${decoded.id_usuario}, ${id_loja}, ${id_atividade}, '${diavisita}', ${ciclo})`;
-
+    values (${id_usuario}, ${decoded.id_usuario}, ${id_loja}, ${id_atividade},'${diavisita}', ${ciclo})`;
+    console.log(query);
     q(query)
         .then(results => {
             res.status(200).json(results);

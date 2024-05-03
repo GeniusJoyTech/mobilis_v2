@@ -2,10 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import h_api from '../../../hook/HApi';
 
+import backUrl from '../../../../config.js';
+
 const Fotos = ({ data, toggleCamera, send, pk_atv }) => {
   const [photo, setPhoto] = useState(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
-  const url = 'https://localhost:5000/pro/foto/incluir';
+  const [facingMode, setFacingMode] = useState('environment'); // 'user' for front camera, 'environment' for back camera
+  const url = backUrl + 'pro/foto/incluir';
 
   useEffect(() => {
     if (photo) {
@@ -22,8 +25,12 @@ const Fotos = ({ data, toggleCamera, send, pk_atv }) => {
     }
   };
 
+  const switchCamera = () => {
+    setFacingMode((prevMode) => (prevMode === 'user' ? 'environment' : 'user'));
+  };
+
   const capturePhoto = async () => {
-    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+    const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode } });
     const video = document.createElement('video');
     video.srcObject = stream;
 
@@ -83,15 +90,15 @@ const Fotos = ({ data, toggleCamera, send, pk_atv }) => {
     const MAX_WIDTH = 800;
     const MAX_HEIGHT = 600;
     const QUALITY = 0.7;
-  
+
     const img = new Image();
     img.src = imageData;
-  
+
     return new Promise((resolve, reject) => {
       img.onload = () => {
         let width = img.width;
         let height = img.height;
-  
+
         if (width > height) {
           if (width > MAX_WIDTH) {
             height *= MAX_WIDTH / width;
@@ -103,24 +110,23 @@ const Fotos = ({ data, toggleCamera, send, pk_atv }) => {
             height = MAX_HEIGHT;
           }
         }
-  
+
         const canvas = document.createElement('canvas');
         canvas.width = width;
         canvas.height = height;
-  
+
         const ctx = canvas.getContext('2d');
         ctx.drawImage(img, 0, 0, width, height);
-  
+
         const resizedImageData = canvas.toDataURL('image/jpeg', QUALITY);
         resolve(resizedImageData);
       };
-  
+
       img.onerror = (error) => {
         reject(error);
       };
     });
   };
-  
 
   return (
     <div>
@@ -133,7 +139,18 @@ const Fotos = ({ data, toggleCamera, send, pk_atv }) => {
             muted
             ref={(video) => {
               if (video && !video.srcObject) {
-                navigator.mediaDevices.getUserMedia({ video: true })
+                navigator.mediaDevices.getUserMedia({ video: { facingMode } })
+                  .then(stream => {
+                    video.srcObject = stream;
+                  })
+                  .catch(error => {
+                    console.error('Error accessing the camera:', error);
+                  });
+              } else if (video && video.srcObject && video.srcObject.getVideoTracks().length > 0) {
+                video.srcObject.getVideoTracks().forEach(track => {
+                  track.stop();
+                });
+                navigator.mediaDevices.getUserMedia({ video: { facingMode } })
                   .then(stream => {
                     video.srcObject = stream;
                   })
@@ -144,7 +161,8 @@ const Fotos = ({ data, toggleCamera, send, pk_atv }) => {
             }}
           />
           <Button onClick={handleCapture} style={{ position: 'absolute', bottom: '20px', left: '50%', transform: 'translateX(-50%)', zIndex: 1 }}>Tirar Foto</Button>
-          <Button onClick={toggleCamera} style={{ position: 'absolute', top: '20px', right: '20px', zIndex: 1 }}>Fechar Câmera</Button>
+          <Button onClick={switchCamera} style={{ position: 'absolute', top: '20px', right: '20px', zIndex: 1 }}>Trocar Câmera</Button>
+          <Button onClick={toggleCamera} style={{ position: 'absolute', top: '20px', left: '20px', zIndex: 1 }}>Fechar Câmera</Button>
         </div>
       )}
       {photo && (

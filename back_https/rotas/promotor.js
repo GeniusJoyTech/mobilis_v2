@@ -1,23 +1,48 @@
 const Router = require('express');
 const router = Router();
-
+const pako = require('pako');
 const bd = require('../db/sql');
 
+
+const jwt = require("jsonwebtoken");
 const { query: q } = bd;
 
-// -[X] RF 10 - Foto
-router.post('/foto/incluir', (req, res) => {
-    const { dia, foto, id_usu, loja, endereco, atividade } = req.body;
-    const query = `INSERT INTO foto (data, foto, fk_usu, fk_exe_tem) VALUES ('${dia}', '${foto}', ${id_usu}, (select pk_exe from db_execucao_tem where fk_loja = (select id_loja from db_loja where endereco = '${endereco}' and loja = '${loja}') and fk_atividade = ${atividade}));`
+const { query, beginTransaction, commitTransaction, rollbackTransaction } = require('../db/sqlPromise');
 
-    q(query)
-        .then(results => {
-            res.status(200).json(results);
-        })
-        .catch(err => {
-            res.status(500).json({ error: 'Erro ao executar a consulta', details: err });
-            
-        });
+
+
+// -[X] RF 10 - Foto
+router.post('/foto/incluir', async (req, res) => {
+    try {
+        const { id_usuario, id_agenda, observacao, foto, datahora } = req.body;
+
+        // Inicia uma transação
+        let connection;
+        try {
+            connection = await beginTransaction();
+
+            // Primeira inserção na tabela `servico`
+            const results1 = await query("INSERT INTO `servico` (`id_usuario`, `id_agenda`, `datahora`) VALUES (?, ?, ?)", [id_usuario, id_agenda, datahora], connection);
+
+            // Segunda inserção na tabela `foto`
+            const results2 = await query("INSERT INTO `foto` (`id_servico`, `observacao`, `foto`, `data`) VALUES (?, ?, ?, current_timestamp())", [results1.insertId, observacao, foto], connection);
+
+            // Comita a transação
+            await commitTransaction(connection);
+
+            res.status(200).send('Inserções concluídas com sucesso.');
+        } catch (error) {
+            // Reverte a transação em caso de erro
+            if (connection) {
+                await rollbackTransaction(connection);
+            }
+            console.error('Erro ao inserir dados:', error);
+            res.status(500).send('Erro ao inserir dados.');
+        }
+    } catch (error) {
+        console.error('Erro ao inserir dados:', error);
+        res.status(500).send('Erro ao inserir dados.');
+    }
 });
 
 
@@ -27,12 +52,15 @@ router.post('/foto/incluir/teste', (req, res) => {
     console.log("teste");
 });
 
-// -[X] RF 11 - Atendimento de roteiro - não testado
+// -[X] RF 11 - Atendimento de roteiro
 router.post('/roteiro/ver', (req, res) => {
-    const cracha = req.body.cracha;
-    console.log(req);
-    const query = `SELECT * FROM v_vis_pro where cracha = "${cracha}";`;
-    console.log(query);
+    const { date } = req.body
+    const token = req.header('Authorization');
+    const decoded = jwt.verify(token, 'segredo');
+    const id_usuario = decoded.id_usuario;
+    const query = `
+    SELECT * FROM v_visitas where (ciclo <> 0 and id_usuario = ${id_usuario} and DATEDIFF('${date}', diavisita) % (ciclo * 7) = 0 or '${date}' = diavisita and id_usuario = ${id_usuario});
+    `;
     q(query)
         .then(results => {
             res.status(200).json(results);
@@ -42,31 +70,63 @@ router.post('/roteiro/ver', (req, res) => {
             res.status(500).json({ error: 'Erro ao executar a consulta', details: err });
         });
 });
-router.get('/roteiro/ver', (req, res) => {
-    const query = `SELECT * FROM v_vis_pro;`;
-    q(query)
-        .then(results => {
-            res.status(200).json(results);
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({ error: 'Erro ao executar a consulta', details: err });
-        });
-});
+
 // -[X] RF 12 - Início de visita - feito em foto
 // -[X] RF 13 - Final de visita - feito em foto
 // -[X] RF 14 - Justificar Falta
-router.post('/justificativa/incluir', (req, res) => {
-    const { data, foto, observacao, fk_usu, fk_exe_tem } = req.body;
-    const query = `INSERT INTO db_foto (data, foto, observacao, fk_usu, fk_exe_tem) VALUES ('${data}', '${foto}', '${observacao}', ${fk_usu}, ${fk_exe_tem});`
+router.post('/justificativa/incluir', async (req, res) => {
+    try {
+        const token = req.header('Authorization');
+        const decoded = jwt.verify(token, 'segredo');
+        const id_usuario = decoded.id_usuario;
+        // const dadosDescompactados = pako.ungzip(req.body, { to: 'string' });
+        const { observacao, foto, datahora, id_loja } = req.body;
+        let id_agenda = 0;
+        const qry = `SELECT id_agenda FROM agenda where id_loja = ${id_loja} and id_usuario = ${id_usuario} and id_atividade = 2;`;
+        await q(qry)
+            .then(results => {
+                id_agenda = results[0].id_agenda;
 
-    q(query)
-        .then(results => {
-            res.status(200).json(results);
-        })
-        .catch(err => {
-            res.status(500).json({ error: 'Erro ao executar a consulta', details: err });
-        });
+                if (id_agenda == 0) {
+                    res.status(404).send('Verifique suas as informações enviadas.');
+                    return
+                }
+                return
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(500).json({ error: 'Erro ao executar a consulta', details: err });
+                return;
+            });
+
+        // Inicia uma transação
+        let connection;
+        try {
+            connection = await beginTransaction();
+
+            // Primeira inserção na tabela `servico`
+            const results1 = await query("INSERT INTO `servico` (`id_usuario`, `id_agenda`, `datahora`) VALUES (?, ?, ?)", [id_usuario, id_agenda, datahora], connection);
+
+            // Segunda inserção na tabela `foto`
+            const results2 = await query("INSERT INTO `foto` (`id_servico`, `observacao`, `foto`, `data`) VALUES (?, ?, ?, ?)", [results1.insertId, observacao, foto, datahora], connection);
+
+            // Comita a transação
+            await commitTransaction(connection);
+
+            res.status(200).send({ message: 'Inserções concluídas com sucesso.' });
+
+        } catch (error) {
+            // Reverte a transação em caso de erro
+            if (connection) {
+                await rollbackTransaction(connection);
+            }
+            console.error('Erro ao inserir dados:', error);
+            res.status(500).send('Erro ao inserir dados.');
+        }
+    } catch (error) {
+        console.error('Erro ao inserir dados:', error);
+        res.status(500).send('Erro ao inserir dados.');
+    }
 });
 
 module.exports = router;

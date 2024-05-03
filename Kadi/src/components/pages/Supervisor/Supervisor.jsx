@@ -9,10 +9,10 @@ import Logout from "../usuario/Logout";
 import { useState } from "react";
 
 export default function Supervisor() {
-    const [rot, setRot] = useState(true);
+    const [rot, setRot] = useState(false);
     const [prom, setProm] = useState(false);
     const [lj, setLj] = useState(false);
-    const [vis, setVis] = useState(false);
+    const [vis, setVis] = useState(true);
     const [atv, setAtv] = useState(false);
     
     const handleRot = () =>{

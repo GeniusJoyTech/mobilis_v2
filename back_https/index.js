@@ -12,6 +12,23 @@ const Administrador = require('./rotas/administrador.js');
 const app = express();
 const PORT = 5000;
 
+
+
+
+
+// Configurar o cors com um limite de tamanho do payload
+app.use(cors({
+  maxBodyLength: 5 * 1024 * 1024 // 50 MB (em bytes)
+}));
+
+// Outros middlewares
+app.use(express.json({ limit: '5mb' }));
+app.use(express.urlencoded({ limit: '5mb', extended: true }));
+
+
+
+
+
 const privateKey = fs.readFileSync('mobilis_b-privateKey.key');
 const certificate = fs.readFileSync('mobilis_b.crt');
 

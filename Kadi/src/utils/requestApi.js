@@ -9,7 +9,6 @@ const requestApi = (data) => {
   if (data.body) {
     requestOptions.body = JSON.stringify(data.body);
   }
-
   return fetch(data.url, requestOptions)
     .then(response => {
       if (response.status === 401) {

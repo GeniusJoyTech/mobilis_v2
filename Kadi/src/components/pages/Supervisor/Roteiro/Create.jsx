@@ -1,12 +1,12 @@
 import { useState } from "react";
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
-import Selects from "./details/Selects";
+import Selects from "../../../crud/details/Selects";
 import Form from 'react-bootstrap/Form';
 
 import h_api from '../../../../hook/HApi';
 
-export default function UpdateDelete({open, close, exibir, dropItens, url }) {
+export default function UpdateDelete({ open, close, exibir, dropItens, url }) {
     const [send, setSend] = useState({}); // Inicialize send como um objeto vazio
 
     const handleInputChange = (e) => {
@@ -23,7 +23,7 @@ export default function UpdateDelete({open, close, exibir, dropItens, url }) {
         if (!selectedItem) return; // Sai da função se o item não for encontrado
 
         // Atualiza o estado send com base no item selecionado
-        const updatedSend = { ...send };        
+        const updatedSend = { ...send };
         const value_list = value.split(',');
         let objeto = {};
 
@@ -37,9 +37,9 @@ export default function UpdateDelete({open, close, exibir, dropItens, url }) {
         const updatedState = { ...updatedSend, ...objeto };
         setSend(updatedState);
     };
- 
 
-    const handleSubmit = async(e) => {
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
         // Aqui você pode enviar o objeto `send` para atualizar/editar na base de dados
         await h_api({ method: 'POST', url: url, body: send });
@@ -57,7 +57,7 @@ export default function UpdateDelete({open, close, exibir, dropItens, url }) {
                     {/* Incorporando os selects */}
                     {dropItens && <Selects dropItens={Object.values(dropItens)} handleSelectChange={handleSelectChange} />}
                     {/* Inputs para outros dados */}
-                    {exibir.map((atribute, index) => (
+                    {/* {exibir.map((atribute, index) => (
                         <div key={index}>
                             <Form.Label htmlFor={atribute}>{atribute}</Form.Label>
                             <Form.Control
@@ -67,7 +67,21 @@ export default function UpdateDelete({open, close, exibir, dropItens, url }) {
                                 onChange={handleInputChange}
                             />
                         </div>
-                    ))}
+                    ))} */}
+                    <Form.Label htmlFor={'ciclo'}>ciclo</Form.Label>
+                    <Form.Control
+                        type="number"
+                        id='ciclo'
+                        name='ciclo'
+                        onChange={handleInputChange}
+                    />
+                    <Form.Label htmlFor={'diavisita'}>diavisita</Form.Label>
+                    <Form.Control
+                        type="date"
+                        id='diavisita'
+                        name='diavisita'
+                        onChange={handleInputChange}
+                    />
                 </form>
             </Modal.Body>
             <Modal.Footer>

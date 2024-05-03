@@ -7,7 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 //Usuario
 import Login from './components/pages/Usuario/Login.jsx';
 //Promotor
-import Promotor from './components/pages/Promotor/Promotor.jsx'
+import Promotor from './components/pages/Promotor2/Promotor.jsx'
 //supervisor
 import Supervisor from './components/pages/Supervisor/Supervisor.jsx';
 //Administrador ou RH

@@ -3,12 +3,14 @@ import h_api from "../../../hook/HApi";
 
 import Lojas from './Lojas.jsx'
 
+import backUrl from '../../../../config.js'
+
 import { DateControls } from "../../crud/details/Data.jsx";
 export default function Promotor() {
     const [intervalo, setIntervalo] = useState({});
     const [proLojas, setProLojas] = useState([])
     const [loading, setLoading] = useState(false);
-    const url = 'https://localhost:5000/pro/roteiro/ver';
+    const url = backUrl+'pro/roteiro/ver';
     const reqPL = {
         method: 'POST',
         url: url,
