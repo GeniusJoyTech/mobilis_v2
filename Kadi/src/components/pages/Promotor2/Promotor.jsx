@@ -2,7 +2,7 @@ import { Navbar, Nav } from "react-bootstrap";
 import { useState } from "react";
 
 import Roteiro from "./Tarefas/Roteiro";
-import AdcLoja from "./Tarefas/AdicionarLoja";
+import AdcLoja from "./Tarefas/Camera";
 //import Atividade from "./Tarefas/Atividades";
 
 import Logout from "../usuario/Logout";
@@ -18,6 +18,7 @@ export default function Supervisor() {
         setAdcLoja(false);        
      }
      const handleAdcLoja = () =>{
+        setRoteiro(false);
         setAdcLoja(true);     
      }
     return (

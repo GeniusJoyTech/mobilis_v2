@@ -11,8 +11,6 @@ export default function Roteiro() {
         { row: "loja", type: "check" },
         { row: "rua", type: "check" },
         { row: "numero", type: "check" },
-        { row: "descricao", type: "check" },
-        { row: "tipo", type: "check" },
         { row: "ciclo", type: "form" },
         { row: "diavisita", type: "form", t: 'date' },
     ];
@@ -20,7 +18,6 @@ export default function Roteiro() {
     const [promotores, setPromotores] = useState([]);
     const [loja, setLoja] = useState([]);
     const [drop, setDrop] = useState([]);
-    const [atv, setAtv] = useState([]);
 
     const url = {
         ver: backUrl+'sup/roteiro/ver',
@@ -37,14 +34,9 @@ export default function Roteiro() {
         method: 'GET',
         url: backUrl+'sup/mercado/ver',
     };
-    const reqAtv = {
-        method: 'GET',
-        url: backUrl+'sup/atv/ver',
-    };
 
     useEffect(() => {
         const req = async () => {
-            await h_api(reqAtv, setAtv);
             await h_api(reqProm, setPromotores);
             await h_api(reqLoja, setLoja);
         };
@@ -52,7 +44,7 @@ export default function Roteiro() {
     }, []);
 
 useEffect(()=>{
-    setDrop([{ funcionario: promotores }, { loja: loja }, { atividade: atv }])
+    setDrop([{ funcionario: promotores }, { loja: loja }])
 },[promotores, loja])
     return (
         <>

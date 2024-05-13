@@ -1,6 +1,5 @@
 const Router = require('express');
 const router = Router();
-const pako = require('pako');
 const bd = require('../db/sql');
 
 
@@ -13,8 +12,11 @@ const { query, beginTransaction, commitTransaction, rollbackTransaction } = requ
 
 // -[X] RF 10 - Foto
 router.post('/foto/incluir', async (req, res) => {
+    const token = req.header('Authorization');
+    const decoded = jwt.verify(token, 'segredo');
+    const id_usuario = decoded.id_usuario;
     try {
-        const { id_usuario, id_agenda, observacao, foto, datahora } = req.body;
+        const { id_agenda, id_atividade, observacao, foto, datahora } = req.body;
 
         // Inicia uma transação
         let connection;
@@ -22,7 +24,7 @@ router.post('/foto/incluir', async (req, res) => {
             connection = await beginTransaction();
 
             // Primeira inserção na tabela `servico`
-            const results1 = await query("INSERT INTO `servico` (`id_usuario`, `id_agenda`, `datahora`) VALUES (?, ?, ?)", [id_usuario, id_agenda, datahora], connection);
+            const results1 = await query("INSERT INTO `servico` (`id_usuario`, `id_agenda`, `id_atividade`, `datahora`) VALUES (?, ?, ?, ?)", [id_usuario, id_agenda, id_atividade, datahora], connection);
 
             // Segunda inserção na tabela `foto`
             const results2 = await query("INSERT INTO `foto` (`id_servico`, `observacao`, `foto`, `data`) VALUES (?, ?, ?, current_timestamp())", [results1.insertId, observacao, foto], connection);
@@ -30,7 +32,7 @@ router.post('/foto/incluir', async (req, res) => {
             // Comita a transação
             await commitTransaction(connection);
 
-            res.status(200).send('Inserções concluídas com sucesso.');
+            res.status(200).send({message: 'Inserções concluídas com sucesso.'});
         } catch (error) {
             // Reverte a transação em caso de erro
             if (connection) {
@@ -59,7 +61,11 @@ router.post('/roteiro/ver', (req, res) => {
     const decoded = jwt.verify(token, 'segredo');
     const id_usuario = decoded.id_usuario;
     const query = `
-    SELECT * FROM v_visitas where (ciclo <> 0 and id_usuario = ${id_usuario} and DATEDIFF('${date}', diavisita) % (ciclo * 7) = 0 or '${date}' = diavisita and id_usuario = ${id_usuario});
+    SELECT * FROM v_visitas where 
+    (ciclo <> 0 and id_usuario = ${id_usuario} and
+        DATEDIFF('${date}', diavisita) % (ciclo * 7) = 0
+            or
+        '${date}' = diavisita and id_usuario = ${id_usuario});
     `;
     q(query)
         .then(results => {
@@ -79,19 +85,18 @@ router.post('/justificativa/incluir', async (req, res) => {
         const token = req.header('Authorization');
         const decoded = jwt.verify(token, 'segredo');
         const id_usuario = decoded.id_usuario;
-        // const dadosDescompactados = pako.ungzip(req.body, { to: 'string' });
         const { observacao, foto, datahora, id_loja } = req.body;
         let id_agenda = 0;
-        const qry = `SELECT id_agenda FROM agenda where id_loja = ${id_loja} and id_usuario = ${id_usuario} and id_atividade = 2;`;
+        const qry = `SELECT id_agenda FROM agenda where id_loja = ${id_loja} and id_usuario = ${id_usuario};`;
         await q(qry)
             .then(results => {
                 id_agenda = results[0].id_agenda;
 
                 if (id_agenda == 0) {
                     res.status(404).send('Verifique suas as informações enviadas.');
-                    return
+                    return;
                 }
-                return
+                return;
             })
             .catch(err => {
                 console.log(err);

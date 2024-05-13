@@ -14,7 +14,7 @@ export default function Promotor() {
     const reqPL = {
         method: 'POST',
         url: url,
-        body: { cracha: 'P02' },
+        body: { cracha: 'P02', date: '2024-05-03' },
     }
     const reqProLoja = async () => {
         setLoading(true);
