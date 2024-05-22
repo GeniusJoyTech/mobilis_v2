@@ -13,7 +13,6 @@ const Login = () => {
       <Fundo
         x={
           <>
-          <div>Teste</div>
             {log && <Log />}
             {troca && <TrocaSenha/>}
           </>

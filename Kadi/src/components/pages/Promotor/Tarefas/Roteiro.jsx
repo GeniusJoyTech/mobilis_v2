@@ -12,7 +12,8 @@ import h_api from "../../../../hook/HApi";
 
 
 export default function Roteiro({ setId_loja }) {
-    const hoje = new Date().toLocaleDateString('en-CA');
+    const hoje = new Date().toLocaleDateString('en-Ca');
+    console.log(hoje)
     const [date, setDate] = useState(hoje);
 
     const [lojasPendentes, setPendentes] = useState(null);

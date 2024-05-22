@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 
-export default function Read({ open, exibir, data, Update, Delete }) {
+import h_api from "../../hook/HApi";
+
+export default function Read({ open, exibir, data, url }) {
     const [page, setPage] = useState(1);
     const itemsPerPage = 10;
     const row = exibir.map((item) => item.row);
@@ -16,7 +18,17 @@ export default function Read({ open, exibir, data, Update, Delete }) {
     const handleClickNext = () => {
         setPage((prevPage) => Math.min(prevPage + 1, totalPages));
     };
+    const adcLoja = async(item)=>{
+        const body = {...item, diavisita: new Date().toLocaleDateString('en-Ca')};
+        console.log(body)
+        const reqRot = {
+            method: 'post',
+            url: url.incluir,
+            body: body
+          };
+          await h_api(reqRot);
 
+    }
     const renderPagination = () => (
         <div>
             <Button onClick={handleClickPrevious} disabled={page === 1}>
@@ -52,9 +64,8 @@ export default function Read({ open, exibir, data, Update, Delete }) {
                                     <td key={index}>{item[propriedade]}</td>
                                 ))}
                                 <td style={{display:'flex', justifyContent:'space-around'}}> 
-                                    <Button style={{margin: '2px'}} onClick={() => Update(item)}>Atualizar</Button>
-                                    <Button variant="danger" onClick={() => Delete(item)}>Deletar</Button>
-                                </td>
+                                    <Button onClick={()=>{adcLoja(item)}} style={{margin: '2px'}} >Adicionar</Button>
+                                    </td>
                             </tr>
                         ))}
                     </tbody>

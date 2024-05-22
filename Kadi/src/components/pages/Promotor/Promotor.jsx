@@ -2,7 +2,7 @@ import { Navbar, Nav } from "react-bootstrap";
 import { useState, useEffect } from "react";
 
 import Roteiro from "./Tarefas/Roteiro";
-import AdcLoja from "./Tarefas/AdicionarLoja";
+import AdcLoja from "./loja/Loja";
 import Notificacao from "./Tarefas/Notificacao";
 import Logout from "../usuario/Logout";
 
@@ -16,19 +16,19 @@ export default function Supervisor() {
     const handleRoteiro = () =>{
         setShowRoteiro(true);    
         setShowNotificacao(false);    
-        setShowAdcLoja(false);    
+         setShowAdcLoja(false);    
                 
      }
-     const handleAdcLoja = () =>{
-        setShowRoteiro(false);
-        setShowNotificacao(false);
-        setShowAdcLoja(true);     
+      const handleAdcLoja = () =>{
+         setShowRoteiro(false);
+         setShowNotificacao(false);
+         setShowAdcLoja(true);     
           
-     }
+      }
      const handleNotificacao = () =>{
          setShowRoteiro(false);    
          setShowNotificacao(true);
-         setShowAdcLoja(false);    
+          setShowAdcLoja(false);    
               
       }
       useEffect(()=>{
@@ -42,7 +42,7 @@ export default function Supervisor() {
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav>
                              <Nav.Link onClick={handleRoteiro}>Roteiro</Nav.Link>
-                             <Nav.Link onClick={handleAdcLoja}>Adicionar Loja</Nav.Link>
+                             <Nav.Link onClick={handleAdcLoja}>Adicionar Loja</Nav.Link> 
                              <Nav.Link onClick={handleNotificacao}>Log do dia</Nav.Link> 
                         </Nav>
                     </Navbar.Collapse>
@@ -50,7 +50,7 @@ export default function Supervisor() {
                     <Logout/>
             </Navbar>
             {showRoteiro && <Roteiro setId_loja={setId_loja} />}
-            {showAdcLoja && <AdcLoja />}
+            {showAdcLoja && <AdcLoja />} 
             {showNotificacao && <Notificacao />}
         </>);
 }

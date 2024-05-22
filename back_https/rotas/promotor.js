@@ -59,7 +59,7 @@ router.post('/roteiro/pendentes', (req, res) => {
     SELECT * 
     FROM v_visitas v
     WHERE 
-        (v.ciclo <> 0 
+        ((v.ciclo <> 0 or v.ciclo = 0 and '${date}' = v.diavisita) 
         AND 
         (    DATEDIFF('${date}', v.diavisita) % (v.ciclo * 7) = 0 
             OR '${date}' = v.diavisita
@@ -69,7 +69,7 @@ router.post('/roteiro/pendentes', (req, res) => {
             SELECT 1 
             FROM servico s 
             WHERE s.id_agenda = v.id_agenda
-        );
+        ) ;
 
     `;
     q(query)
@@ -92,7 +92,7 @@ router.post('/roteiro/andamento', (req, res) => {
         
     SELECT * from v_visitas where id_agenda = (SELECT DISTINCT s1.id_agenda
         FROM servico s1
-        WHERE s1.id_atividade = 1
+        WHERE (s1.id_atividade = 1
           AND NOT EXISTS (
               SELECT 1
               FROM servico s2
@@ -100,7 +100,8 @@ router.post('/roteiro/andamento', (req, res) => {
                 AND s2.id_atividade = 2
           )
         )
-        and id_usuario = ${id_usuario} and date(diavisita) = '${date}'
+        and id_usuario = ${id_usuario} and date(diavisita) = '${date}')
+        
         
 
     `;
@@ -116,6 +117,7 @@ router.post('/roteiro/andamento', (req, res) => {
 
 router.post('/roteiro/concluida', (req, res) => {
     const { date } = req.body
+    console.log(date);
     const token = req.header('Authorization');
     const decoded = jwt.verify(token, 'segredo');
     const id_usuario = decoded.id_usuario;
@@ -126,10 +128,10 @@ router.post('/roteiro/concluida', (req, res) => {
             SELECT DISTINCT s1.id_agenda
             FROM servico s1
             INNER JOIN servico s2 ON s1.id_agenda = s2.id_agenda
-            WHERE s1.id_atividade = 1
-            AND s2.id_atividade = 2
+            WHERE s2.id_atividade = 2 and
+            date(diavisita) = '${date}'
         )
-        and id_usuario = ${id_usuario} and date(diavisita) = '${date}'
+        and id_usuario = ${id_usuario}
     `;
     q(query)
         .then(results => {
@@ -213,5 +215,41 @@ router.post('/log', (req, res) => {
             res.status(500).json({ error: 'Erro ao executar a consulta', details: err });
         });
 });
+
+//Adicionar Lojas
+//Ver Lojas
+router.get('/mercado/ver', (req, res) => {
+    const query = "SELECT * FROM loja;";
+
+    q(query)
+        .then(results => {
+            res.status(200).json(results);
+        })
+        .catch(err => {
+            res.status(500).json({ error: 'Erro ao executar a consulta', details: err });
+        });
+});
+//Adicionar Loja
+router.post('/mercado/incluir', (req, res) => {
+    const { id_loja, diavisita } = req.body;
+    const token = req.header('Authorization');
+    const decoded = jwt.verify(token, 'segredo');
+    const id_usuario = decoded.id_usuario;
+    const query = `
+    
+    INSERT INTO agenda (id_agenda, id_loja, ciclo, diavisita, id_usuario, id_criador) 
+    VALUES (NULL, ${id_loja}, 0, '${diavisita}', '${id_usuario}', '${id_usuario}');
+
+    `
+    console.log(query);
+    q(query)
+        .then(results => {
+            res.status(200).json(results);
+        })
+        .catch(err => {
+            res.status(500).json({ error: 'Erro ao executar a consulta', details: err });
+            console.log(err);
+        });
+})
 
 module.exports = router;
