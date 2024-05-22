@@ -33,9 +33,9 @@ const query = async (sql, values, connection) => {
         }
 
         const result = await promisify(connection.query).call(connection, sql, values);
+        console.log('sql:', sql, 'resultado', result)
         return result;
     } catch (error) {
-        //console.log(error);
         throw error;
     }
 };

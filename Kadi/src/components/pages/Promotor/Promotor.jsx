@@ -1,47 +1,56 @@
-import { useEffect, useState } from "react";
-import h_api from "../../../hook/HApi";
+import { Navbar, Nav } from "react-bootstrap";
+import { useState, useEffect } from "react";
 
-import Lojas from './Lojas.jsx'
+import Roteiro from "./Tarefas/Roteiro";
+import AdcLoja from "./Tarefas/AdicionarLoja";
+import Notificacao from "./Tarefas/Notificacao";
+import Logout from "../usuario/Logout";
 
-import backUrl from '../../../../config.js'
 
-import { DateControls } from "../../crud/details/Data.jsx";
-export default function Promotor() {
-    const [intervalo, setIntervalo] = useState({});
-    const [proLojas, setProLojas] = useState([])
-    const [loading, setLoading] = useState(false);
-    const url = backUrl+'pro/roteiro/ver';
-    const reqPL = {
-        method: 'POST',
-        url: url,
-        body: { cracha: 'P02', date: '2024-05-03' },
-    }
-    const reqProLoja = async () => {
-        setLoading(true);
-        await h_api(reqPL, setProLojas);
-        setLoading(false);
-    };
-    useEffect(() => {
-        reqProLoja();
-    }, [url]);
-    console.log(proLojas);
-    const handleIntervaloChange = (novoIntervalo) => {
-        setIntervalo(novoIntervalo);
-    };
-        return (
+export default function Supervisor() {
+    const [showRoteiro, setShowRoteiro] = useState(true);
+    const [showAdcLoja, setShowAdcLoja] = useState(false);
+    const [showNotificacao, setShowNotificacao] = useState(false);
+    const [id_loja, setId_loja] = useState(null);
+    
+    const handleRoteiro = () =>{
+        setShowRoteiro(true);    
+        setShowNotificacao(false);    
+        setShowAdcLoja(false);    
+                
+     }
+     const handleAdcLoja = () =>{
+        setShowRoteiro(false);
+        setShowNotificacao(false);
+        setShowAdcLoja(true);     
+          
+     }
+     const handleNotificacao = () =>{
+         setShowRoteiro(false);    
+         setShowNotificacao(true);
+         setShowAdcLoja(false);    
+              
+      }
+      useEffect(()=>{
+        console.log(id_loja);
+     }, [id_loja]);
+    return (
         <>
-            {
-                loading ? (
-
-                    <p>Carregando...</p>
-                )
-                    :
-                    <div style={{ border: '20px solid rgba(0,0,0,0)', borderRadius: '4px' }}>
-                        <DateControls onIntervaloChange={handleIntervaloChange} />
-                        
-                        <Lojas lojas={proLojas} />
-                    </div>
-            }
-        </>
-    );
+            <Navbar expand="lg" className="bg-body-tertiary justify-content-between" bg="primary" data-bs-theme="dark">
+                    <Navbar.Brand href="#home">Promotor</Navbar.Brand>
+                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                    <Navbar.Collapse id="basic-navbar-nav">
+                        <Nav>
+                             <Nav.Link onClick={handleRoteiro}>Roteiro</Nav.Link>
+                             <Nav.Link onClick={handleAdcLoja}>Adicionar Loja</Nav.Link>
+                             <Nav.Link onClick={handleNotificacao}>Log do dia</Nav.Link> 
+                        </Nav>
+                    </Navbar.Collapse>
+                    
+                    <Logout/>
+            </Navbar>
+            {showRoteiro && <Roteiro setId_loja={setId_loja} />}
+            {showAdcLoja && <AdcLoja />}
+            {showNotificacao && <Notificacao />}
+        </>);
 }

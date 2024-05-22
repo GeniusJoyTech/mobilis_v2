@@ -4,7 +4,7 @@ import { Accordion, Button, Form, Modal } from 'react-bootstrap/';
 import backUrl from '../../../../../config';
 import h_api from "../../../../hook/HApi";
 
-export default function Lojas({ id_agenda, loja, endereco, cep, mostrarCamera}) {
+export default function Lojas({ id_agenda, id_loja, loja, endereco, cep, mostrarCamera}) {
     const [showJust, setShowJust] = useState(false);
     const handleCloseJust = () => setShowJust(false);
     const handleShowJust = () => setShowJust(true);
@@ -23,14 +23,14 @@ export default function Lojas({ id_agenda, loja, endereco, cep, mostrarCamera}) 
                             <Button style={{ marginRight: '2px' }} onClick={handleShowJust}>
                                 Justificar
                             </Button>
-                            <Button onClick={()=>{mostrarCamera(id_agenda, 1)}}>
+                            <Button onClick={()=>{mostrarCamera(id_agenda, id_loja, 1)}}>
                                 Entrada
                             </Button>
                         </div>
                         <Justificativa
                             showJust={showJust}
                             handleClose={handleCloseJust}
-                            id_loja={id_agenda}
+                            id_agenda={id_agenda}
                         />
                     </Accordion.Body>
                 </Accordion.Item>
@@ -39,7 +39,7 @@ export default function Lojas({ id_agenda, loja, endereco, cep, mostrarCamera}) 
     );
 }
 
-function Justificativa({ showJust, handleClose, id_loja }) {
+function Justificativa({ showJust, handleClose, id_agenda }) {
     const [justificativa, setJustificativa] = useState('');
     const [imagemBase64, setImagemBase64] = useState('');
     const handleSave = async () => {
@@ -49,7 +49,8 @@ function Justificativa({ showJust, handleClose, id_loja }) {
             datahora: new Date(),
             foto: imagemBase64,
             observacao: justificativa,
-            id_loja: id_loja
+            id_agenda: id_agenda,
+            id_atividade: 2
         }
 
         const req = {
@@ -62,6 +63,7 @@ function Justificativa({ showJust, handleClose, id_loja }) {
 
         // Feche o modal
         handleClose();
+        location.reload(true);
     };
     const resizeImage = (file, maxWidth, maxHeight) => {
         return new Promise((resolve, reject) => {

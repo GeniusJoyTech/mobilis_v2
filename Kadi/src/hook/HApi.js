@@ -12,6 +12,7 @@ const h_api = async (fetchData, setData) => {
     };
     const result = await requestApi(requestData);
     if(setData){setData(result)};
+    console.log(result);
 };
 
 export default h_api;
