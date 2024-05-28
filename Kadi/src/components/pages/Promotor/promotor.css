@@ -1,0 +1,20 @@
+  /* Media query para telas menores que 768px */
+  @media (max-width: 980px) {
+    .h1{
+        font-size: 8rem;  
+    }
+    .label {
+      font-size: 4rem; /* Reduz o tamanho da fonte para telas menores */
+    }
+    .label2 {
+      font-size: 3rem; /* Reduz o tamanho da fonte para telas menores */
+    }
+    .control{
+        width: 800px;
+        height: 80px;
+        font-size: 2rem;  
+    }
+
+  }
+  
+  

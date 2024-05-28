@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from 'react-bootstrap/';
 
+import '../promotor.css';
+
 export default function Dia({hoje, date, setDate}) {
     const hojeObj = new Date();
     const amanhaObj = new Date(hojeObj);
@@ -51,12 +53,12 @@ export default function Dia({hoje, date, setDate}) {
 
 
     return (
-        <div style={{ display: 'flex', justifyContent: 'space-around', marginBottom: '8px' }}>
-            <Button variant="secondary" onClick={subtrairDias}>{dataMenos.toISOString().split('T')[0]}</Button>
+        <div style={{ display: 'flex', justifyContent: 'space-around', marginBottom: '40px', marginTop:'40px' }}>
+            <Button className='label2' variant="secondary" onClick={subtrairDias}>{dataMenos.toISOString().split('T')[0]}</Button>
 
-            <Button variant="light" onClick={configurarHoje}>{date}</Button>
+            <Button className='label2' variant="light" onClick={configurarHoje}>{date}</Button>
 
-            <Button variant="secondary" onClick={adicionarDias}>{dataMais.toISOString().split('T')[0]}</Button>
+            <Button className='label2' variant="secondary" onClick={adicionarDias}>{dataMais.toISOString().split('T')[0]}</Button>
         </div>
 
     )

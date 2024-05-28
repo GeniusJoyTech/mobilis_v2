@@ -5,6 +5,7 @@ import Roteiro from "./Tarefas/Roteiro";
 import AdcLoja from "./loja/Loja";
 import Notificacao from "./Tarefas/Notificacao";
 import Logout from "../usuario/Logout";
+import './promotor.css'
 
 
 export default function Supervisor() {
@@ -36,14 +37,14 @@ export default function Supervisor() {
      }, [id_loja]);
     return (
         <>
-            <Navbar expand="lg" className="bg-body-tertiary justify-content-between" bg="primary" data-bs-theme="dark">
-                    <Navbar.Brand href="#home">Promotor</Navbar.Brand>
+            <Navbar expand={'lg'} className="bg-body-tertiary justify-content-between label" bg="primary" data-bs-theme="dark">
+                    <Navbar.Brand className="label2" href="#home">Promotor</Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav>
-                             <Nav.Link onClick={handleRoteiro}>Roteiro</Nav.Link>
-                             <Nav.Link onClick={handleAdcLoja}>Adicionar Loja</Nav.Link> 
-                             <Nav.Link onClick={handleNotificacao}>Log do dia</Nav.Link> 
+                             <Nav.Link className="label2" onClick={handleRoteiro}>Roteiro</Nav.Link>
+                             <Nav.Link className="label2" onClick={handleAdcLoja}>Adicionar Loja</Nav.Link> 
+                             <Nav.Link className="label2" onClick={handleNotificacao}>Log do dia</Nav.Link> 
                         </Nav>
                     </Navbar.Collapse>
                     

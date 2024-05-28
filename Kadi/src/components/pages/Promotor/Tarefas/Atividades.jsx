@@ -4,6 +4,8 @@ import { Accordion, Button } from 'react-bootstrap/';
 import backUrl from '../../../../../config';
 import h_api from "../../../../hook/HApi";
 
+import '../promotor.css'
+
 
 
 export default function Atividades({ id_agenda, loja, mostrarCamera }) {
@@ -25,18 +27,18 @@ export default function Atividades({ id_agenda, loja, mostrarCamera }) {
         <>
             <Accordion>
                 <Accordion.Item eventKey="0">
-                    <Accordion.Header>Loja: {loja}</Accordion.Header>
+                    <Accordion.Header><p className='label' >Loja: {loja}</p></Accordion.Header>
                     <Accordion.Body>
                         {atividade && atividade.map((a) => {
                             return (
                                 <div key={a.id_atividade}>
                                     <Accordion>
                                         <Accordion.Item eventKey="0">
-                                            <Accordion.Header>{a.descricao}</Accordion.Header>
+                                            <Accordion.Header><p className='label' >{a.descricao}</p></Accordion.Header>
                                             <Accordion.Body>
-                                                <p>{a.observacao}</p>
+                                                <p className='label2'>{a.observacao}</p>
                         
-                                                <Button onClick={() => { mostrarCamera(id_agenda, null, a.id_atividade) }}>
+                                                <Button className='label2' onClick={() => { mostrarCamera(id_agenda, null, a.id_atividade) }}>
                                                     Registrar Atividade
                                                 </Button>
                                             </Accordion.Body>

@@ -3,18 +3,19 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import getAuthToken from '../../../utils/authorization';
 import TrocaSenha from './TrocaSenha';
+import Fundo from './Fundo'
 import backUrl from '../../../../config'
+import './login.css';
 
 const Login = () => {
-  const [log, setLog] = useState(true);
   const [troca, setTroca] = useState(false);
   return (
     <>
       <Fundo
         x={
           <>
-            {log && <Log />}
-            {troca && <TrocaSenha/>}
+            {!troca && <Log setTroca={setTroca} />}
+            {troca && <TrocaSenha setTroca={setTroca}/>}
           </>
         }
       />
@@ -22,7 +23,7 @@ const Login = () => {
     </>
   );
 }
-const Log = () => {
+const Log = ({setTroca}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -70,16 +71,13 @@ const Log = () => {
   return (
 
     <div style={{ marginTop: '25vh' }}>
-      <h1>Login</h1>
-      <div
-        style={{
-          width: '25vw',
-          height: '25vh'
-        }}>
+      <h1 className="h1">Login</h1>
+      <div>
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Email</Form.Label>
+            <Form.Label className='label'>Email</Form.Label>
             <Form.Control
+              className='control'
               type="email"
               placeholder="Entre com email"
               value={email}
@@ -90,21 +88,22 @@ const Log = () => {
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicPassword">
-            <Form.Label>Senha</Form.Label>
+            <Form.Label className='label'>Senha</Form.Label>
             <Form.Control
+              className='control'
               type="password"
               placeholder="Senha"
               autoComplete="current-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <Form.Text className="text-muted">
-              Esqueci minha senha.
+            <Form.Text  className="text-muted label2 text-center">
+              <p onClick={()=>{setTroca(true)}} >Esqueci a senha</p>
             </Form.Text>
 
           </Form.Group>
 
-          <Button variant="primary" type="submit">
+          <Button className='label2' variant="primary" type="submit">
             Enviar
           </Button>
         </Form>
@@ -112,22 +111,4 @@ const Log = () => {
     </div>
   );
 };
-function Fundo({ x }) {
-  return (
-    <div
-      style={{
-        backgroundImage: "url('https://cdn.pixabay.com/photo/2020/04/18/01/04/cityscape-5057263_640.png')",
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        width: '100vw',
-        height: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-      }}
-    >
-      {x}
-    </div>
-  )
-}
 export default Login;

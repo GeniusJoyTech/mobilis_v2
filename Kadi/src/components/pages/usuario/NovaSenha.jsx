@@ -1,7 +1,10 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import React, { useState } from 'react';
-import backUrl from '../../../../config'
+import backUrl from '../../../../config';
+import './login.css'
+
+import Fundo from './Fundo'
 
 const NovaSenha = () => {
   const [token, setToken] = useState('');
@@ -9,7 +12,7 @@ const NovaSenha = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    await fetch(backUrl+'nova/senha', {
+    await fetch(backUrl + 'nova/senha', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -29,37 +32,47 @@ const NovaSenha = () => {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '25vh' }}>
-      <Form onSubmit={handleSubmit}>
-        <Form.Group className="mb-3" controlId="formBasicEmail">
-          <Form.Control
-            type="text"
-            placeholder="Entre com o token"
-            value={token}
-            onChange={(e) => setToken(e.target.value)}
-            name="token"
-          />
-          <Form.Text className="text-muted">
-            Não compartilhe seu token com terceiros.
-          </Form.Text>
-        </Form.Group>
+    <Fundo
+      x={
+        <>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '25vh' }}>
+            <Form onSubmit={handleSubmit}>
+              <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Label className='label'>Token de controle</Form.Label>
+            
+                <Form.Control className='control'
+                  type="text"
+                  placeholder="Entre com o token enviado no email."
+                  value={token}
+                  onChange={(e) => setToken(e.target.value)}
+                  name="token"
+                />
+                <Form.Text className="text-muted label2 text-center">
+                  Não compartilhe seu token com terceiros.
+                </Form.Text>
+              </Form.Group>
 
-        <Form.Group className="mb-3" controlId="formBasicPassword">
-          <Form.Label>Senha</Form.Label>
-          <Form.Control
-            type="password"
-            placeholder="Senha"
-            autoComplete="current-password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </Form.Group>
+              <Form.Group className="mb-3" controlId="formBasicPassword">
+                <Form.Label className='label' >Senha</Form.Label>
+                <Form.Control className='control'
+                  type="password"
+                  placeholder="Senha"
+                  autoComplete="current-password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </Form.Group>
 
-        <Button variant="primary" type="submit">
-          Enviar
-        </Button>
-      </Form>
-    </div>
+              <Button className='label2' variant="primary" type="submit">
+                Enviar
+              </Button>
+            </Form>
+          </div>
+
+        </>
+      }
+    />
+
   );
 }
 export default NovaSenha;

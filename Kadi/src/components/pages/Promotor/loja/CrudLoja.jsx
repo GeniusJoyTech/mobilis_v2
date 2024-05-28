@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 
 import h_api from "../../../../hook/HApi";
+import '../promotor.css';
 
-import Read from "../../../crud/Read";
-
+import Read from './Read';
 import {  Form } from 'react-bootstrap';
 
 
@@ -52,7 +52,7 @@ export default function Crud({ titulo, exibir, url }) {
             alignItems: 'center',
             border: '8px solid rgba(0,0,0,0)'
           }}>
-          <h2
+          <h2 className='label'
             style={{
               borderLeft: '4px solid rgba(0, 0, 0, 0)',
               borderRight: '8px solid rgba(0, 0, 0, 0)',
@@ -67,7 +67,7 @@ export default function Crud({ titulo, exibir, url }) {
             }}
           >
 
-            <Form.Control
+            <Form.Control className='control'
               type="text"
               placeholder="Pesquisar..."
               value={searchTerm}

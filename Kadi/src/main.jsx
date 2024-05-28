@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 //Usuario
 import Login from './components/pages/Usuario/Login.jsx';
+import NovaSenha from './components/pages/Usuario/NovaSenha.jsx';
 //Promotor
 import Promotor from './components/pages/Promotor/Promotor.jsx'
 //supervisor
@@ -19,6 +20,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/novasenha" element={<NovaSenha />} />
         <Route path="/sup" element={<Supervisor />} />
         <Route path="/adm" element={<Administrador />} />
         <Route path="/pro" element={<Promotor />} />   

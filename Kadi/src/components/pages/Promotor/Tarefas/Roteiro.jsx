@@ -7,6 +7,8 @@ import Atividades from './Atividades';
 import Concluidas from './Concluidas';
 import Camera from './Camera';
 
+import '../promotor.css';
+
 import backUrl from '../../../../../config';
 import h_api from "../../../../hook/HApi";
 
@@ -106,7 +108,7 @@ export default function Roteiro({ setId_loja }) {
         setSend({});
         reqAndamento();
         reqPendentes();
-        reqCon();
+        reqConcluida();
     };
 
 
@@ -124,14 +126,14 @@ export default function Roteiro({ setId_loja }) {
                 (
                     <>
 
-                        <h1>Roteiro</h1>
+                        <h1 className='label'>Roteiro</h1>
                         {/* Data */}
                         <Dia hoje={hoje} date={date} setDate={setDate} />
 
                         {/* Tarefas do dia */}
                         <Accordion defaultActiveKey="0">
                             <Accordion.Item eventKey="0">
-                                <Accordion.Header>Pendentes</Accordion.Header>
+                                <Accordion.Header ><p className='label' >Pendentes</p></Accordion.Header>
                                 <Accordion.Body>
                                     {lojasPendentes && lojasPendentes.map((lojas) => {
                                         return (
@@ -150,7 +152,7 @@ export default function Roteiro({ setId_loja }) {
                             </Accordion.Item>
                             {/* acordion em andamento. */}
                             <Accordion.Item eventKey="1">
-                                <Accordion.Header>Andamento</Accordion.Header>
+                                <Accordion.Header><p className='label' >Andamento</p></Accordion.Header>
                                 <Accordion.Body>
                                     <ul>
                                         {lojasAndamento && lojasAndamento.map((lojas) => {
@@ -169,7 +171,8 @@ export default function Roteiro({ setId_loja }) {
                             </Accordion.Item>
                             {/* acordion Concluidas. */}
                             <Accordion.Item eventKey="2">
-                                <Accordion.Header>Concluída</Accordion.Header>
+                                <Accordion.Header><p className='label'>Concluída</p>
+                                </Accordion.Header>
                                 <Accordion.Body>
                                     <ul>
                                         {lojasConcluida && lojasConcluida.map((lojas) => {

@@ -2,7 +2,7 @@ import requestApi from '../utils/requestApi';
 import getAuthToken from '../utils/authorization';
 
 const h_api = async (fetchData, setData) => {
-  
+    
     const { url, method, body } = fetchData;
     const requestData = {
       url: url,
@@ -11,8 +11,8 @@ const h_api = async (fetchData, setData) => {
       body: body,
     };
     const result = await requestApi(requestData);
+    if(result.length == 0){alert("Sua solicitação retornou um elemento vazio, nada consta.")}
     if(setData){setData(result)};
-    console.log(result);
 };
 
 export default h_api;

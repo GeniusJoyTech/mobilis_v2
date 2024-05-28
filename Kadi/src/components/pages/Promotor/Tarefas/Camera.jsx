@@ -1,45 +1,48 @@
 import React, { useState, useRef } from 'react';
 import { Button } from "react-bootstrap";
+import '../promotor.css';
 
 const Camera = ({ fechar, enviarFoto }) => {
     const [stream, setStream] = useState(null);
+    const [facingMode, setFacingMode] = useState('environment');
     const videoRef = useRef();
 
-    const iniciarCamera = () => {
-        navigator.mediaDevices.getUserMedia({ video: true })
-            .then((mediaStream) => {
+    const iniciarCamera = async () => {
+        try {
+            const mediaStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+            setStream(mediaStream);
+            videoRef.current.srcObject = mediaStream;
+            // Rolar suavemente até o vídeo após iniciar a câmera
+            videoRef.current.scrollIntoView({ behavior: 'smooth' });
+        } catch (error) {
+            console.error('Erro ao acessar a câmera traseira:', error);
+            try {
+                const mediaStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
                 setStream(mediaStream);
+                setFacingMode('user');
                 videoRef.current.srcObject = mediaStream;
-            })
-            .catch((error) => {
-                console.error('Erro ao acessar a câmera:', error);
-            });
+                // Rolar suavemente até o vídeo após iniciar a câmera
+                videoRef.current.scrollIntoView({ behavior: 'smooth' });
+            } catch (userError) {
+                console.error('Erro ao acessar a câmera frontal:', userError);
+            }
+        }
     };
-    const toggleCamera = () => {
-        if (!stream) return; // Verificar se a câmera está ativada
 
-        const videoTracks = stream.getVideoTracks();
-        if (videoTracks.length === 0) return; // Verificar se há uma pista de vídeo
+    const toggleCamera = async () => {
+        if (!stream) return;
 
-        const currentTrack = videoTracks[0];
-        const currentSettings = currentTrack.getSettings();
-        const facingMode = currentSettings.facingMode;
-
-        // Calcular o novo facingMode
         const newFacingMode = facingMode === 'environment' ? 'user' : 'environment';
-
-        // Parar a câmera atual
         stream.getTracks().forEach(track => track.stop());
 
-        // Ativar a próxima câmera com o novo facingMode
-        navigator.mediaDevices.getUserMedia({ video: { facingMode: newFacingMode } })
-            .then(mediaStream => {
-                setStream(mediaStream);
-                videoRef.current.srcObject = mediaStream;
-            })
-            .catch(error => {
-                console.error('Erro ao trocar de câmera:', error);
-            });
+        try {
+            const mediaStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: newFacingMode } });
+            setStream(mediaStream);
+            setFacingMode(newFacingMode);
+            videoRef.current.srcObject = mediaStream;
+        } catch (error) {
+            console.error('Erro ao trocar de câmera:', error);
+        }
     };
 
     const capturarFoto = () => {
@@ -49,26 +52,21 @@ const Camera = ({ fechar, enviarFoto }) => {
         const maxWidth = 800;
         const maxHeight = 600;
 
-        // Redimensionar a imagem para o tamanho desejado
         const scaleFactor = Math.min(1, maxWidth / videoRef.current.videoWidth, maxHeight / videoRef.current.videoHeight);
         const width = videoRef.current.videoWidth * scaleFactor;
         const height = videoRef.current.videoHeight * scaleFactor;
 
-        // Definir o tamanho do canvas igual ao tamanho desejado
         canvas.width = width;
         canvas.height = height;
 
-        // Desenhar a imagem redimensionada no canvas
         context.drawImage(videoRef.current, 0, 0, width, height);
 
         const dataUrl = canvas.toDataURL('image/jpeg');
 
-        // Aqui você pode lidar com a foto capturada
         enviarFoto(dataUrl);
         stream.getTracks().forEach((track) => track.stop());
         setStream(null);
         videoRef.current.srcObject = null;
-        // console.log('Foto capturada:', dataUrl);
     };
 
     const pararCamera = () => {
@@ -81,18 +79,26 @@ const Camera = ({ fechar, enviarFoto }) => {
     };
 
     return (
-        <div style={{ position: 'relative', width: '100%', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <video ref={videoRef} autoPlay muted style={{ width: '100%', height: '100%' }} />
+        <div style={{ position: 'relative', width: '100vw', height: '100vh', overflow: 'hidden' }}>
+            <video ref={videoRef} autoPlay muted style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             {stream == null && (
-                <Button onClick={iniciarCamera} style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>Ativar Câmera</Button>
+                <Button className='label2' onClick={iniciarCamera} style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
+                    Ativar Câmera
+                </Button>
             )}
             {stream != null && (
-                <Button onClick={capturarFoto} style={{ position: 'absolute', bottom: '10px', left: '50%', transform: 'translateX(-50%)' }}>Capturar Foto</Button>
+                <>
+                    <Button className='label2' onClick={capturarFoto} style={{ position: 'absolute', bottom: '300px', left: '50%', transform: 'translateX(-50%)' }}>
+                        Capturar Foto
+                    </Button>
+                    <Button className='label2' onClick={toggleCamera} style={{ position: 'absolute', top: '10px', left: '10px' }}>
+                        Trocar Câmera
+                    </Button>
+                </>
             )}
-            {stream != null && (
-                <Button onClick={toggleCamera} style={{ position: 'absolute', top: '10px', left: '10px' }}>Trocar Camera</Button>
-            )}
-            <Button onClick={pararCamera} style={{ position: 'absolute', top: '10px', right: '10px' }}>Encerrar</Button>
+            <Button className='label2' onClick={pararCamera} style={{ position: 'absolute', top: '10px', right: '10px' }}>
+                Encerrar
+            </Button>
         </div>
     );
 };

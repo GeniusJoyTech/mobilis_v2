@@ -4,6 +4,9 @@ import { Accordion, Button, Form, Modal } from 'react-bootstrap/';
 import backUrl from '../../../../../config';
 import h_api from "../../../../hook/HApi";
 
+
+import '../promotor.css';
+
 export default function Lojas({ id_agenda, id_loja, loja, endereco, cep, mostrarCamera}) {
     const [showJust, setShowJust] = useState(false);
     const handleCloseJust = () => setShowJust(false);
@@ -12,18 +15,18 @@ export default function Lojas({ id_agenda, id_loja, loja, endereco, cep, mostrar
         <>
             <Accordion>
                 <Accordion.Item eventKey="0">
-                    <Accordion.Header>Loja: {loja}</Accordion.Header>
+                    <Accordion.Header ><p className='label'>Loja: {loja}</p></Accordion.Header>
                     <Accordion.Body>
                         <div>
-                            <p>Endereço: {endereco}</p>
-                            <p>Cep: {cep}</p>
+                            <p className='label2'>Endereço: {endereco}</p>
+                            <p className='label2'>Cep: {cep}</p>
                         </div>
-                        <div style={{ borderBottom: '1px solid', borderRadius: '1px', margin: '2px' }}></div>
+                        <div style={{ borderBottom: '1px solid', borderRadius: '1px', margin: '8px' }}></div>
                         <div style={{ display: 'flex' }}>
-                            <Button style={{ marginRight: '2px' }} onClick={handleShowJust}>
+                            <Button className='label2' style={{ marginRight: '2px' }} onClick={handleShowJust}>
                                 Justificar
                             </Button>
-                            <Button onClick={()=>{mostrarCamera(id_agenda, id_loja, 1)}}>
+                            <Button className='label2' onClick={()=>{mostrarCamera(id_agenda, id_loja, 1)}}>
                                 Entrada
                             </Button>
                         </div>
@@ -119,25 +122,25 @@ function Justificativa({ showJust, handleClose, id_agenda }) {
 
     return (<Modal show={showJust} onHide={handleClose}>
         <Modal.Header closeButton>
-            <Modal.Title>Justificativa</Modal.Title>
+            <Modal.Title className='label'>Justificativa</Modal.Title>
         </Modal.Header>
         <Modal.Body>
             <Form>
                 <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-                    <Form.Label>Por favor escreva o motivo do não atendimento completo.</Form.Label>
-                    <Form.Control as="textarea" rows={3} value={justificativa} onChange={(e) => setJustificativa(e.target.value)} />
+                    <Form.Label className='label2'>Por favor escreva o motivo do não atendimento.</Form.Label>
+                    <Form.Control className='label2' as="textarea" rows={3} value={justificativa} onChange={(e) => setJustificativa(e.target.value)} />
                 </Form.Group>
                 <Form.Group controlId="formFile" className="mb-3">
-                    <Form.Label>Imagem de justificativa</Form.Label>
-                    <Form.Control type="file" accept='image/*' onChange={handleImageChange} />
+                    <Form.Label className='label'>Imagem de justificativa</Form.Label>
+                    <Form.Control className='label2' type="file" accept='image/*' onChange={handleImageChange} />
                 </Form.Group>
             </Form>
         </Modal.Body>
         <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
+            <Button className='label2' variant="secondary" onClick={handleClose}>
                 Fechar
             </Button>
-            <Button variant="primary" onClick={handleSave}>
+            <Button className='label2' variant="primary" onClick={handleSave}>
                 Salvar
             </Button>
         </Modal.Footer>

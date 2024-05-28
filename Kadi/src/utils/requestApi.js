@@ -27,6 +27,7 @@ const requestApi = (data) => {
     })
     .catch(error => {
       console.error('Erro na solicitação da API:', error);
+      alert('Algo deu errado durante a solicitação com a base de dados, se o erro persistir contate um responsável.');
       throw error;
     });
 };

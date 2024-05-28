@@ -216,6 +216,20 @@ router.post('/log', (req, res) => {
         });
 });
 
+// Foto das atividades feitas pelo promotor durante o dia, selecionadas pelo log
+router.post('/log/foto', (req, res) => {
+    const { id_agenda } = req.body;
+    const query = `SELECT * FROM foto WHERE id_servico = ${id_agenda}`;
+    console.log(query);
+    q(query)
+        .then(results => {
+            res.status(200).json(results);
+        })
+        .catch(err => {
+            res.status(500).json({ error: 'Erro ao executar a consulta', details: err });
+        });
+});
+
 //Adicionar Lojas
 //Ver Lojas
 router.get('/mercado/ver', (req, res) => {

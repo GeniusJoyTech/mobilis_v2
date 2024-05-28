@@ -40,7 +40,7 @@ router.post('/login', (req, res) => {
 // -[X] RF 03 - Troca de senha
 router.post('/senha/editar', (req, res) => {
     const email = req.body.email;
-    const query = 'select email from db_usuario where email = ?';
+    const query = 'select email from usuario where email = ?';
 
     q(query, [email])
         .then(results => {
@@ -68,7 +68,7 @@ router.post('/senha/editar', (req, res) => {
                     subject: "Redefinir Senha",
                     html: `<p>Olá,
                             <br>Clique no link abaixo para redefinir sua senha:
-                            <br><a href="${'localhost:5173/novasenha'}">${'https://localhost:5173/novasenha'}</a></p>
+                            <br><a href="${'localhost:5173/novasenha'}">${'https://192.168.0.100:5173/novasenha'}</a></p>
                             <p>Por gentileza utilize o token abaixo para realizar a troca da senha:
                             <br>
                             <br>${token}</p>
@@ -100,8 +100,9 @@ router.post('/nova/senha', async (req, res) => {
     const {token, senha} = req.body;
 
         const decoded = jwt.verify(token, secret);
-        const query = `UPDATE db_usuario SET senha = ? where email = ?`;
-
+        console.log(decoded.email, senha);
+        const query = `UPDATE usuario SET senha = ? where email = ?`;
+    
     q(query, [senha, decoded.email])
         .then(results => {
                 res.status(200).json(results);           
