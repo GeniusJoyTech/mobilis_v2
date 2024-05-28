@@ -23,23 +23,7 @@ export default function UpdatePromotores({ open, close, data, url }) {
             [name]: value
         }));
     };
-    ////
-    const [sup, setSup] = useState();
 
-    useEffect(() => {
-        async function getSup() {
-            const reqSup = {
-                method: 'GET',
-                url: backUrl+'sup/promotor/sup/ver',
-            };
-
-            await h_api(reqSup, setSup);
-
-        }
-        getSup();
-    }, []);
-
-    ////
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -71,28 +55,6 @@ export default function UpdatePromotores({ open, close, data, url }) {
                         id='cracha'
                         name='cracha'
                         value={send['cracha'] || ''}
-                        onChange={handleInputChange}
-                    ></Form.Control>
-                    <Form.Label htmlFor="id_superior">superior</Form.Label>
-                    <Form.Select
-                        aria-label="Default select example"
-                        id='id_superior'
-                        name='id_superior'
-                        onChange={handleInputChange}
-                    >
-                        <option value={send['superior'] || ''}>Superior: {send['superior'] || 'Selecione um superior.'}</option>
-                        {sup && sup.map(supervisor => (
-                            <option key={supervisor.id_usuario} value={supervisor.id_usuario}>
-                                {supervisor.nome}
-                            </option>
-                        ))}
-                    </Form.Select>
-
-                    <Form.Label htmlFor="status">Status</Form.Label>
-                    <Form.Control type='text'
-                        id='status'
-                        name='status'
-                        value={send['status'] || ''}
                         onChange={handleInputChange}
                     ></Form.Control>
 

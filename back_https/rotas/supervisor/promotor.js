@@ -4,14 +4,19 @@ const router = Router();
 
 const bd = require('../../db/sql');
 
+const jwt = require("jsonwebtoken");
 const { pool, query: q } = bd;
 
 // -[X] Ver
 router.get('/ver', (req, res) => {
-    const query = "SELECT nome, status, cargo, id_usuario, id_superior, superior cep, cidade rua, numero, cracha, email FROM v_promotores;";
+    const token = req.header('Authorization');
+    const decoded = jwt.verify(token, 'segredo');
+    const id_usuario = decoded.id_usuario;
+    const query = `SELECT * FROM v_promotores where id_superior =${id_usuario};`;
 
     q(query)
         .then(results => {
+            console.log(results);
             res.status(200).json(results);
         })
         .catch(err => {
@@ -31,9 +36,12 @@ router.get('/sup/ver', (req, res) => {
 });
 // -[X] Incluir
 router.post('/incluir', (req, res) => {
-    const { nome, cracha, id_superior, cep, numero, rua, cidade, email } = req.body;
-    const query = `INSERT INTO usuario (nome, cargo, cracha, id_superior, cep, numero, rua, cidade, email, senha)
-            VALUES ('${nome}', 'Promotor', '${cracha}', '${id_superior}', '${cep}', ${numero}, '${rua}', '${cidade}', '${email}', '123456');`
+    const token = req.header('Authorization');
+    const decoded = jwt.verify(token, 'segredo');
+    const id_usuario = decoded.id_usuario;
+    const { nome, cracha, cep, numero, rua, cidade, email } = req.body;
+    const query = `INSERT INTO usuario (nome, cargo, cracha, status, id_superior, cep, numero, rua, cidade, email, senha)
+            VALUES ('${nome}', 'Promotor', '${cracha}', 'Ativo', '${id_usuario}', '${cep}', ${numero}, '${rua}', '${cidade}', '${email}', '123456');`
 
     q(query)
         .then(results => {
@@ -45,8 +53,7 @@ router.post('/incluir', (req, res) => {
 })
 // -[X] Editar
 router.post('/editar', (req, res) => {
-    const { nome, cracha, superior, cep, numero, rua, cidade, email, id_usuario, id_superior } = req.body;
-    const token = req;
+    const { nome, cracha, cep, numero, rua, cidade, email, id_usuario } = req.body;
     // Verifique se o id está presente nos parâmetros da solicitação
     if (!id_usuario) {
         return res.status(400).send('O campo id é obrigatório');

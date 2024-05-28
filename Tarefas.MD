@@ -8,11 +8,11 @@
 - [] RF 07 - Horas trabalhadas.
 - [] RF 08 - Supervisionar visitas.
 - [X] RF 09 - Gerenciar usuário
-- [] RF 10 - Foto.
+- [X] RF 10 - Foto.
 - [] RF 11 - Atendimento de roteiro.
-- [] RF 12 - Inicio de visita.
-- [] RF 13 - Final de visita.
-- [] RF 14 - Justificar Falta.
+- [X] RF 12 - Inicio de visita.
+- [X] RF 13 - Final de visita.
+- [X] RF 14 - Justificar Falta.
 
 
 
@@ -37,7 +37,7 @@
 ---
 -[] Refatorar Supervisor.
 -[] Adicionar filtros, como nome do promotor, nome da loja, atividade, etc.
--[] Falta finalizar agenda 
+-[X] Falta finalizar agenda 
 -[X] Adicionar crud de atividades
 -[] Remover drop de superior na visão do superior
 -[] Atualizar Gui de visitas 

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import h_api from "../../../../hook/HApi";
 
 import Create from "./CreateProm"
-import Read from "../../../crud/Read";
+import Read from "./Read";
 import Update from "./UpdateProm";
 import Delete from "../../../crud/Delete";
 
@@ -137,11 +137,9 @@ export default function Crud({ titulo, exibir, dropItem, url }) {
         null}
       {/*Inicio Logica de Inclusão CREATE*/}
       <Create
-        handleCreate={handleCreate}
         open={showCreate}
         close={handleCloseCreate}
         url={url.incluir}
-        refresh={reqRot}
       />
       {/*Fim Logica de Inclusão */}
 
