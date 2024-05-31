@@ -22,7 +22,6 @@ export default function Atividades({ id_agenda, loja, mostrarCamera }) {
     useEffect(() => {
         reqAtividades();
     }, [urlAtividades, id_agenda]);
-    console.log(atividade);
     return (
         <>
             <Accordion>

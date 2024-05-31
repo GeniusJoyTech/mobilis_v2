@@ -13,15 +13,16 @@ const secret = "segredo";
 // -[X] RF 01 - Login
 router.post('/login', (req, res) => {
     const { email, senha } = req.body;
-    const query = `SELECT id_usuario, nome, email, senha, cargo, cracha FROM usuario where email = ? and senha = ?`;
+    const query = `SELECT id_usuario, nome, email, senha, cargo, cracha, status FROM usuario WHERE email = ? AND senha = ?`;
 
     q(query, [email, senha])
         .then(results => {
             if (results.length === 0) {
-                res.status(401).json("Algo não saiu como esperado, verifique seus dados de acesso.")
-            }
-            else {
-                const payload = { userId: results[0].id_usu, username: results[0].nome, cargo: results[0].cargo, id_usuario: results[0].id_usuario};
+                res.status(401).json("Algo não saiu como esperado, verifique seus dados de acesso, se o erro persistir questione seu superior sobre seu acesso.");
+            } else if (results[0].status === 'Inativo') {
+                res.status(403).json("Usuário inativado do sistema.");
+            } else {
+                const payload = { userId: results[0].id_usuario, username: results[0].nome, cargo: results[0].cargo, id_usuario: results[0].id_usuario };
                 const token = jwt.sign(payload, secret, { expiresIn: '30w' });
                 res.header('Authorization', `${token}`);
                 res.status(200).json({ token });
@@ -32,6 +33,7 @@ router.post('/login', (req, res) => {
             console.log(err);
         });
 });
+
 // -[] RF 02 - Logout
 //router.post('/logout', (req, res) => {
 // Remover o token do lado do cliente (por exemplo, excluindo cookies ou removendo do armazenamento local)

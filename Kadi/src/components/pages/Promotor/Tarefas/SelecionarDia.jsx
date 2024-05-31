@@ -11,7 +11,6 @@ export default function Dia({hoje, date, setDate}) {
     amanhaObj.setDate(hojeObj.getDate() + 1);
     ontemObj.setDate(hojeObj.getDate() - 1);
 
-    //const [date, setDate] = useState(hoje);
     const [dataMais, setDataMais] = useState(amanhaObj);
     const [dataMenos, setDataMenos] = useState(ontemObj);
     

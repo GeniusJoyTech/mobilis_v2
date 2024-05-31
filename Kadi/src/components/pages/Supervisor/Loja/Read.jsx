@@ -33,48 +33,35 @@ export default function Read({ open, exibir, data, Update, Delete }) {
         const startIndex = (page - 1) * itemsPerPage;
         const endIndex = startIndex + itemsPerPage;
         const visibleItems = data.slice(startIndex, endIndex);
-console.log(visibleItems);
+
         return (
             <>
                 <Table striped bordered hover>
                     <thead>
                         <tr>
-                        <th style={{ textAlign: 'center' }} key={'actions'}>Nome</th>
-                        <th style={{ textAlign: 'center' }} key={'cracha'}>Crachá</th>
-                        <th style={{ textAlign: 'center' }} key={'status'}>Status</th>
-
-                        <th style={{ textAlign: 'center' }} key={'cep'}>Cep</th>
-                        <th style={{ textAlign: 'center' }} key={'numero'}>Número</th>
-
-                        <th style={{ textAlign: 'center' }} key={'rua'}>Rua</th>
-                        <th style={{ textAlign: 'center' }} key={'cidade'}>Cidade</th>
-                        <th style={{ textAlign: 'center' }} key={'email'}>Email</th>
-
-
-                            <th style={{ textAlign: 'center' }} key={'acoes'}>Ações</th>
+                            <th style={{ textAlign: 'center' }} key='loja'>Loja</th>
+                            <th style={{ textAlign: 'center' }} key='Cep'>Cep</th>
+                            <th style={{ textAlign: 'center' }} key='numero'>Número</th>
+                            <th style={{ textAlign: 'center' }} key='rua'>Rua</th>
+                            <th style={{ textAlign: 'center' }} key='cidade'>Cidade</th>
+                            <th style={{ textAlign: 'center' }} key='celular'>Celular</th>
+                            <th style={{ textAlign: 'center' }} key={'actions'}>Ações</th>
                         </tr>
                     </thead>
                     <tbody>
-
                         {visibleItems.map((item, index) => (
                             <tr key={index}>
-                                <td key={'nome'}>{item['nome']}</td>
-                                <td key={'cracha'}>{item['cracha']}</td>
-                                <td key={'status'}>{item['status']}</td>
-                                <td key={'cep'}>{item['cep']}</td>
-                                <td key={'numero'}>{item['numero']}</td>
-                                <td key={'rua'}>{item['rua']}</td>
-                                <td key={'cidade'}>{item['cidade']}</td>
-                                <td key={'email'}>{item['email']}</td>
- 
+                                    <>
+                                        <td key={'loja'+index}>{item['loja']}</td>
+                                        <td key={'cep'+index}>{item['cep']}</td>
+                                        <td key={'numero'+index}>{item['numero']}</td>
+                                        <td key={'rua'+index}>{item['rua']}</td>
+                                        <td key={'cidade'+index}>{item['cidade']}</td>
+                                        <td key={'celular'+index}>{item['celular']}</td>
+                                    </>
                                 <td style={{ display: 'flex', justifyContent: 'space-around' }}>
                                     <Button style={{ margin: '2px' }} onClick={() => Update(item)}>Atualizar</Button>
-                                    {
-                                        item.status == 'Ativo' ?
-                                        <Button variant="danger" onClick={() => Delete({id: item.id_usuario, status: 'Inativo'})}>Inativar</Button>
-                                        :
-                                        <Button variant="success" onClick={() => Delete({id: item.id_usuario, status: 'Ativo'})}>Ativar</Button>
-                                    }
+                                    <Button variant="danger" onClick={() => Delete(item)}>Deletar</Button>
                                 </td>
                             </tr>
                         ))}
@@ -87,4 +74,3 @@ console.log(visibleItems);
         return null;
     }
 }
-

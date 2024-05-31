@@ -10,7 +10,7 @@ export default function Delete({ open, close, data, url }) {
 
     const handleDelete = async () => {
         // Aqui você pode enviar o objeto `send` para deletar da base de dados
-        console.log("Deletando da base de dados:", data, deletar);
+        console.log("Inativando na base de dados:", data, deletar);
         await h_api({ method: 'POST', url: deletar, body: data });
         // Fechar o modal após a exclusão
         close();
@@ -22,10 +22,10 @@ export default function Delete({ open, close, data, url }) {
     return (
         <Modal show={open} onHide={close}>
             <Modal.Header closeButton>
-                <Modal.Title>Deletar</Modal.Title>
+                <Modal.Title>Tornar promotor {data.status} no sistema.</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <p>Você tem certeza?<br/>Deseja <strong>apagar</strong> este em específico?</p>
+                <p>Você tem certeza?</p>
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="danger" onClick={handleDelete}>

@@ -12,7 +12,6 @@ const requestApi = (data) => {
   return fetch(data.url, requestOptions)
     .then(response => {
       if (response.status === 401) {
-        alert('Você não está logado, realize o login.');
         window.location.href = '/login';
       }
       else if (response.status === 403) {
@@ -27,7 +26,6 @@ const requestApi = (data) => {
     })
     .catch(error => {
       console.error('Erro na solicitação da API:', error);
-      alert('Algo deu errado durante a solicitação com a base de dados, se o erro persistir contate um responsável.');
       throw error;
     });
 };

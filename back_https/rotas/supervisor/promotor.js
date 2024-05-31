@@ -12,7 +12,7 @@ router.get('/ver', (req, res) => {
     const token = req.header('Authorization');
     const decoded = jwt.verify(token, 'segredo');
     const id_usuario = decoded.id_usuario;
-    const query = `SELECT * FROM v_promotores where id_superior =${id_usuario};`;
+    const query = `SELECT * FROM v_promotores where id_superior =${id_usuario}`;
 
     q(query)
         .then(results => {
@@ -53,6 +53,7 @@ router.post('/incluir', (req, res) => {
 })
 // -[X] Editar
 router.post('/editar', (req, res) => {
+    
     const { nome, cracha, cep, numero, rua, cidade, email, id_usuario } = req.body;
     // Verifique se o id está presente nos parâmetros da solicitação
     if (!id_usuario) {
@@ -62,7 +63,7 @@ router.post('/editar', (req, res) => {
     const query = `UPDATE usuario 
                     SET nome = '${nome}', cep = '${cep}', cidade = '${cidade}',
                         rua = '${rua}', numero = ${numero}, cracha = '${cracha}',
-                        id_superior = ${id_superior}, email = '${email}'
+                        email = '${email}'
                     WHERE id_usuario = ${id_usuario}`;
 
     // Executar a query
@@ -78,16 +79,20 @@ router.post('/editar', (req, res) => {
 // -[X] Excluir
 router.post('/deletar', (req, res) => {
 
-    const id = req.body.id_usuario;
+    const {id, status} = req.body;
     if (!id) {
+        
         return res.status(400).send('O campo id é obrigatório');
     }
-    const query = `DELETE FROM usuario  WHERE id_usuario = ${id}`;
+    const query = `UPDATE usuario 
+    SET status = '${status}'
+    WHERE id_usuario = ${id}`;
     q(query)
         .then(results => {
             res.status(200).json(results);
         })
         .catch(err => {
+            console.log(err);
             res.status(500).json({ error: 'Erro ao executar a consulta', details: err });
         });
 });

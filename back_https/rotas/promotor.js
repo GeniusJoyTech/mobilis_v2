@@ -83,27 +83,26 @@ router.post('/roteiro/pendentes', (req, res) => {
 });
 
 router.post('/roteiro/andamento', (req, res) => {
-    const { date } = req.body
+    const { date } = req.body;
     const token = req.header('Authorization');
     const decoded = jwt.verify(token, 'segredo');
     const id_usuario = decoded.id_usuario;
     const query = `
         
         
-    SELECT * from v_visitas where id_agenda = (SELECT DISTINCT s1.id_agenda
-        FROM servico s1
-        WHERE (s1.id_atividade = 1
-          AND NOT EXISTS (
-              SELECT 1
-              FROM servico s2
-              WHERE s2.id_agenda = s1.id_agenda
-                AND s2.id_atividade = 2
-          )
-        )
-        and id_usuario = ${id_usuario} and date(diavisita) = '${date}')
-        
-        
-
+    select * from v_visitas where id_agenda = 
+    (
+        SELECT distinct entrada.id_agenda from servico entrada 
+    where entrada.id_usuario = ${id_usuario} 
+    and date(entrada.datahora) = '${date}'
+    and entrada.id_agenda not in(
+                SELECT saida.id_agenda
+                from servico saida
+                where saida.id_atividade = 2 
+                and saida.id_usuario = entrada.id_usuario
+                AND date(entrada.datahora) = date(saida.datahora)     
+    )
+    )
     `;
     q(query)
         .then(results => {
@@ -117,19 +116,18 @@ router.post('/roteiro/andamento', (req, res) => {
 
 router.post('/roteiro/concluida', (req, res) => {
     const { date } = req.body
-    console.log(date);
     const token = req.header('Authorization');
     const decoded = jwt.verify(token, 'segredo');
     const id_usuario = decoded.id_usuario;
     const query = `
     SELECT *
         FROM v_visitas
-        WHERE id_agenda IN (
-            SELECT DISTINCT s1.id_agenda
-            FROM servico s1
-            INNER JOIN servico s2 ON s1.id_agenda = s2.id_agenda
-            WHERE s2.id_atividade = 2 and
-            date(diavisita) = '${date}'
+        WHERE id_agenda IN 
+        (
+            SELECT DISTINCT id_agenda
+            FROM servico
+            WHERE id_atividade = 2 
+            AND date(datahora) = '${date}'
         )
         and id_usuario = ${id_usuario}
     `;

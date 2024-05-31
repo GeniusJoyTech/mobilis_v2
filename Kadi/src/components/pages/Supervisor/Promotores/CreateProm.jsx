@@ -5,9 +5,11 @@ import Form from 'react-bootstrap/Form';
 import buscarCEP from '../../../../utils/buscaCep';
 import h_api from "../../../../hook/HApi";
 
+
 export default function CreatePromotores({ open, close, url }) {
     const [send, setSend] = useState({});
     const [emailError, setEmailError] = useState(false);
+    const [enviando, setEnviando]= useState(false);
 
     const validateEmail = (email) => {
         const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -42,13 +44,16 @@ export default function CreatePromotores({ open, close, url }) {
     };
 
     const handleSubmit = async (e) => {
+        setEnviando(true);
         e.preventDefault();
         if (!send.email) {
             alert("O campo de e-mail é obrigatório.");
+            setEnviando(false);
             return;
         }
         if (emailError) {
             alert("Por favor, corrija o e-mail antes de enviar.");
+            setEnviando(false);
             return;
         }
         console.log("Enviando para a API nova tupla:", send, url);
@@ -61,6 +66,7 @@ export default function CreatePromotores({ open, close, url }) {
         setSend({});
         setEmailError(false);
         close();
+        setEnviando(false);
     };
 
     return (
@@ -140,7 +146,7 @@ export default function CreatePromotores({ open, close, url }) {
                 <Button variant="secondary" onClick={handleClose}>
                     Cancelar
                 </Button>
-                <Button variant="primary" onClick={handleSubmit}>
+                <Button variant="primary" onClick={handleSubmit} disabled={enviando}>
                     Salvar Alterações
                 </Button>
             </Modal.Footer>

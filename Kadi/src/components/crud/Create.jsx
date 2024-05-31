@@ -9,6 +9,7 @@ import h_api from "../../hook/HApi";
 export default function UpdateDelete({open, close, exibir, dropItens, url }) {
     const [send, setSend] = useState({}); // Inicialize send como um objeto vazio
 
+    const [enviando, setEnviando] = useState(false);
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setSend(prevSend => ({
@@ -40,11 +41,15 @@ export default function UpdateDelete({open, close, exibir, dropItens, url }) {
  
 
     const handleSubmit = async(e) => {
+        
+        setEnviando(true)
         e.preventDefault();
         // Aqui você pode enviar o objeto `send` para atualizar/editar na base de dados
         await h_api({ method: 'POST', url: url, body: send });
         console.log("Enviando para a API nova tupla:", send, url);
         close();
+        
+        setEnviando(false)
     };
 
     return (
@@ -71,10 +76,10 @@ export default function UpdateDelete({open, close, exibir, dropItens, url }) {
                 </form>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="secondary" onClick={close}>
+                <Button variant="secondary" onClick={()=>{close(); setEnviando(false);}}>
                     Cancelar
                 </Button>
-                <Button variant="primary" onClick={handleSubmit}>
+                <Button variant="primary" onClick={handleSubmit} disabled={enviando}>
                     Salvar Alterações
                 </Button>
             </Modal.Footer>

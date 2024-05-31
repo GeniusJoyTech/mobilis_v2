@@ -39,8 +39,12 @@
 -[] Adicionar filtros, como nome do promotor, nome da loja, atividade, etc.
 -[X] Falta finalizar agenda 
 -[X] Adicionar crud de atividades
--[] Remover drop de superior na visão do superior
--[] Atualizar Gui de visitas 
+-[X] Atualizar Gui de visitas 
 
 -[] Refatorar Promotor.
--[] Adicionar um histórico para promotor.
+-[X] Adicionar um histórico para promotor
+-[] Adicionar mensagem após troca de senha
+-[] Em atividades manter campo tipo escondido do usuário.
+atividades nao deixar excluir entrada e saida
+atualizar atividades esta criando 2
+-[] 

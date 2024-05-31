@@ -9,12 +9,14 @@ import h_api from '../../hook/HApi';
 export default function Update({ open, close, exibir, data, dropItens, url }) {
     const [send, setSend] = useState(data),
         editar = url.editar
+        const [enviando, setEnviando] = useState(false);
     useEffect(() => {
         setSend(data);
     }, [data]);
 
     const handleClose = () => {
         close()
+        setEnviando(false)
     };
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -47,11 +49,13 @@ export default function Update({ open, close, exibir, data, dropItens, url }) {
 
 
     const handleSubmit = async (e) => {
+        setEnviando(true);
         e.preventDefault();
         await h_api({ method: 'POST', url: editar, body: send });
         console.log("Enviando para a API para editar:", send, url.editar);
         // Fechar o modal após a edição
         close();
+        setEnviando(false);
     };
 
     return (
@@ -83,7 +87,7 @@ export default function Update({ open, close, exibir, data, dropItens, url }) {
                 </form>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="primary" onClick={handleSubmit}>
+                <Button variant="primary" onClick={handleSubmit} disabled={enviando}>
                     Salvar Alterações
                 </Button>
                 <Button variant="primary" onClick={handleClose}>

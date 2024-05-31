@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Accordion, Button } from 'react-bootstrap/';
+import { Accordion } from 'react-bootstrap/';
 
 import Dia from './SelecionarDia';
 import Lojas from './Lojas';
 import Atividades from './Atividades';
 import Concluidas from './Concluidas';
 import Camera from './Camera';
+
+import CustomToast from '../../../../hook/CustomToast';
 
 import '../promotor.css';
 
@@ -15,7 +17,6 @@ import h_api from "../../../../hook/HApi";
 
 export default function Roteiro({ setId_loja }) {
     const hoje = new Date().toLocaleDateString('en-Ca');
-    console.log(hoje)
     const [date, setDate] = useState(hoje);
 
     const [lojasPendentes, setPendentes] = useState(null);
@@ -24,7 +25,8 @@ export default function Roteiro({ setId_loja }) {
     const [showCamera, setShowCamera] = useState(false);
     const [showLojas, setShowLojas] = useState(true);
     const [send, setSend] = useState({});
-
+    const [showToast, setShowToast] = useState(false);
+    const [toastMessage, setToastMessage] = useState('');
 
 
     const urlPendentes = backUrl + 'pro/roteiro/pendentes';
@@ -52,6 +54,8 @@ export default function Roteiro({ setId_loja }) {
     }
 
     const reqPendentes = async () => {
+        setShowToast(true);
+        setToastMessage("Obtendo dados do sistema.");
         setPendentes(null);
         await h_api(reqPen, setPendentes);
     };
@@ -197,7 +201,7 @@ export default function Roteiro({ setId_loja }) {
 
                     </>
                 )}
-
+            <CustomToast showToast={showToast} setShowToast={setShowToast} delay={1500} toastMessage={toastMessage} toastTitulo={"Informações."}/>
             {showCamera && <Camera fechar={fecharCamera} enviarFoto={enviarFoto} />}
         </>
     );

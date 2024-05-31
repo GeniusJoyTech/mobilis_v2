@@ -8,7 +8,7 @@ import Logout from "../usuario/Logout";
 import './promotor.css'
 
 
-export default function Supervisor() {
+export default function Promotor() {
     const [showRoteiro, setShowRoteiro] = useState(true);
     const [showAdcLoja, setShowAdcLoja] = useState(false);
     const [showNotificacao, setShowNotificacao] = useState(false);
@@ -32,9 +32,6 @@ export default function Supervisor() {
           setShowAdcLoja(false);    
               
       }
-      useEffect(()=>{
-        console.log(id_loja);
-     }, [id_loja]);
     return (
         <>
             <Navbar expand={'lg'} className="bg-body-tertiary justify-content-between label" bg="primary" data-bs-theme="dark">

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -6,7 +6,7 @@ import buscarCEP from '../../../../utils/buscaCep'
 import h_api from "../../../../hook/HApi";
 
 export default function CreateLoja({ open, close, url }) {
-    const [send, setSend] = useState({}); // Inicialize send como um objeto vazio
+    const [send, setSend] = useState({});
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -16,11 +16,40 @@ export default function CreateLoja({ open, close, url }) {
         }));
     };
 
+    const formatCEP = (value) => {
+        return value
+            .replace(/\D/g, '') // Remove caracteres não numéricos
+            .slice(0, 8) // Limita o tamanho para 8 caracteres
+            .replace(/^(\d{5})(\d)/, '$1-$2'); // Adiciona o hífen após os primeiros 5 dígitos
+    };
+
+    const formatCelular = (value) => {
+        return value
+            .replace(/\D/g, '') // Remove caracteres não numéricos
+            .slice(0, 11) // Limita o tamanho para 11 caracteres
+            .replace(/^(\d{2})(\d{5})(\d{4}).*/, '($1) $2-$3'); // Formata para (XX) XXXXX-XXXX
+    };
+
+    const handleCepChange = (e) => {
+        const { value } = e.target;
+        setSend(prevSend => ({
+            ...prevSend,
+            cep: formatCEP(value)
+        }));
+    };
+
+    const handleCelularChange = (e) => {
+        const { value } = e.target;
+        setSend(prevSend => ({
+            ...prevSend,
+            celular: formatCelular(value)
+        }));
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // Aqui você pode enviar o objeto `send` para atualizar/editar na base de dados
         await h_api({ method: 'POST', url: url, body: send });
-        console.log("Enviando para a API nova tupla:", send, url);
+        setSend({});
         close();
     };
 
@@ -40,11 +69,11 @@ export default function CreateLoja({ open, close, url }) {
                     ></Form.Control>
 
                     <Form.Label htmlFor="cep">Cep</Form.Label>
-                    <Form.Control type='number'
+                    <Form.Control type='text'
                         id='cep'
                         name='cep'
                         value={send['cep'] || ''}
-                        onChange={handleInputChange}
+                        onChange={handleCepChange}
                         onBlur={(e) => { buscarCEP(e.target.value, setSend) }}
                     ></Form.Control>
 
@@ -74,12 +103,12 @@ export default function CreateLoja({ open, close, url }) {
                         readOnly
                     ></Form.Control>
 
-                    <Form.Label htmlFor="celular">celular</Form.Label>
+                    <Form.Label htmlFor="celular">Celular</Form.Label>
                     <Form.Control type='tel'
                         id='celular'
                         name='celular'
                         value={send['celular'] || ''}
-                        onChange={handleInputChange}
+                        onChange={handleCelularChange}
                     ></Form.Control>
 
                 </form>
@@ -95,4 +124,3 @@ export default function CreateLoja({ open, close, url }) {
         </Modal>
     );
 }
-

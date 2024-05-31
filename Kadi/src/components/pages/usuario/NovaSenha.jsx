@@ -1,14 +1,21 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
 import React, { useState } from 'react';
 import backUrl from '../../../../config';
-import './login.css'
+import './login.css';
 
-import Fundo from './Fundo'
+import Fundo from './Fundo';
 
 const NovaSenha = () => {
   const [token, setToken] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleClearPassword = () => {
+    setPassword('');
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -28,7 +35,7 @@ const NovaSenha = () => {
       }
 
       return response.json();
-    })
+    });
   };
 
   return (
@@ -38,9 +45,9 @@ const NovaSenha = () => {
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '25vh' }}>
             <Form onSubmit={handleSubmit}>
               <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label className='label'>Token de controle</Form.Label>
-            
-                <Form.Control className='control'
+                <Form.Label className='label'>Token de controle</Form.Label>
+                <Form.Control
+                  className='control'
                   type="text"
                   placeholder="Entre com o token enviado no email."
                   value={token}
@@ -53,14 +60,28 @@ const NovaSenha = () => {
               </Form.Group>
 
               <Form.Group className="mb-3" controlId="formBasicPassword">
-                <Form.Label className='label' >Senha</Form.Label>
-                <Form.Control className='control'
-                  type="password"
-                  placeholder="Senha"
-                  autoComplete="current-password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
+                <Form.Label className='label'>Senha</Form.Label>
+                <InputGroup className='control'>
+                  <Form.Control
+                    type={showPassword ? "text" : "password"}
+                    placeholder={password ? "Informe uma nova senha" : "Senha"}
+                    autoComplete="new-password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                  <Button className='label2' variant="secondary" onClick={() => setShowPassword(!showPassword)}>
+                    {showPassword ? "Ocultar" : "Mostrar"}
+                  </Button>
+
+                </InputGroup>
+                {password && (
+                  <p
+                    variant="outline-secondary"
+                    onClick={handleClearPassword}
+                  >
+                    Limpar
+                  </p>
+                )}
               </Form.Group>
 
               <Button className='label2' variant="primary" type="submit">
@@ -68,11 +89,10 @@ const NovaSenha = () => {
               </Button>
             </Form>
           </div>
-
         </>
       }
     />
-
   );
-}
+};
+
 export default NovaSenha;

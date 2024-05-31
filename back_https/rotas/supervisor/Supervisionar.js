@@ -6,30 +6,6 @@ const bd = require('../../db/sql');
 
 const { pool, query: q } = bd;
 
-
-// -[X] RF 07 - Horas trabalhadas
-router.get('/horas/ver', (req, res) => {
-    const { id_usuario, date1, date2 } = req.body;
-
-    let query = "SELECT * FROM v_relogio";
-
-    if (id_usuario && date1 && date2) {
-        query += ` WHERE id_usuario = ${id_usuario} AND data BETWEEN '${date1}' AND '${date2}'`;
-    } else if (id_usuario) {
-        query += ` WHERE id_usuario = ${id_usuario}`;
-    } else if (date1 && date2) {
-        query += ` WHERE data BETWEEN '${date1}' AND '${date2}'`;
-    }
-
-    q(query)
-        .then(results => {
-            res.status(200).json(results);
-        })
-        .catch(err => {
-            res.status(500).json({ error: 'Erro ao executar a consulta', details: err });
-        });
-
-});
 // -[X] RF 08 - Supervisionar visitas
 router.post('/visitas/ver', (req, res) => {
     const { id_usuario, id_loja, date1, date2, sendAtv: atividades } = req.body;

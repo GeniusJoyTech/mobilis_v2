@@ -1,10 +1,10 @@
-import React, { useState} from 'react';
+import React, { useState } from 'react';
 import { Accordion, Button } from 'react-bootstrap/';
-import'../promotor.css';
+import '../promotor.css';
 
 // export default function Lojas({ id_agenda, id_loja, loja, endereco, cep, mostrarCamera}) {
-export default function Lojas({ loja, endereco, cep}) {
-        return (
+export default function Lojas({ loja, endereco, cep }) {
+    return (
         <>
             <Accordion>
                 <Accordion.Item eventKey="0">
@@ -15,11 +15,7 @@ export default function Lojas({ loja, endereco, cep}) {
                             <p className='label'>Cep: {cep}</p>
                         </div>
                         <div style={{ borderBottom: '1px solid', borderRadius: '1px', margin: '2px' }}></div>
-                        {/* <div style={{ display: 'flex' }}>
-                            <Button onClick={()=>{mostrarCamera(id_agenda, id_loja, 1)}}>
-                                Entrada
-                            </Button>
-                        </div> */}
+
                     </Accordion.Body>
                 </Accordion.Item>
             </Accordion>
