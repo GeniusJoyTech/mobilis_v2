@@ -6,14 +6,39 @@ import buscarCEP from '../../../../utils/buscaCep'
 import h_api from "../../../../hook/HApi";
 import backUrl from '../../../../../config'
 
-export default function CreatePromotores({ open, close, url }) {
+export default function CreateFunc({ open, close, url }) {
     const [send, setSend] = useState({}); // Inicialize send como um objeto vazio
+    const [emailError, setEmailError] = useState(false);
+    const [enviando, setEnviando] = useState(false);
+
+    const validateEmail = (email) => {
+        const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        return re.test(String(email).toLowerCase());
+    };
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setSend(prevSend => ({
-            ...prevSend,
-            [name]: value
-        }));
+        if (name === 'cep') {
+            let cepValue = value.replace(/\D/g, '');
+            if (cepValue.length > 8) {
+                cepValue = cepValue.slice(0, 8);
+            }
+            cepValue = cepValue.replace(/^(\d{5})(\d)/, '$1-$2');
+            setSend(prevSend => ({
+                ...prevSend,
+                [name]: cepValue
+            }));
+        } else if (name === 'email') {
+            setEmailError(!validateEmail(value));
+            setSend(prevSend => ({
+                ...prevSend,
+                [name]: value
+            }));
+        } else {
+            setSend(prevSend => ({
+                ...prevSend,
+                [name]: value
+            }));
+        }
     };
     ////
     const [sup, setSup] = useState();
@@ -22,7 +47,7 @@ export default function CreatePromotores({ open, close, url }) {
         async function getSup() {
             const reqSup = {
                 method: 'GET',
-                url: backUrl+'adm/sup/ver',
+                url: backUrl + 'adm/sup/ver',
             };
 
             await h_api(reqSup, setSup);
@@ -33,17 +58,32 @@ export default function CreatePromotores({ open, close, url }) {
 
     ////
     const handleSubmit = async (e) => {
+        setEnviando(true);
         e.preventDefault();
-        
+        if (!send.email) {
+            alert("O campo de e-mail é obrigatório.");
+            setEnviando(false);
+            return;
+        }
+        if (emailError) {
+            alert("Por favor, corrija o e-mail antes de enviar.");
+            setEnviando(false);
+            return;
+        }
         console.log("Enviando para a API nova tupla:", send, url);
-        // Aqui você pode enviar o objeto `send` para atualizar/editar na base de dados
         await h_api({ method: 'POST', url: url, body: send });
         console.log("Enviando para a API nova tupla:", send, url);
-        close();
+        handleClose();
     };
 
+    const handleClose = () => {
+        setSend({});
+        setEmailError(false);
+        close();
+        setEnviando(false);
+    };
     return (
-        <Modal show={open} onHide={close}>
+        <Modal show={open} onHide={handleClose}>
 
             <Modal.Header closeButton>
                 <Modal.Title>Adicionar</Modal.Title>
@@ -56,6 +96,7 @@ export default function CreatePromotores({ open, close, url }) {
                         name='nome'
                         value={send['nome'] || ''}
                         onChange={handleInputChange}
+                        required
                     ></Form.Control>
 
                     <Form.Label htmlFor="cracha">Crachá</Form.Label>
@@ -64,12 +105,14 @@ export default function CreatePromotores({ open, close, url }) {
                         name='cracha'
                         value={send['cracha'] || ''}
                         onChange={handleInputChange}
+                        required
                     ></Form.Control>
                     <Form.Label htmlFor="cargo">cargo</Form.Label>
                     <Form.Select aria-label="Default select example"
                         id='cargo'
                         name='cargo'
                         onChange={handleInputChange}
+                        required
                     >
                         <option>Selecione um cargo</option>
                         <option value="Promotor">Promotor</option>
@@ -84,7 +127,7 @@ export default function CreatePromotores({ open, close, url }) {
                         name='id_superior'
                         onChange={handleInputChange}
                     >
-                        <option value=''>Selecione um superior</option>
+                        <option value='' >Selecione um superior</option>
                         {sup && sup.map(supervisor => (
                             <option key={supervisor.id_usuario} value={supervisor.id_usuario}>
                                 {supervisor.nome}
@@ -122,6 +165,7 @@ export default function CreatePromotores({ open, close, url }) {
                         name='rua'
                         value={send['rua'] || ''}
                         onChange={handleInputChange}
+                        readOnly
                     ></Form.Control>
 
                     <Form.Label htmlFor="cidade">Cidade</Form.Label>
@@ -130,6 +174,7 @@ export default function CreatePromotores({ open, close, url }) {
                         name='cidade'
                         value={send['cidade'] || ''}
                         onChange={handleInputChange}
+                        readOnly
                     ></Form.Control>
 
                     <Form.Label htmlFor="email">Email</Form.Label>
@@ -138,15 +183,20 @@ export default function CreatePromotores({ open, close, url }) {
                         name='email'
                         value={send['email'] || ''}
                         onChange={handleInputChange}
+                        isInvalid={emailError}
+                        required
                     ></Form.Control>
+                    <Form.Control.Feedback type="invalid">
+                        Por favor, insira um e-mail válido.
+                    </Form.Control.Feedback>
 
                 </form>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="secondary" onClick={close}>
+                <Button variant="secondary" onClick={handleClose}>
                     Cancelar
                 </Button>
-                <Button variant="primary" onClick={handleSubmit}>
+                <Button variant="primary" onClick={handleSubmit} disabled={enviando}>
                     Salvar Alterações
                 </Button>
             </Modal.Footer>

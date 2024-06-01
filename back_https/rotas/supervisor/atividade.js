@@ -20,9 +20,9 @@ router.get('/ver', (req, res) => {
 });
 // -[X] Incluir
 router.post('/incluir', (req, res) => {
-    const { descricao, tipo, observacao } = req.body;
+    const { descricao, observacao } = req.body;
     const query = `INSERT INTO atividade (descricao, tipo, observacao) 
-    VALUES ('${descricao}', '${tipo}', '${observacao}');`
+    VALUES ('${descricao}', 'Promotor', '${observacao}');`
 
     q(query)
         .then(results => {

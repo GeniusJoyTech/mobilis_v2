@@ -1,11 +1,10 @@
-import Crud from "../../../crud/Crud";
+import Crud from "./Crud";
 import backUrl  from "../../../../../config";
 export default function Promotores() {
 
 
     const exibir = [
         { row: "descricao", type: "form" },
-        { row: "tipo", type: "form" },
         { row: "observacao", type: "form" }
     ];
     const url = {

@@ -1,18 +1,29 @@
 ## Front.
-- [x] RF 01 - Login.
+- [x] RF 01 - Login.    
+    -[] Se possível adicionar verificador de email e senha.
 - [x] RF 02 - Logout.
+    -[] Testes Manuais
 - [X] RF 03 - Troca de senha.
+    -[] Precisa atualizar no back a rota para NovaSenha.
+    -[] Adicionar mensagem após troca de senha
 - [X] RF 04 - Gerenciar mercado.
+    -[] Testes
 - [X] RF 05 - Gerenciar Promotor.
+    -[X] Se possível adicionar verificador de email e senha.
 - [X] RF 06 - Gerenciar Roteiro.
-- [] RF 07 - Horas trabalhadas.
-- [] RF 08 - Supervisionar visitas.
-- [X] RF 09 - Gerenciar usuário
-- [X] RF 10 - Foto.
-- [] RF 11 - Atendimento de roteiro.
-- [X] RF 12 - Inicio de visita.
-- [X] RF 13 - Final de visita.
-- [X] RF 14 - Justificar Falta.
+
+- [X] RF 07 - Supervisionar visitas.
+
+- [X] RF 08 - Gerenciar usuário.    
+    -[] Se possível adicionar verificador de email e senha.
+- [X] RF 09 - Atendimento de roteiro.
+
+- [X] RF 10 - Inicio de visita.
+    -[] Refatorar Promotor.
+    -[] Necessário análisar o componente da camera, no modo paisagem tá ruim o visual.
+- [X] RF 11 - Final de visita.
+- [X] RF 12 - Registrar fotos.
+- [X] RF 13 - Justificar Falta.
 
 
 
@@ -28,23 +39,21 @@
 
 -[X] No cadastro do promotor validar status do promotor como ativo ou inativo. 
 
--[] Se possível adicionar verificador de email e senha.
 
 ---
 
 -[X] Refatorar Administrador.
 
 ---
--[] Refatorar Supervisor.
--[] Adicionar filtros, como nome do promotor, nome da loja, atividade, etc.
--[X] Falta finalizar agenda 
--[X] Adicionar crud de atividades
--[X] Atualizar Gui de visitas 
+-[X] Refatorar Supervisor.
+-[] Adicionar filtros por tipo de coluna na tabela.
 
--[] Refatorar Promotor.
--[X] Adicionar um histórico para promotor
--[] Adicionar mensagem após troca de senha
--[] Em atividades manter campo tipo escondido do usuário.
-atividades nao deixar excluir entrada e saida
-atualizar atividades esta criando 2
--[] 
+-[X] Falta finalizar agenda.
+-[X] Adicionar crud de atividades.
+-[X] Atualizar Gui de visitas .
+
+-[X] Adicionar um histórico para promotor.
+-[X] Em atividades manter campo tipo escondido do usuário.
+-[x] Atividades nao deixar excluir entrada e saida
+-[x] Atualizar atividades esta criando 2
+-[] Adicionar em todos os botões comando que impeça duplo clique.
