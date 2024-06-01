@@ -31,13 +31,13 @@ router.get('/sup/ver', (req, res) => {
 // -[X] Incluir
 router.post('/func/incluir', (req, res) => {
 
-    const { id_superior, status, nome, cracha, cep, numero, rua, cargo, cidade, email } = req.body;
+    const { id_superior, nome, cracha, cep, numero, rua, cargo, cidade, email } = req.body;
     const query = `INSERT INTO usuario
                     (id_superior, status, nome, cracha, cep, numero, rua, cargo, cidade, email, senha)
                     VALUES 
                     (
                         ${id_superior}, 
-                        '${status}', 
+                        'Ativo', 
                         '${nome}', 
                         '${cracha}', 
                         '${cep}', ${numero}, 

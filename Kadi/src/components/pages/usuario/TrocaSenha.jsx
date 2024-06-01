@@ -2,14 +2,25 @@ import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import backUrl from '../../../../config';
-import './login.css'
+import './login.css';
 
-const TrocaSenha = ({setTroca}) => {
+const TrocaSenha = ({ setTroca }) => {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
+  const [emailError, setEmailError] = useState('');
+
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(String(email).toLowerCase());
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    if (!validateEmail(email)) {
+      setEmailError('Por favor, insira um email válido.');
+      return;
+    }
 
     try {
       const response = await fetch(`${backUrl}senha/editar`, {
@@ -26,7 +37,8 @@ const TrocaSenha = ({setTroca}) => {
 
       const data = await response.json();
       setMessage('Instruções para troca de senha foram enviadas para seu email.');
-
+      setEmailError(''); // Clear email error on successful submission
+      
     } catch (error) {
       console.error('Erro na requisição:', error);
       setMessage('Erro ao enviar o email. Tente novamente.');
@@ -42,11 +54,18 @@ const TrocaSenha = ({setTroca}) => {
             type="email"
             placeholder="Entre com email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              setEmailError('');
+            }}
             autoComplete="email"
             name="email"
+            isInvalid={!!emailError}
           />
-          <Form.Text className='text-muted label2' onClick={()=>{setTroca(false)}}>
+          <Form.Control.Feedback type="invalid">
+            {emailError}
+          </Form.Control.Feedback>
+          <Form.Text className='text-muted label2' onClick={() => { setTroca(false); }}>
             Voltar
           </Form.Text>
         </Form.Group>

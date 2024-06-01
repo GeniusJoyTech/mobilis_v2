@@ -5,10 +5,11 @@ const nodemailer = require("nodemailer");
 const util = require("util");
 
 const bd = require('../db/sql');
-
+const backUrl = 'https://192.168.0.24:5173/';
 const { query: q } = bd;
 
 const secret = "segredo";
+
 // # Usuário 
 // -[X] RF 01 - Login
 router.post('/login', (req, res) => {
@@ -34,15 +35,10 @@ router.post('/login', (req, res) => {
         });
 });
 
-// -[] RF 02 - Logout
-//router.post('/logout', (req, res) => {
-// Remover o token do lado do cliente (por exemplo, excluindo cookies ou removendo do armazenamento local)
-//});
-
 // -[X] RF 03 - Troca de senha
 router.post('/senha/editar', (req, res) => {
     const email = req.body.email;
-    const query = 'select email from usuario where email = ?';
+    const query = 'SELECT email FROM usuario WHERE email = ?';
 
     q(query, [email])
         .then(results => {
@@ -53,7 +49,6 @@ router.post('/senha/editar', (req, res) => {
 
                 const token = jwt.sign(tokenPayload, secret, { expiresIn: '1h' });
 
-                
                 const smtp = nodemailer.createTransport({
                     host: "smtp.office365.com",
                     port: 587,
@@ -70,11 +65,11 @@ router.post('/senha/editar', (req, res) => {
                     subject: "Redefinir Senha",
                     html: `<p>Olá,
                             <br>Clique no link abaixo para redefinir sua senha:
-                            <br><a href="${'localhost:5173/novasenha'}">${'https://192.168.0.100:5173/novasenha'}</a></p>
+                            <br><a href="${backUrl}novasenha">${backUrl}novasenha</a></p>
                             <p>Por gentileza utilize o token abaixo para realizar a troca da senha:
                             <br>
                             <br>${token}</p>
-                            <br><p>copie o token acima e cole no local mencionado.</p>`,
+                            <br><p>Copie o token acima e cole no local mencionado.</p>`,
                 };
 
                 const sendMailPromise = util.promisify(smtp.sendMail).bind(smtp);
@@ -90,7 +85,7 @@ router.post('/senha/editar', (req, res) => {
                         res.status(500).json({ error: 'Erro ao enviar e-mail', details: err });
                     });
             } else {
-                res.status(200).json({ message: 'Tabela está vazia' });
+                res.status(404).json({ message: 'Email não encontrado' });
             }
         })
         .catch(err => {
@@ -98,19 +93,24 @@ router.post('/senha/editar', (req, res) => {
             res.status(500).json({ error: 'Erro ao executar a consulta', details: err });
         });
 });
-router.post('/nova/senha', async (req, res) => {
-    const {token, senha} = req.body;
 
+router.post('/nova/senha', async (req, res) => {
+    const { token, senha } = req.body;
+
+    try {
         const decoded = jwt.verify(token, secret);
-        console.log(decoded.email, senha);
-        const query = `UPDATE usuario SET senha = ? where email = ?`;
-    
-    q(query, [senha, decoded.email])
-        .then(results => {
-                res.status(200).json(results);           
-        })
-        .catch(err => {
-            res.status(500).json({ error: 'Erro ao executar a consulta', details: err });
-        });
+        const query = `UPDATE usuario SET senha = '${senha}' WHERE email = '${decoded.email}'`;
+        q(query)
+            .then(results => {
+                res.status(200).json({ message: 'Senha atualizada com sucesso' });
+            })
+            .catch(err => {
+                res.status(500).json({ error: 'Erro ao executar a consulta', details: err });
+                
+            });
+    } catch (err) {
+        res.status(401).json({ error: 'Token inválido ou expirado', details: err.message });
+    }
 });
+
 module.exports = router;

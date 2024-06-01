@@ -1,11 +1,11 @@
 ## Front.
 - [x] RF 01 - Login.    
-    -[] Se possível adicionar verificador de email e senha.
+    -[X] Se possível adicionar verificador de email e senha.
 - [x] RF 02 - Logout.
-    -[] Testes Manuais
+    -[X] Testes Manuais
 - [X] RF 03 - Troca de senha.
     -[] Precisa atualizar no back a rota para NovaSenha.
-    -[] Adicionar mensagem após troca de senha
+    -[X] Adicionar mensagem após troca de senha
 - [X] RF 04 - Gerenciar mercado.
     -[] Testes
 - [X] RF 05 - Gerenciar Promotor.
@@ -16,6 +16,8 @@
 
 - [X] RF 08 - Gerenciar usuário.    
     -[] Se possível adicionar verificador de email e senha.
+    -[] Adicionar botão de inativar.
+    -[] Corrigir erros ortográficos.
 - [X] RF 09 - Atendimento de roteiro.
 
 - [X] RF 10 - Inicio de visita.

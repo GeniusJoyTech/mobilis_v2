@@ -18,24 +18,28 @@ const NovaSenha = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    if(token == ''){
+      alert("Você precisa informar o token recebido no email.");
+    }
+    else{
+      await fetch(backUrl + 'nova/senha', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          token: token,
+          senha: password,
+        }),
+      }).then(response => {
+        if (!response.ok) {
+          alert('Verifique o token');
+          throw new Error(`Erro na requisição: ${response.status}`);
+        }
+        window.location.href = './login';
+      });
+    }
 
-    await fetch(backUrl + 'nova/senha', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        token: token,
-        senha: password,
-      }),
-    }).then(response => {
-      if (!response.ok) {
-        console.log(response);
-        throw new Error(`Erro na requisição: ${response.status}`);
-      }
-
-      return response.json();
-    });
   };
 
   return (

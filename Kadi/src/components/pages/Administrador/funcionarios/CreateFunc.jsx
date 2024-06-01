@@ -107,7 +107,7 @@ export default function CreateFunc({ open, close, url }) {
                         onChange={handleInputChange}
                         required
                     ></Form.Control>
-                    <Form.Label htmlFor="cargo">cargo</Form.Label>
+                    <Form.Label htmlFor="cargo">Cargo</Form.Label>
                     <Form.Select aria-label="Default select example"
                         id='cargo'
                         name='cargo'
@@ -120,7 +120,7 @@ export default function CreateFunc({ open, close, url }) {
                         <option value="Administrador">Administrador</option>
                     </Form.Select>
 
-                    <Form.Label htmlFor="id_superior">superior</Form.Label>
+                    <Form.Label htmlFor="id_superior">Superior</Form.Label>
                     <Form.Select
                         aria-label="Default select example"
                         id='id_superior'
@@ -134,14 +134,6 @@ export default function CreateFunc({ open, close, url }) {
                             </option>
                         ))}
                     </Form.Select>
-                    <Form.Label htmlFor="status">Status</Form.Label>
-                    <Form.Control type='text'
-                        id='status'
-                        name='status'
-                        value={send['status'] || ''}
-                        onChange={handleInputChange}
-                    ></Form.Control>
-
                     <Form.Label htmlFor="cep">Cep</Form.Label>
                     <Form.Control type='text'
                         id='cep'
@@ -149,6 +141,7 @@ export default function CreateFunc({ open, close, url }) {
                         value={send['cep'] || ''}
                         onChange={handleInputChange}
                         onBlur={(e) => { buscarCEP(e.target.value, setSend) }}
+                        placeholder="xxxxx-xxx"
                     ></Form.Control>
 
                     <Form.Label htmlFor="numero">Número</Form.Label>
@@ -165,6 +158,7 @@ export default function CreateFunc({ open, close, url }) {
                         name='rua'
                         value={send['rua'] || ''}
                         onChange={handleInputChange}
+                        placeholder="Informe o cep."
                         readOnly
                     ></Form.Control>
 
@@ -174,6 +168,7 @@ export default function CreateFunc({ open, close, url }) {
                         name='cidade'
                         value={send['cidade'] || ''}
                         onChange={handleInputChange}
+                        placeholder="Informe o cep."
                         readOnly
                     ></Form.Control>
 

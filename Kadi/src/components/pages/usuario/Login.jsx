@@ -41,39 +41,47 @@ const Log = ({ setTroca }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    try {
-      const response = await fetch(backUrl + 'Login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: email,
-          senha: password,
-        }),
-      });
-
-      if (!response.ok) {
-        throw response;
-      }
-
-      const data = await response.json();
-      const jwtToken = data.token;
-      document.cookie = `Authorization=${jwtToken}; path=/;`;
-      // Redireciona o usuário após o login bem-sucedido
-      window.location.href = '/pro';
-    } catch (error) {
-      console.error('Erro na requisição:', error);
-      if (error.status === 401) {
-        setToastMessage('Email ou senha incorretos.');
-      } else if (error.status === 403) {
-        setToastMessage('Você está inativado. Contate seu superior.');
-      } else {
-        setToastMessage('Erro ao realizar login. Tente novamente mais tarde.');
-      }
-      setShowToast(true);
+    const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (email == '') {
+      alert('Campo email é obrigatório.');
+      return;
     }
+    else if (re.test(String(email).toLowerCase())) {
+      try {
+        const response = await fetch(backUrl + 'Login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: email,
+            senha: password,
+          }),
+        });
+
+        if (!response.ok) {
+          throw response;
+        }
+
+        const data = await response.json();
+        const jwtToken = data.token;
+        document.cookie = `Authorization=${jwtToken}; path=/;`;
+        // Redireciona o usuário após o login bem-sucedido
+        window.location.href = '/pro';
+      } catch (error) {
+        console.error('Erro na requisição:', error);
+        if (error.status === 401) {
+          setToastMessage('Email ou senha incorretos.');
+        } else if (error.status === 403) {
+          setToastMessage('Você está inativado. Contate seu superior.');
+        } else {
+          setToastMessage('Erro ao realizar login. Tente novamente mais tarde.');
+        }
+        setShowToast(true);
+      }
+    }
+    else { alert("email incompleto.") }
+
   };
 
   return (
