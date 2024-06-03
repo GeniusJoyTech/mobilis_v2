@@ -78,6 +78,48 @@ router.post('/func/editar', (req, res) => {
             console.log(err);
         });
 });
+
+router.post('/func/alterarstatus', (req, res) => {
+    const { status, id_usuario } = req.body;
+
+    // Verifique se o id está presente nos parâmetros da solicitação
+    if (!id_usuario) {
+        return res.status(400).send('O campo id é obrigatório');
+    }
+
+    const query = `UPDATE usuario SET status = '${status}' WHERE id_usuario = ${id_usuario}`;
+    console.log(query);
+    // Executar a query
+    q(query)
+        .then(results => {
+            res.status(200).json(results);
+        })
+        .catch(err => {
+            res.status(500).json({ error: 'Erro ao executar a consulta', details: err });
+            console.log(err);
+        });
+});
+
+router.post('/func/editar/status', (req, res) => {
+    const { status, id_usuario } = req.body;
+
+    // Verifique se o id está presente nos parâmetros da solicitação
+    if (!id_usuario) {
+        return res.status(400).send('O campo id é obrigatório');
+    }
+
+    const query = `UPDATE usuario SET status = '${status}' WHERE id_usuario = ${id_usuario}`;
+
+    // Executar a query
+    q(query)
+        .then(results => {
+            res.status(200).json(results);
+        })
+        .catch(err => {
+            res.status(500).json({ error: 'Erro ao executar a consulta', details: err });
+            console.log(err);
+        });
+});
 // -[X] Excluir
 router.post('/func/deletar', (req, res) => {
     const id = req.body.id_usuario;

@@ -7,21 +7,50 @@ import Form from 'react-bootstrap/Form';
 import h_api from '../../../../hook/HApi';
 
 export default function UpdatePromotores({ open, close, data, url }) {
-    const [send, setSend] = useState(data),
-        editar = url.editar
+    const [send, setSend] = useState(data);
+
+    const editar = url.editar;
+    const [emailError, setEmailError] = useState(false);
+    const [enviando, setEnviando] = useState(false);
+
+    const validateEmail = (email) => {
+        const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        return re.test(String(email).toLowerCase());
+    };
     useEffect(() => {
         setSend(data);
     }, [data]);
 
     const handleClose = () => {
-        close()
+        setSend({});
+        setEmailError(false);
+        close();
+        setEnviando(false);
     };
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setSend(prevSend => ({
-            ...prevSend,
-            [name]: value
-        }));
+        if (name === 'cep') {
+            let cepValue = value.replace(/\D/g, '');
+            if (cepValue.length > 8) {
+                cepValue = cepValue.slice(0, 8);
+            }
+            cepValue = cepValue.replace(/^(\d{5})(\d)/, '$1-$2');
+            setSend(prevSend => ({
+                ...prevSend,
+                [name]: cepValue
+            }));
+        } else if (name === 'email') {
+            setEmailError(!validateEmail(value));
+            setSend(prevSend => ({
+                ...prevSend,
+                [name]: value
+            }));
+        } else {
+            setSend(prevSend => ({
+                ...prevSend,
+                [name]: value
+            }));
+        }
     };
     ////
     const [sup, setSup] = useState();
@@ -42,13 +71,22 @@ export default function UpdatePromotores({ open, close, data, url }) {
     ////
 
     const handleSubmit = async (e) => {
+        setEnviando(true);
         e.preventDefault();
-
-        console.log("Enviando para a API para editar:", send, url.editar);
+        if (!send.email) {
+            alert("O campo de e-mail é obrigatório.");
+            setEnviando(false);
+            return;
+        }
+        if (emailError) {
+            alert("Por favor, corrija o e-mail antes de enviar.");
+            setEnviando(false);
+            return;
+        }
+        console.log("Enviando para a API nova tupla:", send, editar);
         await h_api({ method: 'POST', url: editar, body: send });
-        console.log("Enviando para a API para editar:", send, url.editar);
-        // Fechar o modal após a edição
-        close();
+        console.log("Enviando para a API nova tupla:", send, editar);
+        handleClose();
     };
 
     return (
@@ -79,7 +117,7 @@ export default function UpdatePromotores({ open, close, data, url }) {
                         name='cargo'
                         onChange={handleInputChange}
                     >
-                        <option value={send['cargo'] || ''}>cargo: { send['cargo'] || 'Selecione um cargo.'}</option>
+                        <option value={send['cargo'] || ''}>cargo: {send['cargo'] || 'Selecione um cargo.'}</option>
                         <option value="Promotor">Promotor</option>
                         <option value="Supervisor">Supervisor</option>
                         <option value="Administrador">Administrador</option>
@@ -98,14 +136,6 @@ export default function UpdatePromotores({ open, close, data, url }) {
                             </option>
                         ))}
                     </Form.Select>
-
-                    <Form.Label htmlFor="status">Status</Form.Label>
-                    <Form.Control type='text'
-                        id='status'
-                        name='status'
-                        value={send['status'] || ''}
-                        onChange={handleInputChange}
-                    ></Form.Control>
 
                     <Form.Label htmlFor="cep">Cep</Form.Label>
                     <Form.Control type='text'
@@ -147,7 +177,6 @@ export default function UpdatePromotores({ open, close, data, url }) {
                         value={send['email'] || ''}
                         onChange={handleInputChange}
                     ></Form.Control>
-
                 </form>
             </Modal.Body>
             <Modal.Footer>

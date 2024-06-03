@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 
-import h_api from '../../hook/HApi';
+import h_api from '../../../../hook/HApi';
 
 export default function Delete({ open, close, data, url }) {
     const deletar = url.deletar;
@@ -22,10 +22,10 @@ export default function Delete({ open, close, data, url }) {
     return (
         <Modal show={open} onHide={close}>
             <Modal.Header closeButton>
-                <Modal.Title>Promotor {data.status} no sistema.</Modal.Title>
+                <Modal.Title>Usuário cadastrado no sistema.</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <p>Você tem certeza que deseja alterar?</p>
+                <p>Você tem certeza que deseja excluir?</p>
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="danger" onClick={handleDelete}>

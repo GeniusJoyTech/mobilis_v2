@@ -15,7 +15,7 @@
 - [X] RF 07 - Supervisionar visitas.
 
 - [X] RF 08 - Gerenciar usuário.    
-    -[] Se possível adicionar verificador de email e senha.
+    -[X] Se possível adicionar verificador de email e senha.
     -[] Adicionar botão de inativar.
     -[] Corrigir erros ortográficos.
 - [X] RF 09 - Atendimento de roteiro.

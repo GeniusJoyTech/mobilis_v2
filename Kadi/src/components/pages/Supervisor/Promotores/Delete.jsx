@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 
-import h_api from '../../hook/HApi';
+import h_api from '../../../../hook/HApi';
 
 export default function Delete({ open, close, data, url }) {
     const deletar = url.deletar;

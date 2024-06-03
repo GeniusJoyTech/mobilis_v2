@@ -5,7 +5,7 @@ import h_api from "../../../../hook/HApi";
 import Create from "./CreateProm"
 import Read from "./Read";
 import Update from "./UpdateProm";
-import Delete from "../../../crud/Delete";
+import Delete from "./Delete";
 
 import { Button, Form } from 'react-bootstrap';
 

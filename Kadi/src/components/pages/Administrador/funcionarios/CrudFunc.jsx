@@ -3,9 +3,10 @@ import React, { useEffect, useState } from "react";
 import h_api from "../../../../hook/HApi";
 
 import Create from "./CreateFunc"
-import Read from "../../../crud/Read";
+import Read from "./ReadFunc";
 import Update from "./UpdateFunc";
-import Delete from "../../../crud/Delete";
+import Delete from "./Delete";
+import Status from "./Status";
 
 import { Button, Form } from 'react-bootstrap';
 
@@ -17,6 +18,7 @@ export default function Crud({ titulo, exibir, dropItem, url }) {
   const [loading, setLoading] = useState(false);
   const [showUpdate, setShowUpdate] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
+  const [showStatus, setShowStatus] = useState(false);
   
   const [read, setRead] = useState([]); //itens recebidos da base de dados
   const form = exibir.filter((item) => item.type === 'form').map((item) => item.row);
@@ -55,6 +57,7 @@ export default function Crud({ titulo, exibir, dropItem, url }) {
     setShowRead(true);
     setShowUpdate(false);
     setShowDelete(false);
+    setShowStatus(false);
     setSelectedRow([]);
   };
 
@@ -63,6 +66,7 @@ export default function Crud({ titulo, exibir, dropItem, url }) {
     setShowRead(false);
     setShowUpdate(false);
     setShowDelete(false);
+    setShowStatus(false);
   }
 
   const handleUpdateItem = (item) => {
@@ -71,6 +75,7 @@ export default function Crud({ titulo, exibir, dropItem, url }) {
     setShowRead(false);
     setShowUpdate(true);
     setShowDelete(false);
+    setShowStatus(false);
   }
   function handleCloseUpdate() {
     setShowCreate(false);
@@ -79,6 +84,7 @@ export default function Crud({ titulo, exibir, dropItem, url }) {
     setShowRead(true);
     setShowDelete(false);
     setSelectedRow([]);
+    setShowStatus(false);
   };
 
   const handleDeleteItem = (item) => {
@@ -87,6 +93,7 @@ export default function Crud({ titulo, exibir, dropItem, url }) {
     setShowRead(false);
     setShowUpdate(false);
     setShowDelete(true);
+    setShowStatus(false);
   }
   function handleCloseDelete() {
     setShowCreate(false);
@@ -95,8 +102,26 @@ export default function Crud({ titulo, exibir, dropItem, url }) {
     setShowRead(true);
     setShowDelete(false);
     setSelectedRow([]);
+    setShowStatus(false);
   };
 
+  const handleStatusItem = (item) => {
+    setSelectedRow(item);
+    setShowCreate(false);
+    setShowRead(false);
+    setShowUpdate(false);
+    setShowDelete(false);
+    setShowStatus(true);
+  }
+  function handleCloseStatus() {
+    setShowCreate(false);
+    setShowUpdate(false);
+    reqRead();
+    setShowRead(true);
+    setShowDelete(false);
+    setSelectedRow([]);
+    setShowStatus(false);
+  };
   //Lógica para obter dados da base de dados
   return (
     <div
@@ -156,6 +181,7 @@ export default function Crud({ titulo, exibir, dropItem, url }) {
             data={filteredItems} // Exibindo itens filtrados
             Update={handleUpdateItem}
             Delete={handleDeleteItem}
+            Status={handleStatusItem}
           />
       }
 
@@ -173,6 +199,12 @@ export default function Crud({ titulo, exibir, dropItem, url }) {
       <Delete
         open={showDelete}
         close={handleCloseDelete}
+        data={selectedRow}
+        url={url}
+      />
+      <Status
+        open={showStatus}
+        close={handleCloseStatus}
         data={selectedRow}
         url={url}
       />

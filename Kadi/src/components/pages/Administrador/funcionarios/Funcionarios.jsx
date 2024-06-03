@@ -13,13 +13,13 @@ export default function Funcionarios() {
         { row: "rua", type: "form" },
         { row: "cidade", type: "form" },
         { row: "email", type: "form" },
-        { row: "senha", type: "form" }
     ];
     const url = {
         ver: backUrl+'adm/func/ver',
         editar: backUrl+'adm/func/editar',
         deletar: backUrl+'adm/func/deletar',
         incluir: backUrl+'adm/func/incluir',
+        status: backUrl+'adm/func/alterarstatus',
     };
 
 
