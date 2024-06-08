@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 
 export default function Read({ open, data, Update, Delete }) {
     const [page, setPage] = useState(1);
-    const itemsPerPage = 3;
+    const itemsPerPage = 10;
     const totalPages = Math.ceil(data.length / itemsPerPage);
 
     const handleClickPrevious = () => {
@@ -44,6 +44,7 @@ export default function Read({ open, data, Update, Delete }) {
                             <th style={{ textAlign: 'center' }} key={'numero'}>Número</th>
                             <th style={{ textAlign: 'center' }} key={'Ciclo'}>Ciclo</th>
                             <th style={{ textAlign: 'center' }} key={'dv'}>Primeira visita</th>
+                            <th style={{ textAlign: 'center' }} key={'pv'}>Próxima visita</th>
                             <th style={{ textAlign: 'center' }} key={'actions'}>Ações</th>
                         </tr>
                     </thead>
@@ -55,11 +56,12 @@ export default function Read({ open, data, Update, Delete }) {
                                     <td key={index +'nome'}>{r.nome}</td>
                                     <td key={index +'r'}>{r.roteirista}</td>
                                     <td key={index+'l'}>{r.loja}</td>
-
                                     <td key={index+'ru'}>{r.rua}</td>
+
                                     <td key={index+'n'}>{r.numero}</td>
-                                    <td key={index+'c'}>{r.ciclo}</td>
+                                    <td key={index+'c'}>{r.ciclo == 1 ? 'Semanal' : r.ciclo == 2 ? 'Bissemanal' : r.ciclo == 3 ? 'Trissemanal' : 'Tetrassemanal'}</td>
                                     <td key={index+'dv'}>{r.diavisita}</td>
+                                    <td key={index+'diav'}>{r.proxima_visita}</td>
 
                                     <td style={{ display: 'flex', justifyContent: 'space-around' }}>
                                         <Button style={{ margin: '2px' }} onClick={() => Update(r)}>Atualizar</Button>
