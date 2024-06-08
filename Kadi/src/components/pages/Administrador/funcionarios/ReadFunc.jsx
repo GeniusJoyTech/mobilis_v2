@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {Table, Button} from 'react-bootstrap';
+import { Table, Button } from 'react-bootstrap';
 
 export default function Read({ open, exibir, data, Update, Delete, Status }) {
     const [page, setPage] = useState(1);
@@ -34,38 +34,50 @@ export default function Read({ open, exibir, data, Update, Delete, Status }) {
         const visibleItems = data.slice(startIndex, endIndex);
 
         return (
-            <>
-                <Table striped bordered hover>
+            <div style={{maxHeight:'90vh', overflowY: 'scroll'}}>
+                <Table striped bordered hover >
                     <thead>
                         <tr>
-                            {row.map((propriedade, index) => (
+                            {/* {row.map((propriedade, index) => (
                                 <th style={{textAlign:'center'}} key={index}>{propriedade}</th>
-                            ))}
-                            <th style={{textAlign:'center'}} key={'actions'}>Ações</th>
+                            ))} */}
+
+                            <th style={{ textAlign: 'center' }} key={0}>{'Nome'}</th>
+                            <th style={{ textAlign: 'center' }} key={1}>{'Crachá'}</th>
+                            <th style={{ textAlign: 'center' }} key={2}>{'Cargo'}</th>
+                            <th style={{ textAlign: 'center' }} key={3}>{'Superior'}</th>
+                            <th style={{ textAlign: 'center' }} key={4}>{'Status'}</th>
+                            <th style={{ textAlign: 'center' }} key={5}>{'Cep'}</th>
+
+                            <th style={{ textAlign: 'center' }} key={6}>{'Número'}</th>
+                            <th style={{ textAlign: 'center' }} key={7}>{'Rua'}</th>
+                            <th style={{ textAlign: 'center' }} key={8}>{'Cidade'}</th>
+                            <th style={{ textAlign: 'center' }} key={9}>{'Email'}</th>
+                            <th style={{ textAlign: 'center' }} key={'actions'}>Ações</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody >
                         {visibleItems.map((item, index) => (
                             <tr key={index}>
                                 {row.map((propriedade, index) => (
                                     <td key={index}>{item[propriedade]}</td>
                                 ))}
-                                <td style={{display:'flex', justifyContent:'space-around'}}> 
-                                    <Button style={{margin: '2px'}} onClick={() => Update(item)}>Atualizar</Button>
+                                <td style={{ display: 'flex', justifyContent: 'space-around' }}>
+                                    <Button style={{ margin: '2px' }} onClick={() => Update(item)}>Atualizar</Button>
                                     {
                                         item.status == 'Ativo' ?
-                                        <Button variant="danger" onClick={() => Status({id_usuario: item.id_usuario, status: 'Inativo'})}>Inativar</Button>
-                                        :
-                                        <Button variant="success" onClick={() => Status({id_usuario: item.id_usuario, status: 'Ativo'})}>Ativar</Button>
+                                            <Button variant="danger" onClick={() => Status({ id_usuario: item.id_usuario, status: 'Inativo' })}>Inativar</Button>
+                                            :
+                                            <Button variant="success" onClick={() => Status({ id_usuario: item.id_usuario, status: 'Ativo' })}>Ativar</Button>
                                     }
-                                    <Button variant="danger" onClick={() => Delete(item)}>Deletar</Button>
+                                    <Button variant="danger" style={{ margin: '2px' }} onClick={() => Delete(item)}>Deletar</Button>
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </Table>
                 {renderPagination()}
-            </>
+            </div>
         );
     } else {
         return null;

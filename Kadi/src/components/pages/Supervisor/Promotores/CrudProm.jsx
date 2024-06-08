@@ -5,7 +5,7 @@ import h_api from "../../../../hook/HApi";
 import Create from "./CreateProm"
 import Read from "./Read";
 import Update from "./UpdateProm";
-import Delete from "./Delete";
+import Status from "./Status";
 
 import { Button, Form } from 'react-bootstrap';
 
@@ -168,7 +168,7 @@ export default function Crud({ titulo, exibir, dropItem, url }) {
         dropItens={dropItem}
         url={url}
       />
-      <Delete
+      <Status
         open={showDelete}
         close={handleCloseDelete}
         data={selectedRow}

@@ -7,6 +7,7 @@ import h_api from "../../../../hook/HApi";
 
 export default function CreateLoja({ open, close, url }) {
     const [send, setSend] = useState({});
+    const [enviando, setEnviando] = useState(false);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -47,10 +48,27 @@ export default function CreateLoja({ open, close, url }) {
     };
 
     const handleSubmit = async (e) => {
+        setEnviando(true);
+        if(!send.loja){
+            alert('Informe o nome da loja.');
+            setEnviando(false);
+            return;
+        }
+        if(!send.cep){
+            alert('Informe o cep da loja.');
+            setEnviando(false);
+            return
+        }
+        if(!send.numero){
+            alert('Informe o número da loja.');
+            setEnviando(false);
+            return;
+        }
         e.preventDefault();
         await h_api({ method: 'POST', url: url, body: send });
         setSend({});
         close();
+        setEnviando(false);
     };
 
     return (
@@ -114,10 +132,10 @@ export default function CreateLoja({ open, close, url }) {
                 </form>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="secondary" onClick={close}>
+                <Button variant="secondary" onClick={()=>{close(); setEnviando(false); setSend({})}}>
                     Cancelar
                 </Button>
-                <Button variant="primary" onClick={handleSubmit}>
+                <Button variant="primary" onClick={handleSubmit} disabled={enviando}>
                     Salvar Alterações
                 </Button>
             </Modal.Footer>

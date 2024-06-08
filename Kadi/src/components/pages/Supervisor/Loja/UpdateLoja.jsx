@@ -6,8 +6,8 @@ import Form from 'react-bootstrap/Form';
 
 import h_api from '../../../../hook/HApi';
 
-export default function Update({ open, close, exibir, data, dropItens, url }) {
-    const [send, setSend] = useState(data),
+export default function Update({ open, close, data, url }) {
+    const [send, setSend] = useState(data), [enviando, setEnviando] = useState(false),
         editar = url.editar;
 
     useEffect(() => {
@@ -15,6 +15,8 @@ export default function Update({ open, close, exibir, data, dropItens, url }) {
     }, [data]);
 
     const handleClose = () => {
+        setEnviando(false);
+        setSend({});
         close();
     };
 
@@ -57,11 +59,30 @@ export default function Update({ open, close, exibir, data, dropItens, url }) {
     };
 
     const handleSubmit = async (e) => {
+        if(!send.loja){
+            alert("Informe o nome da loja!");
+            return
+        }
+        if(!send.cep){
+            alert("Informe o cep da loja!");
+            return
+        }
+        if(!send.numero){
+            alert("Informe o número da loja!");
+            return
+        }
+        else if(send.numero < 1){
+            alert("Verifique o campo de número.");
+            setEnviando(false);
+            return;
+        }
         e.preventDefault();
+        setEnviando(true);
         await h_api({ method: 'POST', url: editar, body: send });
         console.log("Enviando para a API para editar:", send, url.editar);
         // Fechar o modal após a edição
         close();
+        setEnviando(false);
     };
 
     return (
@@ -125,7 +146,7 @@ export default function Update({ open, close, exibir, data, dropItens, url }) {
                 </form>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="primary" onClick={handleSubmit}>
+                <Button variant="primary" onClick={handleSubmit} disabled={enviando}>
                     Salvar Alterações
                 </Button>
                 <Button variant="primary" onClick={handleClose}>

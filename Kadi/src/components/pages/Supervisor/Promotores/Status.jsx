@@ -1,22 +1,21 @@
-import React, { useEffect, useState } from "react";
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
+import { useState } from 'react';
 
 import h_api from '../../../../hook/HApi';
 
 export default function Status({ open, close, data, url }) {
-    const statusUrl = url.status;
-    const [enviando, setEnviando] = useState(false);
-    
+    const deletar = url.deletar;
+    const [enviando, setEnviando]= useState(false);    
 
-    const handleStatus = async () => {
-        setEnviando(true);
+    const handleDelete = async () => {
+        setEnviando(false);
         // Aqui você pode enviar o objeto `send` para deletar da base de dados
-        console.log("Inativando na base de dados:", data, statusUrl);
-        await h_api({ method: 'POST', url: statusUrl, body: data });
+        console.log("Inativando na base de dados:", data, deletar);
+        await h_api({ method: 'POST', url: deletar, body: data });
         // Fechar o modal após a exclusão
         close();
-        setEnviando(false);
+        setEnviando(true);
     };
     const handleClose = () => {
         close();
@@ -32,7 +31,7 @@ export default function Status({ open, close, data, url }) {
                 <p>Você tem certeza que deseja alterar?</p>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="danger" onClick={handleStatus} disabled={enviando}>
+                <Button variant="danger" onClick={handleDelete} disabled={enviando}>
                     Confirmar
                 </Button>
                 <Button variant="primary" onClick={handleClose}>

@@ -1,13 +1,37 @@
-## Front.
+-[X] Refatorar Supervisor.
+
+-[] Adicionar em todos os botões comando que impeça duplo clique.
+-[] Adicionar placeholder em rua e cidade da tela de promotores, nos botões criar e atualizar.
+-[] Testar botão deletar funcionários.
+-[] Adicionar placeholder em rua e cidade da tela de Lojas, nos botões criar e atualizar.
+
+-[] Adicionar mais filtros em Visitas, lojas não atendidades, faltas, etc.
+
+-[] Atualizar escopo de roteiro, adição de checagem de campo nulo isso em criar e em atualizar.
+
+-[] Desabilitar os botões do escopo de roteiro após o primeiro clique e reabilitar após o fim do método, o botão "salvar" de criar está funcionando indefinidamente.
+
+-[] Trocar ciclo de atualizar para que fique igual como está em criar.
+-[] Precisa atualizar no back a rota para NovaSenha.
+-[] Testes
+-[] Necessário análisar o componente da camera, no modo paisagem tá ruim o visual.
+-[] Solicitar duas pessoas para testar a aplicação.## Front.
+
+-[] Adicionar filtros por tipo de coluna na tabela.
+
+-[X] Na tela de promotores, adição de checagem de campo nulo isso em criar e em atualizar.
+-[X] Na tela de promotores, impedir multiplo clique nos botões.
+-[X] Na tela de Loja, adição de checagem de campo nulo isso em criar e em atualizar.
+-[X] Na tela de Loja, impedir multiplo clique nos botões.
+
+
 - [x] RF 01 - Login.    
     -[X] Se possível adicionar verificador de email e senha.
 - [x] RF 02 - Logout.
     -[X] Testes Manuais
 - [X] RF 03 - Troca de senha.
-    -[] Precisa atualizar no back a rota para NovaSenha.
     -[X] Adicionar mensagem após troca de senha
 - [X] RF 04 - Gerenciar mercado.
-    -[] Testes
 - [X] RF 05 - Gerenciar Promotor.
     -[X] Se possível adicionar verificador de email e senha.
 - [X] RF 06 - Gerenciar Roteiro.
@@ -16,13 +40,12 @@
 
 - [X] RF 08 - Gerenciar usuário.    
     -[X] Se possível adicionar verificador de email e senha.
-    -[] Adicionar botão de inativar.
-    -[] Corrigir erros ortográficos.
+    -[X] Adicionar botão de inativar.
+    -[X] Corrigir erros ortográficos.
 - [X] RF 09 - Atendimento de roteiro.
 
 - [X] RF 10 - Inicio de visita.
-    -[] Refatorar Promotor.
-    -[] Necessário análisar o componente da camera, no modo paisagem tá ruim o visual.
+    -[X] Refatorar Promotor.
 - [X] RF 11 - Final de visita.
 - [X] RF 12 - Registrar fotos.
 - [X] RF 13 - Justificar Falta.
@@ -47,15 +70,13 @@
 -[X] Refatorar Administrador.
 
 ---
--[X] Refatorar Supervisor.
--[] Adicionar filtros por tipo de coluna na tabela.
+
 
 -[X] Falta finalizar agenda.
 -[X] Adicionar crud de atividades.
--[X] Atualizar Gui de visitas .
+-[X] Atualizar Gui de visitas.
 
 -[X] Adicionar um histórico para promotor.
 -[X] Em atividades manter campo tipo escondido do usuário.
 -[x] Atividades nao deixar excluir entrada e saida
 -[x] Atualizar atividades esta criando 2
--[] Adicionar em todos os botões comando que impeça duplo clique.

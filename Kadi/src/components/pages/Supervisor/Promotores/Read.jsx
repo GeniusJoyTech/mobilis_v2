@@ -35,7 +35,7 @@ export default function Read({ open, exibir, data, Update, Delete }) {
         const visibleItems = data.slice(startIndex, endIndex);
 console.log(visibleItems);
         return (
-            <>
+            <div style={{minHeight:'90vh', overflowY: 'scroll'}}>
                 <Table striped bordered hover>
                     <thead>
                         <tr>
@@ -81,7 +81,7 @@ console.log(visibleItems);
                     </tbody>
                 </Table>
                 {renderPagination()}
-            </>
+            </div>
         );
     } else {
         return null;

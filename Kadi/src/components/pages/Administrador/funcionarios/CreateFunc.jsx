@@ -60,6 +60,32 @@ export default function CreateFunc({ open, close, url }) {
     const handleSubmit = async (e) => {
         setEnviando(true);
         e.preventDefault();
+        if (!send.nome) {
+            alert("O campo de nome é obrigatório.");
+            setEnviando(false);
+            return;
+        }
+        if (!send.cargo || send.cargo == 0) {
+            alert("O campo de cargo é obrigatório.");
+            setEnviando(false);
+            return;
+        }
+        
+        if (!send.cep) {
+            alert("O campo de cep é obrigatório.");
+            setEnviando(false);
+            return;
+        }
+        
+        if (!send.numero) {
+            alert("O campo de número é obrigatório.");
+            setEnviando(false);
+            return;
+        } else if(send.numero < 1){
+            alert("Verifique o campo de número.");
+            setEnviando(false);
+            return;
+        }
         if (!send.email) {
             alert("O campo de e-mail é obrigatório.");
             setEnviando(false);
@@ -70,9 +96,7 @@ export default function CreateFunc({ open, close, url }) {
             setEnviando(false);
             return;
         }
-        console.log("Enviando para a API nova tupla:", send, url);
         await h_api({ method: 'POST', url: url, body: send });
-        console.log("Enviando para a API nova tupla:", send, url);
         handleClose();
     };
 
@@ -106,7 +130,7 @@ export default function CreateFunc({ open, close, url }) {
                         value={send['cracha'] || ''}
                         onChange={handleInputChange}
                         required
-                    ></Form.Control>
+                    ></ Form.Control>
                     <Form.Label htmlFor="cargo">Cargo</Form.Label>
                     <Form.Select aria-label="Default select example"
                         id='cargo'
@@ -114,26 +138,32 @@ export default function CreateFunc({ open, close, url }) {
                         onChange={handleInputChange}
                         required
                     >
-                        <option>Selecione um cargo</option>
+                        <option value={0} >Selecione um cargo</option>
                         <option value="Promotor">Promotor</option>
                         <option value="Supervisor">Supervisor</option>
                         <option value="Administrador">Administrador</option>
                     </Form.Select>
 
-                    <Form.Label htmlFor="id_superior">Superior</Form.Label>
-                    <Form.Select
-                        aria-label="Default select example"
-                        id='id_superior'
-                        name='id_superior'
-                        onChange={handleInputChange}
-                    >
-                        <option value='' >Selecione um superior</option>
-                        {sup && sup.map(supervisor => (
-                            <option key={supervisor.id_usuario} value={supervisor.id_usuario}>
-                                {supervisor.nome}
-                            </option>
-                        ))}
-                    </Form.Select>
+                    {
+                        sup != null > 0 && (
+                            <>
+                                <Form.Label htmlFor="id_superior">Superior</Form.Label>
+                                <Form.Select
+                                    aria-label="Default select example"
+                                    id='id_superior'
+                                    name='id_superior'
+                                    onChange={handleInputChange}
+                                >
+                                    <option value='' >Selecione um superior</option>
+                                    {sup && sup.map(supervisor => (
+                                        <option key={supervisor.id_usuario} value={supervisor.id_usuario}>
+                                            {supervisor.nome}
+                                        </option>
+                                    ))}
+                                </Form.Select>
+                            </>
+                        )
+                    }
                     <Form.Label htmlFor="cep">Cep</Form.Label>
                     <Form.Control type='text'
                         id='cep'

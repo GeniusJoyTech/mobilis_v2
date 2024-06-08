@@ -5,8 +5,9 @@ import buscarCEP from "../../../../utils/buscaCep";
 import Form from 'react-bootstrap/Form';
 
 import h_api from '../../../../hook/HApi';
+import backUrl from "../../../../../config";
 
-export default function UpdatePromotores({ open, close, data, url }) {
+export default function UpdatePromotores({ open, close, data, supervisores, url }) {
     const [send, setSend] = useState(data);
 
     const editar = url.editar;
@@ -59,7 +60,7 @@ export default function UpdatePromotores({ open, close, data, url }) {
         async function getSup() {
             const reqSup = {
                 method: 'GET',
-                url: 'https://192.168.0.100:5000/adm/sup/ver',
+                url: backUrl+'adm/sup/ver',
             };
 
             await h_api(reqSup, setSup);
@@ -73,6 +74,32 @@ export default function UpdatePromotores({ open, close, data, url }) {
     const handleSubmit = async (e) => {
         setEnviando(true);
         e.preventDefault();
+        if (!send.nome) {
+            alert("O campo de nome é obrigatório.");
+            setEnviando(false);
+            return;
+        }
+        if (!send.cargo || send.cargo == 0) {
+            alert("O campo de cargo é obrigatório.");
+            setEnviando(false);
+            return;
+        }
+        
+        if (!send.cep) {
+            alert("O campo de cep é obrigatório.");
+            setEnviando(false);
+            return;
+        }
+        
+        if (!send.numero) {
+            alert("O campo de número é obrigatório.");
+            setEnviando(false);
+            return;
+        } else if(send.numero < 1){
+            alert("Verifique o campo de número.");
+            setEnviando(false);
+            return;
+        }
         if (!send.email) {
             alert("O campo de e-mail é obrigatório.");
             setEnviando(false);
@@ -83,9 +110,8 @@ export default function UpdatePromotores({ open, close, data, url }) {
             setEnviando(false);
             return;
         }
-        console.log("Enviando para a API nova tupla:", send, editar);
-        await h_api({ method: 'POST', url: editar, body: send });
-        console.log("Enviando para a API nova tupla:", send, editar);
+        if(JSON.stringify(data) != JSON.stringify(send))
+            await h_api({ method: 'POST', url: editar, body: send });
         handleClose();
     };
 
@@ -117,25 +143,32 @@ export default function UpdatePromotores({ open, close, data, url }) {
                         name='cargo'
                         onChange={handleInputChange}
                     >
-                        <option value={send['cargo'] || ''}>cargo: {send['cargo'] || 'Selecione um cargo.'}</option>
+                        <option value={send.cargo || ''}>{'Atual: ' + send['cargo'] || 'Selecione um cargo.'}</option>
                         <option value="Promotor">Promotor</option>
                         <option value="Supervisor">Supervisor</option>
                         <option value="Administrador">Administrador</option>
                     </Form.Select>
-                    <Form.Label htmlFor="id_superior">superior</Form.Label>
-                    <Form.Select
-                        aria-label="Default select example"
-                        id='id_superior'
-                        name='id_superior'
-                        onChange={handleInputChange}
-                    >
-                        <option value={send['superior'] || ''}>Superior: {send['superior'] || 'Selecione um superior.'}</option>
-                        {sup && sup.map(supervisor => (
-                            <option key={supervisor.id_usuario} value={supervisor.id_usuario}>
-                                {supervisor.nome}
-                            </option>
-                        ))}
-                    </Form.Select>
+                    {
+                        sup != null > 0 && (
+                            <>
+                                <Form.Label htmlFor="id_superior">Superior</Form.Label>
+                                <Form.Select
+                                    aria-label="Default select example"
+                                    id='id_superior'
+                                    name='id_superior'
+                                    onChange={handleInputChange}
+                                >
+                                    <option value={send.cargo || ''} >{'Atual: '+send.superior || 'Selecione um superior'}</option>
+                                    {sup && sup.map(supervisor => (
+                                        <option key={supervisor.id_usuario} value={supervisor.id_usuario}>
+                                            {supervisor.nome}
+                                        </option>
+                                    ))}
+                                </Form.Select>
+                            </>
+                        )
+                    }
+
 
                     <Form.Label htmlFor="cep">Cep</Form.Label>
                     <Form.Control type='text'
@@ -180,10 +213,10 @@ export default function UpdatePromotores({ open, close, data, url }) {
                 </form>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="primary" onClick={handleSubmit}>
+                <Button variant="primary" onClick={handleSubmit} disabled={enviando}>
                     Salvar Alterações
                 </Button>
-                <Button variant="primary" onClick={handleClose}>
+                <Button variant="primary" onClick={handleClose} >
                     Cancelar
                 </Button>
             </Modal.Footer>

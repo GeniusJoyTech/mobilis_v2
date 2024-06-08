@@ -6,13 +6,13 @@ import h_api from '../../../../hook/HApi';
 
 export default function Delete({ open, close, data, url }) {
     const deletar = url.deletar;
+    const [enviando, setEnviando] = useState(false);
     
 
     const handleDelete = async () => {
-        // Aqui você pode enviar o objeto `send` para deletar da base de dados
-        console.log("Inativando na base de dados:", data, deletar);
+        setEnviando(true);
         await h_api({ method: 'POST', url: deletar, body: data });
-        // Fechar o modal após a exclusão
+        setEnviando(false);
         close();
     };
     const handleClose = () => {
@@ -25,10 +25,14 @@ export default function Delete({ open, close, data, url }) {
                 <Modal.Title>Usuário cadastrado no sistema.</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <p>Você tem certeza que deseja excluir?</p>
+                <p>Você tem certeza que deseja excluir o <strong>{data.cargo}</strong> {data.nome}?</p>
+
+                <p>Todos seus dados serão excluídos do sistema.</p>
+                
+
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="danger" onClick={handleDelete}>
+                <Button variant="danger" onClick={handleDelete} disabled={enviando}>
                     Confirmar
                 </Button>
                 <Button variant="primary" onClick={handleClose}>
