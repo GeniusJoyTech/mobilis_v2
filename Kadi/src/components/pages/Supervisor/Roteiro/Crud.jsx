@@ -17,7 +17,7 @@ export default function Crud({ titulo, promotores, lojas, url }) {
   const [loading, setLoading] = useState(false);
   const [showUpdate, setShowUpdate] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
-  
+
   const [read, setRead] = useState([]); //itens recebidos da base de dados
   const [searchTerm, setSearchTerm] = useState(""); // estado para armazenar o termo de pesquisa
 
@@ -119,7 +119,7 @@ export default function Crud({ titulo, promotores, lojas, url }) {
             style={{
               display: 'flex',
               alignItems: 'center',
-              width:'100%'
+              width: '100%'
             }}
           >
             <Button onClick={handleCreate} style={{ marginRight: '4px' }}>Adicionar {titulo}</Button>
@@ -168,6 +168,9 @@ export default function Crud({ titulo, promotores, lojas, url }) {
         lojas={lojas}
         url={url}
       />
+
+
+
       <Delete
         open={showDelete}
         close={handleCloseDelete}

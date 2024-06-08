@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 
 export default function Read({ open, data, Update, Delete }) {
     const [page, setPage] = useState(1);
-    const itemsPerPage = 10;
+    const itemsPerPage = 3;
     const totalPages = Math.ceil(data.length / itemsPerPage);
 
     const handleClickPrevious = () => {
@@ -51,19 +51,19 @@ export default function Read({ open, data, Update, Delete }) {
                         {visibleItems.map((r, index) => {
                             return (
 
-                                <tr>
-                                    <td key={index}>{r.nome}</td>
-                                    <td key={index}>{r.roteirista}</td>
-                                    <td key={index}>{r.loja}</td>
+                                <tr key={index}>
+                                    <td key={index +'nome'}>{r.nome}</td>
+                                    <td key={index +'r'}>{r.roteirista}</td>
+                                    <td key={index+'l'}>{r.loja}</td>
 
-                                    <td key={index}>{r.rua}</td>
-                                    <td key={index}>{r.numero}</td>
-                                    <td key={index}>{r.ciclo}</td>
-                                    <td key={index}>{r.diavisita}</td>
+                                    <td key={index+'ru'}>{r.rua}</td>
+                                    <td key={index+'n'}>{r.numero}</td>
+                                    <td key={index+'c'}>{r.ciclo}</td>
+                                    <td key={index+'dv'}>{r.diavisita}</td>
 
                                     <td style={{ display: 'flex', justifyContent: 'space-around' }}>
-                                        <Button style={{ margin: '2px' }} onClick={() => Update(item)}>Atualizar</Button>
-                                        <Button variant="danger" onClick={() => Delete(item)}>Deletar</Button>
+                                        <Button style={{ margin: '2px' }} onClick={() => Update(r)}>Atualizar</Button>
+                                        <Button variant="danger" onClick={() => Delete(r)}>Deletar</Button>
                                     </td>
 
                                 </tr>

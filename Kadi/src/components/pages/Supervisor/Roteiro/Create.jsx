@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import h_api from '../../../../hook/HApi';
 
-export default function UpdateDelete({ open, close, promotores, lojas, url }) {
+export default function Create({ open, close, promotores, lojas, url }) {
     const [send, setSend] = useState({}); 
     const [enviando, setEnviando] = useState(false);
 
