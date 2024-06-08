@@ -4,20 +4,8 @@ import h_api from "../../../../hook/HApi";
 import backUrl from '../../../../../config'
 export default function Roteiro() {
 
-    
-    const exibir = [
-        { row: "nome", type: "check" },
-        { row: "roteirista", type: "check" },
-        { row: "loja", type: "check" },
-        { row: "rua", type: "check" },
-        { row: "numero", type: "check" },
-        { row: "ciclo", type: "form" },
-        { row: "diavisita", type: "form", t: 'date' },
-    ];
-
     const [promotores, setPromotores] = useState([]);
     const [loja, setLoja] = useState([]);
-    const [drop, setDrop] = useState([]);
 
     const url = {
         ver: backUrl+'sup/roteiro/ver',
@@ -43,17 +31,14 @@ export default function Roteiro() {
         req();
     }, []);
 
-useEffect(()=>{
-    setDrop([{ funcionario: promotores }, { loja: loja }])
-},[promotores, loja])
     return (
         <>
             <Crud
                 titulo='Roteiro'
-                exibir={exibir}
-                dropItem={drop}
+                promotores={promotores}
+                lojas={loja}
                 url={url}
             />
         </>
     )
-} 
+}

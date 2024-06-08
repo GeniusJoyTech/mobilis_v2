@@ -5,18 +5,8 @@ import Form from 'react-bootstrap/Form';
 
 import h_api from '../../../../hook/HApi';
 
-export default function Update({ open, close, data, dropItens, url }) {
-    const func = dropItens
-        .filter(objeto => objeto.hasOwnProperty("funcionario"))
-        .map(objeto => objeto["funcionario"]);;
-    const loja = dropItens
-        .filter(objeto => objeto.hasOwnProperty("loja"))
-        .map(objeto => objeto["loja"]);;
-    const atividades = dropItens
-        .filter(objeto => objeto.hasOwnProperty("atividade"))
-        .map(objeto => objeto["atividade"]);;
-
-
+export default function Update({ open, close, promotores, lojas, data, url }) {
+    const [enviando, setEnviando] = useState(false);
     const [send, setSend] = useState(data),
         editar = url.editar
     useEffect(() => {
@@ -33,60 +23,41 @@ export default function Update({ open, close, data, dropItens, url }) {
             [name]: value
         }));
     };
-    // const handleSelectChange = (e) => {
-    //     const { name, value } = e.target;
-    //     console.log(name, value);
-    //     // Busca o item selecionado em sel
-    //     const selectedItem = dropItens.find(item => Object.keys(item)[0] === name);
-    //     if (!selectedItem) return; // Sai da função se o item não for encontrado
-
-    //     // Atualiza o estado send com base no item selecionado
-    //     const updatedSend = { ...send };
-    //     const value_list = value.split(',');
-    //     let objeto = {};
-
-
-    //     selectedItem[name].forEach(obj => {
-    //         const keys = Object.keys(obj);
-    //         keys.forEach((k, i) => {
-    //             objeto[k] = value_list[i];
-    //         });
-    //     });
-    //     const updatedState = { ...updatedSend, ...objeto };
-    //     setSend(updatedState);
-    // };
-
     const handleSelectChange = (e) => {
         const { name, value } = e.target;
-        console.log(name, value);
-    
-        // Busca o item selecionado diretamente em data
-        const selectedItem = data[name];
-        if (!selectedItem) {
-            console.log('Item não encontrado em data');
-            return;
-        }
-    
-        // Atualiza o estado send com base no item selecionado
-        setSend(prevSend => {
-            const updatedSend = { ...prevSend };
-    
-            // Atualiza o objeto send com a nova chave e valor
-            updatedSend[name] = value;
-    
-            console.log(updatedSend); // O estado atualizado está disponível aqui
-            return updatedSend;
-        });
+        setSend(prevSend => ({
+            ...prevSend,
+            [name]: value
+        }));
     };
-    
 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!send.id_usuario) {
+            alert('Necessário selecionar um promotor.');
+            return;
+        }
+        if (!send.loja) {
+            alert('Necessário a loja para o roteiro.');
+            return;
+        }
+        if (!send.ciclo) {
+            alert('O ciclo é importante, pois representa a repetição da visita do promotor.');
+            return;
+        }
+
+        if (!send.diavisita) {
+            alert('Por favor informe quando será o primeiro dia da visita.');
+            return;
+        }
+        setEnviando(true);
+        // Aqui você pode enviar o objeto `send` para atualizar/editar na base de dados
         await h_api({ method: 'POST', url: editar, body: send });
-        console.log("Enviando para a API para editar:", send, url.editar);
-        // Fechar o modal após a edição
         close();
+        setSend({});
+        setEnviando(false);
     };
     return (
         <Modal show={open} onHide={close}>
@@ -95,44 +66,64 @@ export default function Update({ open, close, data, dropItens, url }) {
             </Modal.Header>
             <Modal.Body>
                 <form onSubmit={handleSubmit}>
-
-                    <Form.Label htmlFor='funcionario'>Funcionário</Form.Label>
-                    <Form.Select id={'funcionario'} name={'id_usuario'} onChange={handleSelectChange}>
-                        <option key={data.id_usuario} value={data.id_usuario}>usuário atual: {data.id_usuario} - {data.nome}</option>
-
-                        {func[0] && func[0].map((f, index) => (
-                            <option key={index} value={f.id_usuario}>{f.id_usuario} {f.nome}</option>
+                <Form.Label htmlFor={'promotores'}>Promotores</Form.Label>
+                    <Form.Select id={'promotores'} name={'promotores'} onChange={handleSelectChange}>
+                        <option key={`A`} value={send.id_usuario || ''}>{'Atual: '+ send.nome || 'Selecione um Promotor'}</option>
+                        {promotores && promotores.map((p, index) => (
+                            <option key={index} value={p.id_usuario}>{p.nome} - {p.status} - {p.cracha}</option>
                         ))}
                     </Form.Select>
-
-
-                    <Form.Label htmlFor='loja'>Loja</Form.Label>
-                    <Form.Select id={'loja'} name={'id_loja'} onChange={handleSelectChange}>
-                        <option key='lj' value={data.id_loja}>Loja atual: {data.loja} - {data.rua} {data.numero}</option>
-
-                        {loja[0] && loja[0].map((l, index) => (
-                            <option key={'l ' + index} value={l.id_loja}>{l.id_loja} {l.loja} - {l.cidade}, {l.rua} {l.numero}</option>
+                    
+                    <Form.Label htmlFor={'loja'}>Lojas</Form.Label>
+                    <Form.Select id={'loja'} name={'loja'} onChange={handleSelectChange}>
+                        <option key={`B`} value={send.id_loja || ''}>{'Atual: '+ send.loja || 'Selecione uma Loja'}</option>
+                        {lojas && lojas.map((l, index) => (
+                            <option key={index} value={l.id_loja}>{l.loja} - {l.rua} - {l.numero}</option>
                         ))}
                     </Form.Select>
-
-                    <Form.Label htmlFor='atividade'>Atividade</Form.Label>
-                    <Form.Select id={'Atividade'} name={'id_atividade'} onChange={handleSelectChange}>
-                        <option key='at' value={data.id_atividade}>atividade atual: {data.descricao}</option>
-
-                        {atividades[0] && atividades[0].map((a, index) => (
-                            <option key={'a ' + index} value={a.id_atividade}>{a.descricao} - {a.observacao}</option>
-                        ))}
-                    </Form.Select>
-
-
-                    <Form.Label htmlFor={'ciclo'}>Ciclo</Form.Label>
-                    <Form.Control
-                        type="number"
-                        id='ciclo'
-                        name='ciclo'
-                        value={send.ciclo || ''}
-                        onChange={handleInputChange}
-                    />
+                    <Form.Label htmlFor={'ciclo'}>Ciclo se repete a cada</Form.Label>
+                    <div>
+                        <Form.Check
+                            inline
+                            type='radio'
+                            id='semanal'
+                            name='ciclo'
+                            label='uma semana'
+                            value={1}
+                            checked={send['ciclo'] == 1}
+                            onChange={handleInputChange}
+                        />
+                        <Form.Check
+                            inline
+                            type='radio'
+                            id='duasSemanas'
+                            name='ciclo'
+                            label='duas semanas'
+                            value={2}
+                            checked={send['ciclo'] == 2}
+                            onChange={handleInputChange}
+                        /><br />
+                        <Form.Check
+                            inline
+                            type='radio'
+                            id='tresSemanas'
+                            name='ciclo'
+                            label='três semanas'
+                            value={3}
+                            checked={send['ciclo'] == 3}
+                            onChange={handleInputChange}
+                        />
+                        <Form.Check
+                            inline
+                            type='radio'
+                            id='quatroSemanas'
+                            name='ciclo'
+                            label='quatro semanas'
+                            value={4}
+                            checked={send['ciclo'] == 4}
+                            onChange={handleInputChange}
+                        />
+                    </div>
 
                     <Form.Label htmlFor={'diavisita'}>Dia da visita</Form.Label>
                     <Form.Control
@@ -146,7 +137,7 @@ export default function Update({ open, close, data, dropItens, url }) {
                 </form>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="primary" onClick={handleSubmit}>
+                <Button variant="primary" onClick={handleSubmit} disabled={enviando}>
                     Salvar Alterações
                 </Button>
                 <Button variant="primary" onClick={handleClose}>

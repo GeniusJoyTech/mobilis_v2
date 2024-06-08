@@ -2,11 +2,9 @@ import React, { useState } from 'react';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 
-export default function Read({ open, exibir, data, Update, Delete }) {
+export default function Read({ open, data, Update, Delete }) {
     const [page, setPage] = useState(1);
     const itemsPerPage = 10;
-    const row = exibir.map((item) => item.row);
-
     const totalPages = Math.ceil(data.length / itemsPerPage);
 
     const handleClickPrevious = () => {
@@ -39,24 +37,38 @@ export default function Read({ open, exibir, data, Update, Delete }) {
                 <Table striped bordered hover>
                     <thead>
                         <tr>
-                            {row.map((propriedade, index) => (
-                                <th style={{textAlign:'center'}} key={index}>{propriedade}</th>
-                            ))}
-                            <th style={{textAlign:'center'}} key={'actions'}>Ações</th>
+                            <th style={{ textAlign: 'center' }} key={'Nome'}>Nome</th>
+                            <th style={{ textAlign: 'center' }} key={'Roteirista'}>Roteirista</th>
+                            <th style={{ textAlign: 'center' }} key={'Loja'}>Loja</th>
+                            <th style={{ textAlign: 'center' }} key={'Rua'}>Rua</th>
+                            <th style={{ textAlign: 'center' }} key={'numero'}>Número</th>
+                            <th style={{ textAlign: 'center' }} key={'Ciclo'}>Ciclo</th>
+                            <th style={{ textAlign: 'center' }} key={'dv'}>Primeira visita</th>
+                            <th style={{ textAlign: 'center' }} key={'actions'}>Ações</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {visibleItems.map((item, index) => (
-                            <tr key={index}>
-                                {row.map((propriedade, index) => (
-                                    <td key={index}>{item[propriedade]}</td>
-                                ))}
-                                <td style={{display:'flex', justifyContent:'space-around'}}> 
-                                    <Button style={{margin: '2px'}} onClick={() => Update(item)}>Atualizar</Button>
-                                    <Button variant="danger" onClick={() => Delete(item)}>Deletar</Button>
-                                </td>
-                            </tr>
-                        ))}
+                        {visibleItems.map((r, index) => {
+                            return (
+
+                                <tr>
+                                    <td key={index}>{r.nome}</td>
+                                    <td key={index}>{r.roteirista}</td>
+                                    <td key={index}>{r.loja}</td>
+
+                                    <td key={index}>{r.rua}</td>
+                                    <td key={index}>{r.numero}</td>
+                                    <td key={index}>{r.ciclo}</td>
+                                    <td key={index}>{r.diavisita}</td>
+
+                                    <td style={{ display: 'flex', justifyContent: 'space-around' }}>
+                                        <Button style={{ margin: '2px' }} onClick={() => Update(item)}>Atualizar</Button>
+                                        <Button variant="danger" onClick={() => Delete(item)}>Deletar</Button>
+                                    </td>
+
+                                </tr>
+                            )
+                        })}
                     </tbody>
                 </Table>
                 {renderPagination()}

@@ -1,12 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
-import Selects from "../../../crud/details/Selects";
 import Form from 'react-bootstrap/Form';
 import h_api from '../../../../hook/HApi';
 
-export default function UpdateDelete({ open, close, exibir, dropItens, url }) {
-    const [send, setSend] = useState({}); // Inicialize send como um objeto vazio
+export default function UpdateDelete({ open, close, promotores, lojas, url }) {
+    const [send, setSend] = useState({}); 
+    const [enviando, setEnviando] = useState(false);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -18,32 +18,39 @@ export default function UpdateDelete({ open, close, exibir, dropItens, url }) {
 
     const handleSelectChange = (e) => {
         const { name, value } = e.target;
-        // Busca o item selecionado em sel
-        const selectedItem = dropItens.find(item => Object.keys(item)[0] === name);
-        if (!selectedItem) return; // Sai da função se o item não for encontrado
-
-        // Atualiza o estado send com base no item selecionado
-        const updatedSend = { ...send };
-        const value_list = value.split(',');
-        let objeto = {};
-
-        selectedItem[name].forEach(obj => {
-            const keys = Object.keys(obj);
-            keys.forEach((k, i) => {
-                objeto[k] = value_list[i];
-            });
-        });
-        const updatedState = { ...updatedSend, ...objeto };
-        setSend(updatedState);
+        setSend(prevSend => ({
+            ...prevSend,
+            [name]: value
+        }));
     };
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Enviando para a API nova tupla:", send, url);
+
+        if (!send.id_usuario) {
+            alert('Necessário selecionar um promotor.');
+            return;
+        }
+        if (!send.id_loja) {
+            alert('Necessário a loja para o roteiro.');
+            return;
+        }
+        if (!send.ciclo) {
+            alert('O ciclo é importante, pois representa a repetição da visita do promotor.');
+            return;
+        }
+
+        if (!send.diavisita) {
+            alert('Por favor informe quando será o primeiro dia da visita.');
+            return;
+        }
+        setEnviando(true);
         // Aqui você pode enviar o objeto `send` para atualizar/editar na base de dados
         await h_api({ method: 'POST', url: url, body: send });
         close();
         setSend({});
+        setEnviando(false);
     };
 
     return (
@@ -53,9 +60,21 @@ export default function UpdateDelete({ open, close, exibir, dropItens, url }) {
             </Modal.Header>
             <Modal.Body>
                 <form onSubmit={handleSubmit}>
-                    {/* Incorporando os selects */}
-                    {dropItens && <Selects dropItens={Object.values(dropItens)} handleSelectChange={handleSelectChange} />}
+                    <Form.Label htmlFor={'id_usuario'}>Promotores</Form.Label>
+                    <Form.Select id={'id_usuario'} name={'id_usuario'} onChange={handleSelectChange}>
+                        <option key={`A`} value="">Selecione um Promotor</option>
+                        {promotores && promotores.map((p, index) => (
+                            <option key={index} value={p.id_usuario}>{p.nome} - {p.status} - {p.cracha}</option>
+                        ))}
+                    </Form.Select>
                     
+                    <Form.Label htmlFor={'id_loja'}>Lojas</Form.Label>
+                    <Form.Select id={'id_loja'} name={'id_loja'} onChange={handleSelectChange}>
+                        <option key={`B`} value="">Selecione uma Loja</option>
+                        {lojas && lojas.map((l, index) => (
+                            <option key={index} value={l.id_loja}>{l.loja} - {l.rua} - {l.numero}</option>
+                        ))}
+                    </Form.Select>
                     <Form.Label htmlFor={'ciclo'}>Ciclo se repete a cada</Form.Label>
                     <div>
                         <Form.Check
@@ -77,7 +96,7 @@ export default function UpdateDelete({ open, close, exibir, dropItens, url }) {
                             value='2'
                             checked={send['ciclo'] === '2'}
                             onChange={handleInputChange}
-                        /><br/>
+                        /><br />
                         <Form.Check
                             inline
                             type='radio'
@@ -114,7 +133,7 @@ export default function UpdateDelete({ open, close, exibir, dropItens, url }) {
                 <Button variant="secondary" onClick={close}>
                     Cancelar
                 </Button>
-                <Button variant="primary" type="submit" onClick={handleSubmit}>
+                <Button variant="primary" type="submit" onClick={handleSubmit} disabled={enviando}>
                     Salvar Alterações
                 </Button>
             </Modal.Footer>
