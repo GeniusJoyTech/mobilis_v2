@@ -3,10 +3,6 @@ import backUrl  from "../../../../../config";
 export default function Promotores() {
 
 
-    const exibir = [
-        { row: "descricao", type: "form" },
-        { row: "observacao", type: "form" }
-    ];
     const url = {
         ver: backUrl + 'sup/atv/ver',
         editar: backUrl + 'sup/atv/editar',
@@ -19,7 +15,6 @@ export default function Promotores() {
         <>
         <Crud
             titulo='Atividade'
-            exibir={exibir}
             url={url}
         />
         </>

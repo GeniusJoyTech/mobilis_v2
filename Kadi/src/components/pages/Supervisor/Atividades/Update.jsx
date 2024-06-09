@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import h_api from '../../../../hook/HApi';
 
-export default function Update({ open, close, exibir, data, url }) {
+export default function Update({ open, close, data, url }) {
     const [send, setSend] = useState(data),
         editar = url.editar
         const [enviando, setEnviando] = useState(false);

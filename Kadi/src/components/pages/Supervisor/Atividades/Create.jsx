@@ -5,7 +5,7 @@ import Form from 'react-bootstrap/Form';
 
 import h_api from "../../../../hook/HApi";
 
-export default function UpdateDelete({ open, close, exibir, dropItens, url }) {
+export default function UpdateDelete({ open, close, url }) {
     const [send, setSend] = useState({}); // Inicialize send como um objeto vazio
 
     const [enviando, setEnviando] = useState(false);
@@ -16,31 +16,16 @@ export default function UpdateDelete({ open, close, exibir, dropItens, url }) {
             [name]: value
         }));
     };
-    const handleSelectChange = (e) => {
-        const { name, value } = e.target;
-        // Busca o item selecionado em sel
-        const selectedItem = dropItens.find(item => Object.keys(item)[0] === name);
-        if (!selectedItem) return; // Sai da função se o item não for encontrado
-
-        // Atualiza o estado send com base no item selecionado
-        const updatedSend = { ...send };
-        const value_list = value.split(',');
-        let objeto = {};
-
-
-        selectedItem[name].forEach(obj => {
-            const keys = Object.keys(obj);
-            keys.forEach((k, i) => {
-                objeto[k] = value_list[i];
-            });
-        });
-        const updatedState = { ...updatedSend, ...objeto };
-        setSend(updatedState);
-    };
-
 
     const handleSubmit = async (e) => {
-
+        if (!send.descricao) {
+            alert("Obrigatório adicionar a descrição da atividade.");
+            return;
+        }
+        if (!send.observacao) {
+            alert("Obrigatório adicionar uma observacao da atividade.");
+            return;
+        }
         setEnviando(true)
         e.preventDefault();
         // Aqui você pode enviar o objeto `send` para atualizar/editar na base de dados
