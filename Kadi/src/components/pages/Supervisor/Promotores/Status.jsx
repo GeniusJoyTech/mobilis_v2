@@ -9,13 +9,13 @@ export default function Status({ open, close, data, url }) {
     const [enviando, setEnviando]= useState(false);    
 
     const handleDelete = async () => {
-        setEnviando(false);
+        setEnviando(true);
         // Aqui você pode enviar o objeto `send` para deletar da base de dados
         console.log("Inativando na base de dados:", data, deletar);
         await h_api({ method: 'POST', url: deletar, body: data });
         // Fechar o modal após a exclusão
         close();
-        setEnviando(true);
+        setEnviando(false);
     };
     const handleClose = () => {
         close();

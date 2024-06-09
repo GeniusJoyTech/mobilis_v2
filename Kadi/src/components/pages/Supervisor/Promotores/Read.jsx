@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 
-export default function Read({ open, exibir, data, Update, Delete }) {
+export default function Read({ open, data, Update, Delete }) {
     const [page, setPage] = useState(1);
     const itemsPerPage = 10;
-    const row = exibir.map((item) => item.row);
 
     const totalPages = Math.ceil(data.length / itemsPerPage);
 

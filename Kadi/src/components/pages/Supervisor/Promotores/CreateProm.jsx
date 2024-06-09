@@ -46,6 +46,26 @@ export default function CreatePromotores({ open, close, url }) {
     const handleSubmit = async (e) => {
         setEnviando(true);
         e.preventDefault();
+        if (!send.nome) {
+            alert("O campo de e-mail é obrigatório.");
+            setEnviando(false);
+            return;
+        }
+        if (!send.cracha) {
+            alert("O campo de e-mail é obrigatório.");
+            setEnviando(false);
+            return;
+        }
+        if (!send.cep) {
+            alert("O campo de e-mail é obrigatório.");
+            setEnviando(false);
+            return;
+        }
+        if (!send.numero) {
+            alert("O campo de e-mail é obrigatório.");
+            setEnviando(false);
+            return;
+        }
         if (!send.email) {
             alert("O campo de e-mail é obrigatório.");
             setEnviando(false);
@@ -116,6 +136,7 @@ export default function CreatePromotores({ open, close, url }) {
                         name='rua'
                         value={send['rua'] || ''}
                         onChange={handleInputChange}
+                        placeholder="Por favor adicione o cep."
                         readOnly
                     ></Form.Control>
 
@@ -125,6 +146,7 @@ export default function CreatePromotores({ open, close, url }) {
                         name='cidade'
                         value={send['cidade'] || ''}
                         onChange={handleInputChange}
+                        placeholder="Por favor adicione o cep."
                         readOnly
                     ></Form.Control>
 
@@ -135,6 +157,7 @@ export default function CreatePromotores({ open, close, url }) {
                         value={send['email'] || ''}
                         onChange={handleInputChange}
                         isInvalid={emailError}
+                        placeholder="email@email.com"
                         required
                     ></Form.Control>
                     <Form.Control.Feedback type="invalid">

@@ -3,7 +3,6 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import buscarCEP from "../../../../utils/buscaCep";
 import Form from 'react-bootstrap/Form';
-import backUrl from "../../../../../config";
 import h_api from '../../../../hook/HApi';
 
 export default function UpdatePromotores({ open, close, data, url }) {
@@ -55,6 +54,26 @@ export default function UpdatePromotores({ open, close, data, url }) {
     const handleSubmit = async (e) => {
         setEnviando(true);
         e.preventDefault();
+        if (!send.nome) {
+            alert("O campo de nome é obrigatório.");
+            setEnviando(false);
+            return;
+        }
+        if (!send.cracha) {
+            alert("O campo de cracha é obrigatório.");
+            setEnviando(false);
+            return;
+        }
+        if (!send.cep) {
+            alert("O campo de cep é obrigatório.");
+            setEnviando(false);
+            return;
+        }
+        if (!send.numero) {
+            alert("O campo de número é obrigatório.");
+            setEnviando(false);
+            return;
+        }
         if (!send.email) {
             alert("O campo de e-mail é obrigatório.");
             setEnviando(false);
