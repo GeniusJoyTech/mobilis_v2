@@ -7,7 +7,7 @@ import Form from 'react-bootstrap/Form';
 import h_api from '../../../../hook/HApi';
 import backUrl from "../../../../../config";
 
-export default function UpdatePromotores({ open, close, data, supervisores, url }) {
+export default function UpdatePromotores({ open, close, data, url }) {
     const [send, setSend] = useState(data);
 
     const editar = url.editar;

@@ -52,7 +52,7 @@ export default function Read({ open, exibir, data, Update, Delete, Status }) {
                             <th style={{ textAlign: 'center' }} key={6}>{'Número'}</th>
                             <th style={{ textAlign: 'center' }} key={7}>{'Rua'}</th>
                             <th style={{ textAlign: 'center' }} key={8}>{'Cidade'}</th>
-                            <th style={{ textAlign: 'center' }} key={9}>{'Email'}</th>
+                            <th style={{ textAlign: 'center' }} key={9}>{'E-mail'}</th>
                             <th style={{ textAlign: 'center' }} key={'actions'}>Ações</th>
                         </tr>
                     </thead>

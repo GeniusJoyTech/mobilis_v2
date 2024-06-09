@@ -202,12 +202,13 @@ export default function CreateFunc({ open, close, url }) {
                         readOnly
                     ></Form.Control>
 
-                    <Form.Label htmlFor="email">Email</Form.Label>
+                    <Form.Label htmlFor="email">E-mail</Form.Label>
                     <Form.Control type='text'
                         id='email'
                         name='email'
                         value={send['email'] || ''}
                         onChange={handleInputChange}
+                        placeholder="email@email.com"
                         isInvalid={emailError}
                         required
                     ></Form.Control>

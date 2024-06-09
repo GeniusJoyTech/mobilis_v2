@@ -162,11 +162,9 @@ export default function Crud({ titulo, exibir, dropItem, url }) {
         null}
       {/*Inicio Logica de Inclusão CREATE*/}
       <Create
-        handleCreate={handleCreate}
         open={showCreate}
         close={handleCloseCreate}
         url={url.incluir}
-        refresh={reqRot}
       />
       {/*Fim Logica de Inclusão */}
 
@@ -191,9 +189,7 @@ export default function Crud({ titulo, exibir, dropItem, url }) {
       <Update
         open={showUpdate}
         close={handleCloseUpdate}
-        exibir={form}
         data={selectedRow}
-        dropItens={dropItem}
         url={url}
       />
       <Delete
