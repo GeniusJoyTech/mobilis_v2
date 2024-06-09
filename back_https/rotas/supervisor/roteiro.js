@@ -7,9 +7,11 @@ const { pool, query: q } = bd;
 
 // -[X] Ver
 router.get('/ver', (req, res) => {
-    
+    const token = req.header('Authorization');
+    const decoded = jwt.verify(token, 'segredo');
+    const superior = decoded.id_usuario 
 
-    const query = "SELECT id_agenda, id_usuario, nome, id_superior, roteirista, id_loja, loja, rua, numero, ciclo, LEFT(CONVERT(diavisita, CHAR), 10) as diavisita FROM v_sup_vis;";
+    const query = `SELECT id_agenda, id_usuario, nome, id_superior, roteirista, id_loja, loja, rua, numero, ciclo, LEFT(CONVERT(diavisita, CHAR), 10) as diavisita, LEFT(CONVERT(proxima_visita, CHAR), 10) as proxima_visita FROM v_sup_vis where id_superior = ${superior};`;
     
 
     q(query)
@@ -18,7 +20,7 @@ router.get('/ver', (req, res) => {
             
         })
         .catch(err => {
-            console.log(err)
+            console.log(err);
             res.status(500).json({ error: 'Erro ao executar a consulta', details: err });
         });
 });
@@ -41,15 +43,17 @@ router.post('/incluir', async (req, res) => {
 });
 
 // -[X] Editar
-router.post('/editar', (req, res) => {
-    const { id_agenda, id_atividade, id_loja, id_usuario, id_criador, ciclo, diavisita } = req.body;
+router.post('/editar', (req, res) => {    
+    const token = req.header('Authorization'), decoded = jwt.verify(token, 'segredo'), id_criador = decoded.id_usuario;
+    
+    const { id_agenda, id_loja, id_usuario, ciclo, diavisita } = req.body;
 
     // Verifique se o id está presente nos parâmetros da solicitação
     if (!id_agenda) {
         return res.status(400).send('O campo id é obrigatório');
     }
 
-    const query = `UPDATE agenda SET id_atividade = ${id_atividade}, id_loja = ${id_loja}, id_usuario = ${id_usuario}, id_criador = ${id_criador}, ciclo = ${ciclo}, diavisita = '${diavisita}' WHERE id_agenda = ${id_agenda}`;
+    const query = `UPDATE agenda SET id_loja = ${id_loja}, id_usuario = ${id_usuario}, id_criador = ${id_criador}, ciclo = ${ciclo}, diavisita = '${diavisita}' WHERE id_agenda = ${id_agenda}`;
     console.log(query);
     // Executar a query
     q(query)

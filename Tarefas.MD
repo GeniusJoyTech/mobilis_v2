@@ -1,7 +1,12 @@
--[X] Refatorar Supervisor.
+
+-[X] Refatorar Loja de Supervisor.
+-[] Refatorar Visitas de Supervisor.
+-[] Refatorar Atividades de Supervisor.
+-[] Refatorar Funcionarios de Administrador.
+
+-[] Comprar um domínio e upar o front.
 
 -[] Adicionar em todos os botões comando que impeça duplo clique.
--[] Adicionar placeholder em rua e cidade da tela de promotores, nos botões criar e atualizar.
 -[] Testar botão deletar funcionários.
 -[] Adicionar placeholder em rua e cidade da tela de Lojas, nos botões criar e atualizar.
 
@@ -23,6 +28,9 @@
 -[X] Na tela de promotores, impedir multiplo clique nos botões.
 -[X] Na tela de Loja, adição de checagem de campo nulo isso em criar e em atualizar.
 -[X] Na tela de Loja, impedir multiplo clique nos botões.
+-[X] Refatorar Roteiro de Supervisor.
+-[X] Refatorar Promotores de Supervisor.
+-[X] Adicionar placeholder em rua e cidade da tela de promotores, nos botões criar e atualizar.
 
 
 - [x] RF 01 - Login.    
