@@ -1,29 +1,29 @@
-
-- [] Refatorar Visitas de Supervisor.
-- [] Refatorar Funcionarios de Administrador.
+# Tarefas
+- [ ] Refatorar Visitas de Supervisor.
+- [ ] Refatorar Funcionarios de Administrador.
 
 - [X] Refatorar Loja de Supervisor.
 - [X] Refatorar Atividades de Supervisor.
 
-- [] Comprar um domínio e upar o front.
+- [ ] Comprar um domínio e upar o front.
 
-- [] Adicionar em todos os botões comando que impeça duplo clique.
-- [] Testar botão deletar funcionários.
-- [] Adicionar placeholder em rua e cidade da tela de Lojas, nos botões criar e atualizar.
+- [ ] Adicionar em todos os botões comando que impeça duplo clique.
+- [ ] Testar botão deletar funcionários.
+- [ ] Adicionar placeholder em rua e cidade da tela de Lojas, nos botões criar e atualizar.
 
-- [] Adicionar mais filtros em Visitas, lojas não atendidades, faltas, etc.
+- [ ] Adicionar mais filtros em Visitas, lojas não atendidades, faltas, etc.
 
-- [] Atualizar escopo de roteiro, adição de checagem de campo nulo isso em criar e em atualizar.
+- [ ] Atualizar escopo de roteiro, adição de checagem de campo nulo isso em criar e em atualizar.
 
-- [] Desabilitar os botões do escopo de roteiro após o primeiro clique e reabilitar após o fim do método, o botão "salvar" de criar está funcionando indefinidamente.
+- [ ] Desabilitar os botões do escopo de roteiro após o primeiro clique e reabilitar após o fim do método, o botão "salvar" de criar está funcionando indefinidamente.
 
-- [] Trocar ciclo de atualizar para que fique igual como está em criar.
-- [] Precisa atualizar no back a rota para NovaSenha.
-- [] Testes
-- [] Necessário análisar o componente da camera, no modo paisagem tá ruim o visual.
-- [] Solicitar duas pessoas para testar a aplicação.## Front.
+- [ ] Trocar ciclo de atualizar para que fique igual como está em criar.
+- [ ] Precisa atualizar no back a rota para NovaSenha.
+- [ ] Testes
+- [ ] Necessário análisar o componente da camera, no modo paisagem tá ruim o visual.
+- [ ] Solicitar duas pessoas para testar a aplicação.## Front.
 
-- [] Adicionar filtros por tipo de coluna na tabela.
+- [ ] Adicionar filtros por tipo de coluna na tabela.
 
 - [X] Na tela de promotores, adição de checagem de campo nulo isso em criar e em atualizar.
 - [X] Na tela de promotores, impedir multiplo clique nos botões.
