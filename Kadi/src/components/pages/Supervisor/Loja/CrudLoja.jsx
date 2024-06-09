@@ -10,7 +10,7 @@ import Delete from "./Delete";
 import { Button, Form } from 'react-bootstrap';
 
 
-export default function Crud({ titulo, exibir, dropItem, url }) {
+export default function Crud({ titulo, url }) {
   //variaveis para exibir os componentes de edição, deletar e inclusão.
   const [showCreate, setShowCreate] = useState(false);
   const [showRead, setShowRead] = useState(false);
@@ -19,7 +19,6 @@ export default function Crud({ titulo, exibir, dropItem, url }) {
   const [showDelete, setShowDelete] = useState(false);
   
   const [read, setRead] = useState([]); //itens recebidos da base de dados
-  const form = exibir.filter((item) => item.type === 'form').map((item) => item.row);
   const [searchTerm, setSearchTerm] = useState(""); // estado para armazenar o termo de pesquisa
 
 
@@ -152,7 +151,6 @@ export default function Crud({ titulo, exibir, dropItem, url }) {
           :
           <Read
             open={showRead}
-            exibir={exibir}
             data={filteredItems} // Exibindo itens filtrados
             Update={handleUpdateItem}
             Delete={handleDeleteItem}
@@ -165,9 +163,7 @@ export default function Crud({ titulo, exibir, dropItem, url }) {
       <Update
         open={showUpdate}
         close={handleCloseUpdate}
-        exibir={form}
         data={selectedRow}
-        dropItens={dropItem}
         url={url}
       />
       <Delete

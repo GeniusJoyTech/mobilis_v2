@@ -26,10 +26,10 @@ export default function Delete({ open, close, data, url }) {
     return (
         <Modal show={open} onHide={close}>
             <Modal.Header closeButton>
-                <Modal.Title>Promotor {data.status} no sistema.</Modal.Title>
+                <Modal.Title>Deletar.</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <p>Você tem certeza que deseja alterar?</p>
+                <p>Você tem certeza que deseja apagar {data.loja}?</p>
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="danger" onClick={handleDelete} disabled={enviando}>

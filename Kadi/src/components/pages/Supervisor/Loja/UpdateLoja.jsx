@@ -123,6 +123,7 @@ export default function Update({ open, close, data, url }) {
                         name='rua'
                         value={send['rua'] || ''}
                         onChange={handleInputChange}
+                        placeholder="Informe o cep."
                         readOnly
                     ></Form.Control>
 
@@ -132,6 +133,7 @@ export default function Update({ open, close, data, url }) {
                         name='cidade'
                         value={send['cidade'] || ''}
                         onChange={handleInputChange}
+                        placeholder="Informe o cep."
                         readOnly
                     ></Form.Control>
 

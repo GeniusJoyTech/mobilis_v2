@@ -109,6 +109,7 @@ export default function CreateLoja({ open, close, url }) {
                         name='rua'
                         value={send['rua'] || ''}
                         onChange={handleInputChange}
+                        placeholder="Informe o cep."
                         readOnly
                     ></Form.Control>
 
@@ -118,6 +119,7 @@ export default function CreateLoja({ open, close, url }) {
                         name='cidade'
                         value={send['cidade'] || ''}
                         onChange={handleInputChange}
+                        placeholder="Informe o cep."
                         readOnly
                     ></Form.Control>
 
