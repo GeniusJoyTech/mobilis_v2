@@ -88,22 +88,19 @@ router.post('/roteiro/andamento', (req, res) => {
     const decoded = jwt.verify(token, 'segredo');
     const id_usuario = decoded.id_usuario;
     const query = `
-        
-        
-    select * from v_visitas where id_agenda = 
-    (
-        SELECT distinct entrada.id_agenda from servico entrada 
-    where entrada.id_usuario = ${id_usuario} 
-    and date(entrada.datahora) = '${date}'
-    and entrada.id_agenda not in(
-                SELECT saida.id_agenda
-                from servico saida
-                where saida.id_atividade = 2 
-                and saida.id_usuario = entrada.id_usuario
-                AND date(entrada.datahora) = date(saida.datahora)     
-    )
-    )
-    `;
+        SELECT l.*, a.id_agenda from agenda a INNER join loja l on l.id_loja = a.id_loja 
+            where id_agenda in (SELECT 
+                a.id_agenda
+            FROM 
+                servico a
+            WHERE 
+                a.id_usuario = ${id_usuario} AND date(a.datahora) = '${date}'
+            GROUP BY 
+                a.id_agenda
+            HAVING 
+                SUM(CASE WHEN a.id_atividade = 1 THEN 1 ELSE 0 END) >
+                SUM(CASE WHEN a.id_atividade = 2 THEN 1 ELSE 0 END) );
+`;
     q(query)
         .then(results => {
             res.status(200).json(results);

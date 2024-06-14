@@ -12,8 +12,6 @@ export default function Promotor() {
     const [showRoteiro, setShowRoteiro] = useState(true);
     const [showAdcLoja, setShowAdcLoja] = useState(false);
     const [showNotificacao, setShowNotificacao] = useState(false);
-    const [id_loja, setId_loja] = useState(null);
-    
     const handleRoteiro = () =>{
         setShowRoteiro(true);    
         setShowNotificacao(false);    
@@ -47,7 +45,7 @@ export default function Promotor() {
                     
                     <Logout/>
             </Navbar>
-            {showRoteiro && <Roteiro setId_loja={setId_loja} />}
+            {showRoteiro && <Roteiro  />}
             {showAdcLoja && <AdcLoja />} 
             {showNotificacao && <Notificacao />}
         </>);

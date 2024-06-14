@@ -9,6 +9,7 @@ export default function Visitas() {
   const [atv, setAtv] = useState([]);
   const [sendAtv, setSendAtv] = useState([]);
   const [visP, setVisP] = useState([]);
+  const [enviando, setEnviando] = useState(false);
   const [selectedPromotor, setSelectedPromotor] = useState(null);
   const [selectedLoja, setSelectedLoja] = useState(null);
   const [date1, setDate1] = useState(null);
@@ -78,6 +79,13 @@ export default function Visitas() {
       setDate2(value);
     }
   };
+  const handleReqVisitas = async () => {
+    setEnviando(true);
+    setVisP([]);
+    await reqApiVis();
+    setEnviando(false);
+  }
+
   return (
     <div style={{ margin: '4px' }}>
       <h2>Visitas</h2>
@@ -89,9 +97,9 @@ export default function Visitas() {
             </Accordion.Header>
             <Accordion.Body>
               <div>
-                <div style={{ display: 'flex', justifyContent:'space-around', margin: '8px 0px 8px 0px' }}>
-                <SelProm prom={prom} handle={handleSelectPromotor} selP={selectedPromotor} />
-                <SelLoja loja={ljs} handle={handleSelectLoja} selL={selectedLoja} />
+                <div style={{ display: 'flex', justifyContent: 'space-around', margin: '8px 0px 8px 0px' }}>
+                  <SelProm prom={prom} handle={handleSelectPromotor} selP={selectedPromotor} />
+                  <SelLoja loja={ljs} handle={handleSelectLoja} selL={selectedLoja} />
 
                 </div>
                 <Form >
@@ -125,7 +133,7 @@ export default function Visitas() {
 
                     </div>
                     <div style={{ textAlign: 'center' }}>
-                      <Button onClick={() => { setVisP([]); reqApiVis(); console.log(reqVisP) }}>Ver visitas</Button>
+                      <Button onClick={handleReqVisitas} disabled={enviando}>Ver visitas</Button>
 
                     </div>
                   </Form.Group>
@@ -137,7 +145,7 @@ export default function Visitas() {
 
         </Accordion>
 
-        <div style={{ textAlign: 'center', marginTop:'8px' }}>
+        <div style={{ textAlign: 'center', marginTop: '8px' }}>
           {visP.length > 0 && visP.map((item, index) => (
             <div key={index} >
               <p>{item.descricao} - {item.data} - {item.loja} - {item.rua}</p>

@@ -45,9 +45,18 @@ export default function Lojas({ id_agenda, id_loja, loja, endereco, cep, mostrar
 function Justificativa({ showJust, handleClose, id_agenda }) {
     const [justificativa, setJustificativa] = useState('');
     const [imagemBase64, setImagemBase64] = useState('');
+    const [enviando, setEnviando] = useState(false);
     const handleSave = async () => {
         // Aqui você pode enviar a justificativa e a imagem base64 para onde precisar, como um servidor ou um estado do componente pai
-
+        if(justificativa.length < 10){
+            alert('Por favor justifique corretamente o roteiro, adicione mais palavras.');
+            return;
+        }
+        if(!imagemBase64){
+            alert('Você precisa adicionar uma imagem!');
+            return;    
+        }
+        setEnviando(true);
         const send = {
             datahora: new Date(),
             foto: imagemBase64,
@@ -61,11 +70,9 @@ function Justificativa({ showJust, handleClose, id_agenda }) {
             url: backUrl + 'pro/justificativa/incluir',
             body: send,
         }
-        console.log(send);
         await h_api(req);
-
-        // Feche o modal
         handleClose();
+        setEnviando(false);
         location.reload(true);
     };
     const resizeImage = (file, maxWidth, maxHeight) => {
@@ -140,7 +147,7 @@ function Justificativa({ showJust, handleClose, id_agenda }) {
             <Button className='label2' variant="secondary" onClick={handleClose}>
                 Fechar
             </Button>
-            <Button className='label2' variant="primary" onClick={handleSave}>
+            <Button className='label2' variant="primary" onClick={handleSave} disabled={enviando}>
                 Salvar
             </Button>
         </Modal.Footer>

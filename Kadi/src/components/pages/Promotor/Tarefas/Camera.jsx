@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Button } from "react-bootstrap";
 import '../promotor.css';
 
@@ -7,7 +7,28 @@ const Camera = ({ fechar, enviarFoto }) => {
     const [facingMode, setFacingMode] = useState('environment');
     const videoRef = useRef();
 
+    const verificarOrientacao = () => {
+        const largura = window.screen.width;
+        const altura = window.screen.height;
+        if(largura > altura){
+            return true;
+        }
+        else return false;
+    };
+    const verificarOrientacaoContinuamente = () => {
+        const interval = setInterval(() => {
+            if (verificarOrientacao() && stream) {
+                pararCamera();
+                fechar();
+                alert('Fotos devem ser tiradas apenas no modo retrato.');
+                clearInterval(interval);
+            }
+        }, 0);
+    };
+    verificarOrientacaoContinuamente();
+
     const iniciarCamera = async () => {
+
         try {
             const mediaStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
             setStream(mediaStream);
@@ -73,6 +94,8 @@ const Camera = ({ fechar, enviarFoto }) => {
         if (stream) {
             stream.getTracks().forEach((track) => track.stop());
             setStream(null);
+        }
+        if (videoRef.current && videoRef.current.srcObject) {
             videoRef.current.srcObject = null;
         }
         fechar();

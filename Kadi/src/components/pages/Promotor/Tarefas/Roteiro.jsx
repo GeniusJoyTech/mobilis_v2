@@ -15,12 +15,13 @@ import backUrl from '../../../../../config';
 import h_api from "../../../../hook/HApi";
 
 
-export default function Roteiro({ setId_loja }) {
+export default function Roteiro() {
     const hoje = new Date().toLocaleDateString('en-Ca');
     const [date, setDate] = useState(hoje);
 
     const [lojasPendentes, setPendentes] = useState(null);
     const [lojasAndamento, setAndamento] = useState(null);
+    console.log(lojasAndamento);
     const [lojasConcluida, setConcluida] = useState(null);
     const [showCamera, setShowCamera] = useState(false);
     const [showLojas, setShowLojas] = useState(true);
@@ -107,8 +108,6 @@ export default function Roteiro({ setId_loja }) {
         setShowCamera(false);
         setShowLojas(true);
         await h_api(incluirFoto);
-
-        setId_loja(send.id_loja);
         setSend({});
         reqAndamento();
         reqPendentes();

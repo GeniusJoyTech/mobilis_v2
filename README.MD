@@ -1,29 +1,32 @@
 # Tarefas
-- [ ] Refatorar Visitas de Supervisor.
-- [ ] Refatorar Funcionarios de Administrador.
+- [ ] Acertar as datas quando se adiciona uma foto. 
+- [ ] A base de dados com os valores no MER do TG.
+- [X] Necessário análisar o componente da camera, no modo paisagem tá ruim o visual.
+- [X] Adicionar filtros por tipo de coluna na tabela.
+- [X] Adicionar mais filtros em Visitas, lojas não atendidades, faltas, etc.
+- [X] Adicionar placeholder em rua e cidade da tela de Lojas, nos botões criar e atualizar.
 
-- [X] Refatorar Loja de Supervisor.
-- [X] Refatorar Atividades de Supervisor.
 
-- [ ] Comprar um domínio e upar o front.
+- [X] Adicionar em todos de roteiro os botões comando que impeça duplo clique.
+- [X] Adicionar em todos de promotores os botões comando que impeça duplo clique.
+- [X] Adicionar em todos de visitas os botões comando que impeça duplo clique.
+- [X] Adicionar em todos de Atividades os botões comando que impeça duplo clique.
+- [X] Adicionar em todos de Funcionarios os botões comando que impeça duplo clique.
+- [X] Adicionar em todos de Promotores os botões comando que impeça duplo clique.
 
-- [ ] Adicionar em todos os botões comando que impeça duplo clique.
-- [ ] Testar botão deletar funcionários.
-- [ ] Adicionar placeholder em rua e cidade da tela de Lojas, nos botões criar e atualizar.
+- [X] Testar botão deletar funcionários.
+- [X] Acertar Pendentes em roteiro de promotor.
 
-- [ ] Adicionar mais filtros em Visitas, lojas não atendidades, faltas, etc.
 
-- [ ] Atualizar escopo de roteiro, adição de checagem de campo nulo isso em criar e em atualizar.
+- [X] Atualizar escopo de roteiro, adição de checagem de campo nulo isso em criar e em atualizar.
+- [X] Refatorar Visitas de Supervisor. **NOTA:** Essa tarefa será atualizada após a apresentação.
+- [X] Desabilitar os botões do escopo de roteiro após o primeiro clique e reabilitar após o fim do método, o botão "salvar" de criar está funcionando indefinidamente.
 
-- [ ] Desabilitar os botões do escopo de roteiro após o primeiro clique e reabilitar após o fim do método, o botão "salvar" de criar está funcionando indefinidamente.
+- [X] Trocar ciclo de atualizar para que fique igual como está em criar.
+- [X] Precisa atualizar no back a rota para NovaSenha.
 
-- [ ] Trocar ciclo de atualizar para que fique igual como está em criar.
-- [ ] Precisa atualizar no back a rota para NovaSenha.
-- [ ] Testes
-- [ ] Necessário análisar o componente da camera, no modo paisagem tá ruim o visual.
-- [ ] Solicitar duas pessoas para testar a aplicação.## Front.
+- [X] Solicitar duas pessoas para testar a aplicação.## Front.
 
-- [ ] Adicionar filtros por tipo de coluna na tabela.
 
 - [X] Na tela de promotores, adição de checagem de campo nulo isso em criar e em atualizar.
 - [X] Na tela de promotores, impedir multiplo clique nos botões.
@@ -33,6 +36,10 @@
 - [X] Refatorar Promotores de Supervisor.
 - [X] Adicionar placeholder em rua e cidade da tela de promotores, nos botões criar e atualizar.
 
+- [X] Refatorar Loja de Supervisor.
+- [X] Refatorar Atividades de Supervisor.
+
+- [X] Comprar um domínio e upar o front.
 
 - [x] RF 01 - Login.    
     - [X] Se possível adicionar verificador de email e senha.
